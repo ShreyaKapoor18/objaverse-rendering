@@ -4,19 +4,13 @@ import random
 from dataclasses import dataclass
 
 import boto3
-import objaverse
 import tyro
 from tqdm import tqdm
+import objaverse
 
 
 @dataclass
 class Args:
-    start_i: int
-    """total number of files uploaded"""
-
-    end_i: int
-    """total number of files uploaded"""
-
     skip_completed: bool = False
     """whether to skip the files that have already been downloaded"""
 
@@ -36,6 +30,33 @@ def get_completed_uids():
     dirs = [d for d, c in dir_counts.items() if c == 12]
     return set(dirs)
 
+def ten_per_cat(annotations, uids):
+    categories = ['characters-creatures', 'cultural-heritage-history', 'furniture-home', 'art-abstract',
+                  'science-technology', 'architecture', 'cars-vehicles', 'places-travel', 'people', 'food-drink',
+                  'fashion-style', 'sports-fitness', 'music', 'news-politics', 'animals-pets', 'nature-plants', 
+                  'electronic-gadgets', 'weapons-military']
+    dict_cat = {}
+    for category in categories:
+        cnt = 0 
+        category_uids = []
+        for i in range(len(uids)):
+            if annotations[uids[i]]['categories'] != []:
+                if len(annotations[uids[i]]['categories']) == 1:
+                    if annotations[uids[i]]['categories'][0]['name'] == category:
+                        cnt +=1
+                        category_uids.append(uids[i])
+                elif len(annotations[uids[i]]['categories']) == 2:
+                    if annotations[uids[i]]['categories'][1]['name'] == category:
+                        cnt +=1
+                        category_uids.append(uids[i])
+            if cnt ==10:
+                dict_cat[category] = category_uids
+                break
+
+    return dict_cat       
+
+
+            
 
 # set the random seed to 42
 if __name__ == "__main__":
@@ -44,11 +65,19 @@ if __name__ == "__main__":
     random.seed(42)
 
     uids = objaverse.load_uids()
+    annotations = objaverse.load_annotations()
 
     random.shuffle(uids)
 
     object_paths = objaverse._load_object_paths()
-    uids = uids[args.start_i : args.end_i]
+    #uids = uids[args.start_i : args.end_i]
+    dict_cat = ten_per_cat(annotations, uids)
+    list_cat = []
+    for cat in dict_cat:
+        list_cat.extend(dict_cat[cat])
+    print(list_cat)
+    uids = list_cat
+    print(len(uids))
 
     # get the uids that have already been downloaded
     if args.skip_completed:

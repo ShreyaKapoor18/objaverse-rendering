@@ -45,20 +45,13 @@ def worker(
         print(item, gpu)
         command = (
             f"export DISPLAY=:0.{gpu} &&"
-            f" blender-3.2.2-linux-x64/blender -b -P scripts/blender_script.py --"
+            f" Blender -b -P scripts/blender_script.py --"
             f" --object_path {item}"
         )
         subprocess.run(command, shell=True)
+        # quit opening blender for each turn
 
-        if args.upload_to_s3:
-            if item.startswith("http"):
-                uid = item.split("/")[-1].split(".")[0]
-                for f in glob.glob(f"views/{uid}/*"):
-                    s3.upload_file(
-                        f, "objaverse-images", f"{uid}/{f.split('/')[-1]}"
-                    )
-            # remove the views/uid directory
-            shutil.rmtree(f"views/{uid}")
+	
 
         with count.get_lock():
             count.value += 1
