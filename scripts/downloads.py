@@ -21,8 +21,7 @@ categories = ['characters-creatures', 'cultural-heritage-history', 'furniture-ho
                   'electronic-gadgets', 'weapons-military']
 dict_cat = {k:i for k,i in zip(categories, range(len(categories)))}
 #Learning Rate Annealer
-from keras.callbacks import ReduceLROnPlateau
-lrr= ReduceLROnPlateau(monitor='val_acc',   factor=.01,   patience=3,  min_lr=1e-5)
+
 
 X = []
 y = []
@@ -82,7 +81,7 @@ np.random.seed(1000)
 AlexNet = Sequential()
 
 #1st Convolutional Layer
-AlexNet.add(Conv2D(filters=96, input_shape=(512,512,3), kernel_size=(11,11), strides=(4,4), padding='same'))
+AlexNet.add(Conv2D(filters=126, input_shape=(512,512,3), kernel_size=(11,11), strides=(4,4), padding='same'))
 AlexNet.add(BatchNormalization())
 AlexNet.add(Activation('relu'))
 AlexNet.add(MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='same'))
@@ -141,11 +140,11 @@ AlexNet.add(Activation('softmax'))
 AlexNet.summary()
 AlexNet.compile(loss = keras.losses.categorical_crossentropy, optimizer= 'adam', metrics=['accuracy'])
 
-AlexNet.fit_generator(train_generator.flow(x_train, y_train, batch_size=batch_size),
+AlexNet.fit(train_generator.flow(x_train, y_train, batch_size=batch_size),
  epochs = epochs, 
  steps_per_epoch = x_train.shape[0]//batch_size, 
  validation_data = val_generator.flow(x_val, y_val, 
- batch_size=batch_size), validation_steps = 250, callbacks = [lrr], verbose=1)
+ batch_size=batch_size), validation_steps = 250, verbose=1)
 
 
 import matplotlib.pyplot as plt
