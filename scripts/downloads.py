@@ -14,6 +14,7 @@ from keras.layers import Dense, Activation, Dropout, Flatten, Conv2D, MaxPooling
 from keras.layers import BatchNormalization
 from keras.utils import to_categorical
 import numpy as np
+from torchvision.io import read_image
 
 categories = ['characters-creatures', 'cultural-heritage-history', 'furniture-home', 'art-abstract', 
                   'science-technology', 'architecture', 'cars-vehicles', 'places-travel', 'people', 'food-drink',
@@ -32,7 +33,7 @@ for dirname1, _, filenames in os.walk(join(dirname(dirname(__file__)), 'views/')
     for filename in filenames:
        count +=1
        filepath = join(dirname(dirname(__file__)), dirname1, filename)
-       img = cv2.imread(filepath)
+       img = read_image(filepath)
        X.append(img)
        fs = dirname1.split('/')[-1]
        if len(annotations[fs]['categories']) == 1:
@@ -81,7 +82,7 @@ np.random.seed(1000)
 AlexNet = Sequential()
 
 #1st Convolutional Layer
-AlexNet.add(Conv2D(filters=126, input_shape=(512,512,3), kernel_size=(11,11), strides=(4,4), padding='same'))
+AlexNet.add(Conv2D(filters=96, input_shape=(227,227,3), kernel_size=(11,11), strides=(4,4), padding='same'))
 AlexNet.add(BatchNormalization())
 AlexNet.add(Activation('relu'))
 AlexNet.add(MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='same'))

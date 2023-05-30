@@ -40,7 +40,7 @@ parser.add_argument(
     "--engine", type=str, default="BLENDER_EEVEE", choices=["CYCLES", "BLENDER_EEVEE"]
 )
 parser.add_argument("--num_images", type=int, default=12)
-parser.add_argument("--camera_dist", type=int, default=1.5)
+parser.add_argument("--camera_dist", type=int, default=2.0)
 
 argv = sys.argv[sys.argv.index("--") + 1 :]
 args = parser.parse_args(argv)
@@ -52,8 +52,8 @@ render = scene.render
 render.engine = args.engine
 render.image_settings.file_format = "PNG"
 render.image_settings.color_mode = "RGBA"
-render.resolution_x = 512
-render.resolution_y = 512
+render.resolution_x = 227
+render.resolution_y = 227
 render.resolution_percentage = 100
 
 scene.cycles.device = "GPU"
@@ -85,7 +85,7 @@ def add_lighting() -> None:
     bpy.ops.object.light_add(type="AREA")
     light2 = bpy.data.lights["Area"]
     light2.energy = 30000
-    bpy.data.objects["Area"].location[2] = 0.5
+    bpy.data.objects["Area"].location[2] = 0.3
     bpy.data.objects["Area"].scale[0] = 100
     bpy.data.objects["Area"].scale[1] = 100
     bpy.data.objects["Area"].scale[2] = 100
