@@ -51,9 +51,9 @@ render = scene.render
 
 render.engine = args.engine
 render.image_settings.file_format = "PNG"
-render.image_settings.color_mode = "RGBA"
-render.resolution_x = 227
-render.resolution_y = 227
+render.image_settings.color_mode = "RGBA" # hence there are 4 channels, I could just put them as 3 channels then it could be compatible with RESNET
+render.resolution_x = 512
+render.resolution_y = 512
 render.resolution_percentage = 100
 
 scene.cycles.device = "GPU"
@@ -83,6 +83,7 @@ def add_lighting() -> None:
     bpy.ops.object.delete()
     # add a new light
     bpy.ops.object.light_add(type="AREA")
+    # other options here are POINT, SUN, SPOT, AREA
     light2 = bpy.data.lights["Area"]
     light2.energy = 30000
     bpy.data.objects["Area"].location[2] = 0.3

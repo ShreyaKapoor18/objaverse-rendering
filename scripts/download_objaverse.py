@@ -55,6 +55,15 @@ def ten_per_cat(annotations, uids):
 
     return dict_cat       
 
+def lvis_cats():
+    import itertools
+    lvis_annotations = objaverse.load_lvis_annotations()
+    #categories = lvis_annotations.keys()
+    listkey = list(lvis_annotations.values())
+    merged_uids = list(itertools.chain(*listkey))
+    
+    return merged_uids
+
 
             
 
@@ -64,21 +73,21 @@ if __name__ == "__main__":
 
     random.seed(42)
 
-    uids = objaverse.load_uids()
+    #uids = objaverse.load_uids()
     annotations = objaverse.load_annotations()
-
-    random.shuffle(uids)
-
     object_paths = objaverse._load_object_paths()
+    print(len(object_paths))
     #uids = uids[args.start_i : args.end_i]
-    dict_cat = ten_per_cat(annotations, uids)
-    list_cat = []
-    for cat in dict_cat:
-        list_cat.extend(dict_cat[cat])
-    print(list_cat)
-    uids = list_cat
+    #dict_cat = ten_per_cat(annotations, uids)
+    #list_cat = []
+    #for cat in dict_cat:
+    #    list_cat.extend(dict_cat[cat])
+    #print(list_cat)
+    #uids = list_cat
+    #print(len(uids))
+    uids = lvis_cats()
+    # values should be around 47k
     print(len(uids))
-
     # get the uids that have already been downloaded
     if args.skip_completed:
         completed_uids = get_completed_uids()
@@ -88,6 +97,6 @@ if __name__ == "__main__":
         f"https://huggingface.co/datasets/allenai/objaverse/resolve/main/{object_paths[uid]}"
         for uid in uids
     ]
-
+    print(len(uid_object_paths))
     with open("input_models_path.json", "w") as f:
         json.dump(uid_object_paths, f, indent=2)

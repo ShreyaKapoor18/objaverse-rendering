@@ -15,6 +15,8 @@ from keras.layers import BatchNormalization
 from keras.utils import to_categorical
 import numpy as np
 from torchvision.io import read_image
+from tensorflow.keras.optimizers.legacy import Adam
+
 
 categories = ['characters-creatures', 'cultural-heritage-history', 'furniture-home', 'art-abstract', 
                   'science-technology', 'architecture', 'cars-vehicles', 'places-travel', 'people', 'food-drink',
@@ -33,7 +35,7 @@ for dirname1, _, filenames in os.walk(join(dirname(dirname(__file__)), 'views/')
     for filename in filenames:
        count +=1
        filepath = join(dirname(dirname(__file__)), dirname1, filename)
-       img = read_image(filepath)
+       img = cv2.imread(filepath)
        X.append(img)
        fs = dirname1.split('/')[-1]
        if len(annotations[fs]['categories']) == 1:
@@ -44,9 +46,9 @@ for dirname1, _, filenames in os.walk(join(dirname(dirname(__file__)), 'views/')
             y.append(dict_cat[cat])
 
 X = np.array(X)
-#print(X.shape)
-#print(len(y))
-#print(count)
+print(X.shape)
+print(len(y))
+print(count)
 print(y)
 
 from sklearn.model_selection import train_test_split

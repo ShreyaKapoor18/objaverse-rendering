@@ -16,7 +16,7 @@ from keras.utils import to_categorical
 import numpy as np
 from torchvision.models import resnet50, ResNet50_Weights
 from torchvision.io import read_image
-
+from PIL import Image
 
 categories = ['characters-creatures', 'cultural-heritage-history', 'furniture-home', 'art-abstract', 
                   'science-technology', 'architecture', 'cars-vehicles', 'places-travel', 'people', 'food-drink',
@@ -35,7 +35,8 @@ for dirname1, _, filenames in os.walk(join(dirname(dirname(__file__)), 'views/')
     for filename in filenames:
        count +=1
        filepath = join(dirname(dirname(__file__)), dirname1, filename)
-       img = read_image(filepath)
+       print(filepath)
+       img = Image.open(filepath)
        X.append(img)
        fs = dirname1.split('/')[-1]
        if len(annotations[fs]['categories']) == 1:
@@ -47,20 +48,24 @@ for dirname1, _, filenames in os.walk(join(dirname(dirname(__file__)), 'views/')
 
 #X = np.array(X)
 #print(X.shape)
-#print(len(y))
-#print(count)
-print(y)
+print(len(y))
+print(count)
+#print(y)
 print(type(img))
+print(img.size)
+img = np.array(img)
+# remove the alpha channel which is required for the image
+print(img.shape)
 from torchvision.models import resnet50, ResNet50_Weights
 
-resnet50(weights=ResNet50_Weights.IMAGENET1K_V1)
+resnet50(weights=ResNet50_Weights.DEFAULT)
 resnet50(weights="IMAGENET1K_V1")
 resnet50(pretrained=True)
 resnet50(True)
 
 weights = ResNet50_Weights.DEFAULT
 preprocess = weights.transforms()
-batch = preprocess(img)
+batch = preprocess(img).squeeze(0)
 
 # Step 4: Use the model and print the predicted category
 prediction = model(batch).unsqueeze(0)
