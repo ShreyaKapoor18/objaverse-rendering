@@ -1,0 +1,8 @@
+{
+    "debug.allowBreakpointsEverywhere": true,
+    "debug.console.closeOnEnd": true,
+    "debug.javascript.breakOnConditionalError": true,
+    "terminal.integrated.env.linux": {
+    
+    }
+}   
