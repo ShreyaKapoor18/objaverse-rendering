@@ -2,7 +2,7 @@ import argparse
 import json
 import random
 from dataclasses import dataclass
-
+import torch
 import boto3
 import tyro
 from tqdm import tqdm
@@ -34,7 +34,7 @@ def ten_per_cat(annotations, uids):
     categories = ['characters-creatures', 'cultural-heritage-history', 'furniture-home', 'art-abstract',
                   'science-technology', 'architecture', 'cars-vehicles', 'places-travel', 'people', 'food-drink',
                   'fashion-style', 'sports-fitness', 'music', 'news-politics', 'animals-pets', 'nature-plants', 
-                  'electronic-gadgets', 'weapons-military']
+                  'electronics-gadgets', 'weapons-military']
     dict_cat = {}
     for category in categories:
         cnt = 0 
@@ -52,7 +52,6 @@ def ten_per_cat(annotations, uids):
             if cnt ==10:
                 dict_cat[category] = category_uids
                 break
-
     return dict_cat       
 
 def lvis_cats():
@@ -86,6 +85,7 @@ if __name__ == "__main__":
     #uids = list_cat
     #print(len(uids))
     uids = lvis_cats()
+    uids = uids[:100]
     # values should be around 47k
     print(len(uids))
     # get the uids that have already been downloaded

@@ -1,3 +1,4 @@
+#%%
 import numpy as np # linear algebra
 import tensorflow as tf
 from tensorflow import keras
@@ -17,15 +18,17 @@ import numpy as np
 from torchvision.models import resnet50, ResNet50_Weights
 from torchvision.io import read_image
 from PIL import Image
-
+import torch
+#%%
+# https://vitalflux.com/pytorch-load-predict-pretrained-resnet-model/
 categories = ['characters-creatures', 'cultural-heritage-history', 'furniture-home', 'art-abstract', 
                   'science-technology', 'architecture', 'cars-vehicles', 'places-travel', 'people', 'food-drink',
                   'fashion-style', 'sports-fitness', 'music', 'news-politics', 'animals-pets', 'nature-plants',
-                  'electronic-gadgets', 'weapons-military']
+                  'electronics-gadgets', 'weapons-military']
 dict_cat = {k:i for k,i in zip(categories, range(len(categories)))}
 #Learning Rate Annealer
-
-
+#%%
+'''
 X = []
 y = []
 annotations = objaverse.load_annotations()
@@ -35,8 +38,7 @@ for dirname1, _, filenames in os.walk(join(dirname(dirname(__file__)), 'views/')
     for filename in filenames:
        count +=1
        filepath = join(dirname(dirname(__file__)), dirname1, filename)
-       print(filepath)
-       img = Image.open(filepath)
+       img = Image.open(filepath).convert("RGB")
        X.append(img)
        fs = dirname1.split('/')[-1]
        if len(annotations[fs]['categories']) == 1:
@@ -45,34 +47,45 @@ for dirname1, _, filenames in os.walk(join(dirname(dirname(__file__)), 'views/')
        elif len(annotations[fs]['categories']) == 2:
             cat = annotations[fs]['categories'][1]['name']
             y.append(dict_cat[cat])
-
+'''
+#%%
+filepath = '/Users/shreya/blender/objaverse-rendering/views/cars-vehicles/e9fe70b8fc094d26a08bb4b8c1c37518/008.png'
+img = Image.open(filepath).convert("RGB")
 #X = np.array(X)
 #print(X.shape)
-print(len(y))
-print(count)
-#print(y)
-print(type(img))
-print(img.size)
-img = np.array(img)
-# remove the alpha channel which is required for the image
-print(img.shape)
-from torchvision.models import resnet50, ResNet50_Weights
+plt.imshow(img)
+print(filepath)
+resnet = resnet50(weights=ResNet50_Weights.DEFAULT)
+from torchvision import transforms
+#
+# Create a preprocessing pipeline
+#
+preprocess = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(
+        mean=[0.485, 0.456, 0.406],
+        std=[0.229, 0.224, 0.225]
+    )])
+#%%
+# Pass the image for preprocessing and the image preprocessed
+img_preprocessed = preprocess(img)
+batch_tensor = torch.unsqueeze(img_preprocessed, 0)
+resnet.eval()
+out = resnet(batch_tensor)
 
-resnet50(weights=ResNet50_Weights.DEFAULT)
-resnet50(weights="IMAGENET1K_V1")
-resnet50(pretrained=True)
-resnet50(True)
+with open('imagenet_classes.txt') as f:
+    labels = [line.strip() for line in f.readlines()]
 
-weights = ResNet50_Weights.DEFAULT
-preprocess = weights.transforms()
-batch = preprocess(img).squeeze(0)
-
-# Step 4: Use the model and print the predicted category
-prediction = model(batch).unsqueeze(0)
-class_id = prediction.argmax().squeeze(0).item()
-score = prediction[class_id].item()
-category_name = weights.meta["categories"][class_id]
-print(f"{category_name}: {100 * score:.1f}%")
-
-
-
+_, index = torch.max(out, 1)#
+percentage = torch.nn.functional.softmax(out, dim=1)[0] * 100
+#
+# Print the name along with score of the object identified by the model
+#
+print(labels[index[0]], percentage[index[0]].item())
+#
+# Print the top 5 scores along with the image label. Sort function is invoked on the torch to sort the scores.
+#
+_, indices = torch.sort(out, descending=True)
+[(labels[idx], percentage[idx].item()) for idx in indices[0][:5]]

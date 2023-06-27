@@ -1,3 +1,4 @@
+
 """Blender script to render images of 3D models.
 
 This script is used to render images of 3D models. It takes in a list of paths
@@ -5,7 +6,7 @@ to .glb files and renders images of each model. The images are from rotating the
 object around the origin. The images are saved to the output directory.
 
 Example usage:
-    blender -b -P blender_script.py -- \
+    blender -b -P blender_script_2.py -- \
         --object_path my_object.glb \
         --output_dir ./views \
         --engine CYCLES \
@@ -16,6 +17,18 @@ Example usage:
 Here, input_model_paths.json is a json file containing a list of paths to .glb.
 """
 
+
+"""
+To do list:
+a. Render around 100 images per object
+b. Explore different illumination types for each object: area, point light
+c. Change angles, i.e. camera position
+d. Engines are cycles
+e. 
+f. 
+g. 
+h. 
+"""
 import argparse
 import math
 import os
@@ -36,12 +49,11 @@ parser.add_argument(
     help="Path to the object file",
 )
 parser.add_argument("--output_dir", type=str, default="./views")
-parser.add_argument(
-    "--engine", type=str, default="BLENDER_EEVEE", choices=["CYCLES", "BLENDER_EEVEE"]
-)
+parser.add_argument( "--engine", type=str, default="BLENDER_EEVEE", choices=["CYCLES", "BLENDER_EEVEE"])
+# cycles can work with the GPU
 parser.add_argument("--num_images", type=int, default=12)
 parser.add_argument("--camera_dist", type=int, default=1.0)
-
+parser.add_argument("--illumination", type=str, default="Area")
 argv = sys.argv[sys.argv.index("--") + 1 :]
 args = parser.parse_args(argv)
 
@@ -56,15 +68,15 @@ render.resolution_x = 512
 render.resolution_y = 512
 render.resolution_percentage = 100
 
-scene.cycles.device = "GPU"
-scene.cycles.samples = 32
-scene.cycles.diffuse_bounces = 1
-scene.cycles.glossy_bounces = 1
+scene.cycles.device = "GPU" # does this work with the M1 chip no one knows
+scene.cycles.samples = 32 # number of samples
+scene.cycles.diffuse_bounces = 1 # the bouncing reflection from diffuse reflection
+scene.cycles.glossy_bounces = 1 # glossy bounces
 scene.cycles.transparent_max_bounces = 3
-scene.cycles.transmission_bounces = 3
-scene.cycles.filter_width = 0.01
-scene.cycles.use_denoising = True
-scene.render.film_transparent = True
+scene.cycles.transmission_bounces = 3 # transmission bounces
+scene.cycles.filter_width = 0.01 # width of the filter being used
+scene.cycles.use_denoising = True # use denoising 
+scene.render.film_transparent = True # transparent film
 
 
 def sample_point_on_sphere(radius: float) -> Tuple[float, float, float]:
@@ -77,19 +89,31 @@ def sample_point_on_sphere(radius: float) -> Tuple[float, float, float]:
     )
 
 
-def add_lighting() -> None:
+def add_lighting(illumination) -> None:
     # delete the default light
     bpy.data.objects["Light"].select_set(True)
     bpy.ops.object.delete()
     # add a new light
-    bpy.ops.object.light_add(type="AREA")
-    # other options here are POINT, SUN, SPOT, AREA
-    light2 = bpy.data.lights["Area"]
-    light2.energy = 30000
-    bpy.data.objects["Area"].location[2] = 0.3
-    bpy.data.objects["Area"].scale[0] = 100
-    bpy.data.objects["Area"].scale[1] = 100
-    bpy.data.objects["Area"].scale[2] = 100
+    if illumination == "AREA":
+        bpy.ops.object.light_add(type="AREA")
+        # other options here are POINT, SUN, SPOT, AREA
+        light2 = bpy.data.lights["Area"]
+        light2.energy = 30000
+        bpy.data.objects["Area"].location[2] = 0.3
+        bpy.data.objects["Area"].scale[0] = 100
+        bpy.data.objects["Area"].scale[1] = 100
+        bpy.data.objects["Area"].scale[2] = 100
+    elif illumination == "POINT":
+        light_data = bpy.data.lights.new(name="my-light-data", type='POINT')
+        light_data.energy = 100
+        # Create new object, pass the light data 
+        light_object = bpy.data.objects.new(name="my-light", object_data=light_data)
+        # Link object to collection in context
+        bpy.context.collection.objects.link(light_object)
+        # Change light position
+        light_object.location = (0, 0, 3)
+
+        
 
 
 def reset_scene() -> None:
@@ -150,6 +174,11 @@ def scene_meshes():
 
 
 def normalize_scene():
+    '''
+    Normalize the scene
+    Bounding box in between
+    ** should not matter how we normalize the scene **
+    '''
     bbox_min, bbox_max = scene_bbox()
     scale = 1 / max(bbox_max - bbox_min)
     for obj in scene_root_objects():
@@ -174,7 +203,7 @@ def setup_camera():
     return cam, cam_constraint
 
 
-def save_images(object_file: str) -> None:
+def save_images(object_file: str, ) -> None:
     """Saves rendered images of the object in the scene."""
     os.makedirs(args.output_dir, exist_ok=True)
     reset_scene()
@@ -195,8 +224,7 @@ def save_images(object_file: str) -> None:
         point = (
             args.camera_dist * math.sin(phi) * math.cos(theta),
             args.camera_dist * math.sin(phi) * math.sin(theta),
-            args.camera_dist * math.cos(phi),
-        )
+            args.camera_dist * math.cos(phi),)
         cam.location = point
         # render the image
         render_path = os.path.join(args.output_dir, object_uid, f"{i:03d}.png")
