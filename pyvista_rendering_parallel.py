@@ -44,7 +44,7 @@ def worker(
         print(item, gpu)
         command = (
             f"export DISPLAY=:0.{gpu} &&"
-            f" python3 scripts/pyvista_rendering_all.py --"
+            f" python3 pyvista_rendering_all.py --"
             f" --object_path {item}"
         )
         subprocess.run(command, shell=True)

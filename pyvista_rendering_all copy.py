@@ -1,3 +1,4 @@
+#%%
 import glob
 import json
 import multiprocessing
@@ -12,33 +13,22 @@ import wandb
 import pyvista as pv
 import pyshtools
 
-
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "--object_path",
-    type=str,
-    required=True,
-    help="Path to the object file",)
-parser.add_argument("--output_dir", type=str, default="./views")
-argv = sys.argv[sys.argv.index("--") + 1 :]
-args = parser.parse_args(argv)
-
-
 def load_data(file_path)-> None:
     """
     Load the data from a particular file path
     """
-    plotter = pv.Plotter()
     mesh = pv.read(file_path)
     return mesh
-
-def load_background(background_file: str) -> None:
+#%%
+def load_background(mesh, background_file: str) -> None:
     """
     Add a background image to a particular plotting session
     """
     plotter = pv.Plotter()
-    pv.add_background_image()
-
+    plotter.add_mesh(mesh)
+    plotter.add_background_image(background_file)
+    return plotter
+#%%
 
 def add_texture(mesh):
     """
@@ -97,6 +87,11 @@ def plot_mesh(mesh):
     plotter.background_color = 'white'
     plotter.show()
 
+def save_plot(mesh, file_name):
+    plotter.add_mesh(mesh)
+    plotter.camera_position = 'xy'
+    plotter.background_color = 'white'
+    plotter.save_image(file_name)
 
 
 def spherical_harmonics():
@@ -115,43 +110,3 @@ def spherical_harmonics():
     sphere['Lighting'] = lighting_values
     sphere.plot(smooth_shading=True, lighting='Lighting')
 
-def save_plot(mesh, file_name):
-    os.makedirs(args.output_dir, exist_ok=True)
-    # load the object
-    load_object(object_file)
-    object_uid = os.path.basename(object_file).split(".")[0]
-
-    # create an empty object to track
-    for i in range(args.num_images):
-        # set the camera position
-        theta = (i / args.num_images) * math.pi * 2
-        phi = math.radians(60)
-        point = (
-            args.camera_dist * math.sin(phi) * math.cos(theta),
-            args.camera_dist * math.sin(phi) * math.sin(theta),
-            args.camera_dist * math.cos(phi),
-        )
-        cam.location = point
-        # render the image
-        render_path = os.path.join(args.output_dir, object_uid, f"{i:03d}.png")
-
-
-def main():
-        try:
-        start_i = time.time()
-        if args.object_path.startswith("http"):
-            local_path = download_object(args.object_path)
-        else:
-            local_path = args.object_path
-        save_plot(local_path)
-        end_i = time.time()
-        print("Finished", local_path, "in", end_i - start_i, "seconds")
-        # delete the object if it was downloaded
-        if args.object_path.startswith("http"):
-            os.remove(local_path)
-    except Exception as e:
-        print("Failed to render", args.object_path)
-        print(e)
-
-if __name__ == '__main__':
-    main()
