@@ -11,102 +11,53 @@ import boto3
 import tyro
 import wandb
 import pyvista as pv
-import pyshtools
+from os.path import join
+from pyvista import examples
+import cv2
+import meshio
+from os.path import join
+import os
+#%%
+"""
 
-def load_data(file_path)-> None:
-    """
-    Load the data from a particular file path
-    """
+To do:
+Add a loop for different rotations of the object/ different poses
+Add another loop for textures applied to the object
+Add reflectivity/ metalicness/ luminosity of the object
+"""
+file_path = '/Users/shreya/Documents/000-000/0a3dd21606a84a449bb22f597c34bab7.glb'
+backgrounds = '/Users/shreya/Downloads/RENI_HDR/Test'
+output_dir = './out'
+os.environ["OPENCV_IO_ENABLE_OPENEXR"]="1"
+if not os.path.exists(output_dir):
+    os.mkdir(output_dir)
+
+#%%
+for background in glob.glob(join(backgrounds, '*.exr')):
+    pl = pv.Plotter(lighting='none')
     mesh = pv.read(file_path)
-    return mesh
-#%%
-def load_background(mesh, background_file: str) -> None:
-    """
-    Add a background image to a particular plotting session
-    """
-    plotter = pv.Plotter()
-    plotter.add_mesh(mesh)
-    plotter.add_background_image(background_file)
-    return plotter
-#%%
+    bg_image = cv2.imread(background, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH | cv2.IMREAD_UNCHANGED) 
+    fname = background.split('.exr')[0] + ".png"
+    print(fname)
+    cv2.imwrite(fname, cv2.cvtColor(255.0*bg_image, cv2.COLOR_RGB2BGR)) 
+    pl.add_background_image(fname)
+    for shading in ['smooth', 'flat']:
+        if shading == 'smooth':
+            actor = pl.add_mesh(mesh, smooth_shading=True)
+        elif shading == 'flat':
+            actor = pl.add_mesh(mesh)
+        for lighting in ['head_light', 'camera-light', 'scene-light']:
+            light = pv.Light()
+            if lighting == 'head-light':
+                light.set_headlight()
+            elif lighting == 'camera-light':
+                light.set_camera_light()
+            elif lighting == 'scene-light':
+                light.set_scene_light()
+            pl.add_light(light)
+            bgname = background.split(backgrounds + "/")[1][:-4]
+            pl.show(screenshot=join(output_dir, f'{shading}_{bgname}_{lighting}.png'))
+            pl=pv.Plotter()
+        
 
-def add_texture(mesh):
-    """
-    Add texture map to the mesh of the object
-    """
-    mesh.texture_map_to_plane(inplace=True)
-    mesh.plot(texture=tex)
-
-
-def change_lighting_on_object(mesh, light_direction=(1, 1, 1), light_color='white', light_intensity=1.0):
-    plotter = pv.Plotter()
-    plotter.add_mesh(mesh)
-    plotter.add_directional_light(direction=light_direction, color=light_color, intensity=light_intensity)
-    plotter.camera_position = 'xy'
-    plotter.background_color = 'white'
-
-def change_transparency(mesh, opacity=1.0):
-    mesh.opacity = opacity
-    plotter = pv.Plotter()
-    plotter.add_mesh(mesh)
-    plotter.camera_position = 'xy'
-    plotter.background_color = 'white'
-    plotter.show()
-
-
-def change_shading_on_object(mesh, shading='phong'):
-    plotter = pv.Plotter()
-    plotter.add_mesh(mesh)
-    plotter.set_shading(shading)
-    plotter.camera_position = 'xy'
-    plotter.background_color = 'white'
-    plotter.show()
-    
-
-def add_lighting(lighting: str) -> None:
-    """
-    Lighting types are here:
-    render objects with different types
-    of lighting. All types of lighting 
-    should be used
-    """
-    plotter= pv.Plotter(lighting="none", window_size=(1000, 1000))
-    light = pv.Light()
-    plotter.add_mesh(mesh, color='white', smooth_shading=True)
-    light = pv.Light()
-    light.set_direction_angle(30, -20)
-    plotter.add_light(light)
-    plotter.show()
-
-def plot_mesh(mesh):
-    """
-    Plot the particular mesh you have
-    """
-    plotter.add_mesh(mesh)
-    plotter.camera_position = 'xy'
-    plotter.background_color = 'white'
-    plotter.show()
-
-def save_plot(mesh, file_name):
-    plotter.add_mesh(mesh)
-    plotter.camera_position = 'xy'
-    plotter.background_color = 'white'
-    plotter.save_image(file_name)
-
-
-def spherical_harmonics():
-    # Step 1: Compute or obtain spherical harmonic coefficients
-    # Example: Generate random coefficients for demonstration
-    coeffs = np.random.randn(9)
-
-    # Step 2: Generate a spherical mesh
-    sphere = pv.Sphere(radius=1, theta_resolution=100, phi_resolution=100)
-
-    # Step 3: Apply lighting to the mesh vertices
-    # Example: Compute lighting values based on spherical harmonics
-    lighting_values = shtools.SHExpandDH(coeffs, sampling=2)
-
-    # Step 4: Visualize the mesh with lighting
-    sphere['Lighting'] = lighting_values
-    sphere.plot(smooth_shading=True, lighting='Lighting')
-
+# %%

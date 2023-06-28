@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../Downloads/RENI_HDR"
+		}
+	],
+	"settings": {
+		"debug.allowBreakpointsEverywhere": true,
+		"debug.console.closeOnEnd": true,
+		"debug.javascript.breakOnConditionalError": true,
+		"terminal.integrated.env.linux": {}
+	}
+}
