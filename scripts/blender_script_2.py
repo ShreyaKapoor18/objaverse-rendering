@@ -1,3 +1,4 @@
+import blenderproc as bproc
 
 """Blender script to render images of 3D models.
 
@@ -37,46 +38,44 @@ import sys
 import time
 import urllib.request
 from typing import Tuple
+import bpy
+import math
+from mathutils import Vector
+
+import argparse
+import math
+import os
+import random
+import sys
+import time
+import urllib.request
+from typing import Tuple
 
 import bpy
 from mathutils import Vector
 
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "--object_path",
-    type=str,
-    required=True,
-    help="Path to the object file",
-)
-parser.add_argument("--output_dir", type=str, default="./views")
-parser.add_argument( "--engine", type=str, default="BLENDER_EEVEE", choices=["CYCLES", "BLENDER_EEVEE"])
-# cycles can work with the GPU
-parser.add_argument("--num_images", type=int, default=12)
-parser.add_argument("--camera_dist", type=int, default=1.0)
-parser.add_argument("--illumination", type=str, default="Area")
-argv = sys.argv[sys.argv.index("--") + 1 :]
-args = parser.parse_args(argv)
+
 
 context = bpy.context
 scene = context.scene
 render = scene.render
 
-render.engine = args.engine
+render.engine = "CYCLES"
 render.image_settings.file_format = "PNG"
-render.image_settings.color_mode = "RGBA" # hence there are 4 channels, I could just put them as 3 channels then it could be compatible with RESNET
+render.image_settings.color_mode = "RGBA"
 render.resolution_x = 512
 render.resolution_y = 512
 render.resolution_percentage = 100
 
-scene.cycles.device = "GPU" # does this work with the M1 chip no one knows
-scene.cycles.samples = 32 # number of samples
-scene.cycles.diffuse_bounces = 1 # the bouncing reflection from diffuse reflection
-scene.cycles.glossy_bounces = 1 # glossy bounces
+scene.cycles.device = "GPU"
+scene.cycles.samples = 32
+scene.cycles.diffuse_bounces = 1
+scene.cycles.glossy_bounces = 1
 scene.cycles.transparent_max_bounces = 3
-scene.cycles.transmission_bounces = 3 # transmission bounces
-scene.cycles.filter_width = 0.01 # width of the filter being used
-scene.cycles.use_denoising = True # use denoising 
-scene.render.film_transparent = True # transparent film
+scene.cycles.transmission_bounces = 3
+scene.cycles.filter_width = 0.01
+scene.cycles.use_denoising = True
+scene.render.film_transparent = True
 
 
 def sample_point_on_sphere(radius: float) -> Tuple[float, float, float]:
@@ -89,31 +88,18 @@ def sample_point_on_sphere(radius: float) -> Tuple[float, float, float]:
     )
 
 
-def add_lighting(illumination) -> None:
+def add_lighting() -> None:
     # delete the default light
     bpy.data.objects["Light"].select_set(True)
     bpy.ops.object.delete()
     # add a new light
-    if illumination == "AREA":
-        bpy.ops.object.light_add(type="AREA")
-        # other options here are POINT, SUN, SPOT, AREA
-        light2 = bpy.data.lights["Area"]
-        light2.energy = 30000
-        bpy.data.objects["Area"].location[2] = 0.3
-        bpy.data.objects["Area"].scale[0] = 100
-        bpy.data.objects["Area"].scale[1] = 100
-        bpy.data.objects["Area"].scale[2] = 100
-    elif illumination == "POINT":
-        light_data = bpy.data.lights.new(name="my-light-data", type='POINT')
-        light_data.energy = 100
-        # Create new object, pass the light data 
-        light_object = bpy.data.objects.new(name="my-light", object_data=light_data)
-        # Link object to collection in context
-        bpy.context.collection.objects.link(light_object)
-        # Change light position
-        light_object.location = (0, 0, 3)
-
-        
+    bpy.ops.object.light_add(type="AREA")
+    light2 = bpy.data.lights["Area"]
+    light2.energy = 30000
+    bpy.data.objects["Area"].location[2] = 0.5
+    bpy.data.objects["Area"].scale[0] = 100
+    bpy.data.objects["Area"].scale[1] = 100
+    bpy.data.objects["Area"].scale[2] = 100
 
 
 def reset_scene() -> None:
@@ -174,11 +160,6 @@ def scene_meshes():
 
 
 def normalize_scene():
-    '''
-    Normalize the scene
-    Bounding box in between
-    ** should not matter how we normalize the scene **
-    '''
     bbox_min, bbox_max = scene_bbox()
     scale = 1 / max(bbox_max - bbox_min)
     for obj in scene_root_objects():
@@ -190,6 +171,26 @@ def normalize_scene():
     for obj in scene_root_objects():
         obj.matrix_world.translation += offset
     bpy.ops.object.select_all(action="DESELECT")
+
+def roate_meshes_in_scene():
+    # Select the mesh object you want to rotate
+     for obj in bpy.context.scene.objects.values():
+        if isinstance(obj.data, (bpy.types.Mesh)):
+            #bpy.data.objects[mesh].select_set(True)
+            # Set the rotation values
+            rotation_angle = math.radians(45)  # Replace with the desired rotation angle in degrees
+            rotation_axis = (0, 0, 1)  # Replace with the desired rotation axis (X, Y, Z)
+
+            # Get the active object and enter Edit Mode
+            bpy.context.view_layer.objects.active = obj
+            bpy.ops.object.mode_set(mode='EDIT')
+
+            # Rotate the mesh in Edit Mode
+            bpy.ops.transform.rotate(value=rotation_angle, orient_axis=rotation_axis)
+
+             # Exit Edit Mode and update the scene
+            bpy.ops.object.mode_set(mode='OBJECT')
+            bpy.context.view_layer.update()
 
 
 def setup_camera():
@@ -203,31 +204,41 @@ def setup_camera():
     return cam, cam_constraint
 
 
-def save_images(object_file: str, ) -> None:
+def save_images(object_file: str) -> None:
     """Saves rendered images of the object in the scene."""
-    os.makedirs(args.output_dir, exist_ok=True)
+    os.makedirs('./views', exist_ok=True)
     reset_scene()
     # load the object
     load_object(object_file)
     object_uid = os.path.basename(object_file).split(".")[0]
     normalize_scene()
-    add_lighting()
+    #add_lighting("AREA")
     cam, cam_constraint = setup_camera()
+    image_path = "/Users/shreya/Downloads/RENI_HDR/Test/00011.exr"
+   
+
     # create an empty object to track
     empty = bpy.data.objects.new("Empty", None)
     scene.collection.objects.link(empty)
     cam_constraint.target = empty
-    for i in range(args.num_images):
+    num_images = 10
+    for i in range(num_images):
         # set the camera position
-        theta = (i / args.num_images) * math.pi * 2
-        phi = math.radians(60)
+        theta = (i / num_images) * math.pi * 2
+        phi = math.radians(20*i)
+        print(phi)
+        
+        camera_dist = 2
         point = (
-            args.camera_dist * math.sin(phi) * math.cos(theta),
-            args.camera_dist * math.sin(phi) * math.sin(theta),
-            args.camera_dist * math.cos(phi),)
+            camera_dist * math.sin(phi) * math.cos(theta),
+            camera_dist * math.sin(phi) * math.sin(theta),
+            camera_dist * math.cos(phi),
+        )
         cam.location = point
+        roate_meshes_in_scene()
+        add_environment_map(image_path)
         # render the image
-        render_path = os.path.join(args.output_dir, object_uid, f"{i:03d}.png")
+        render_path = os.path.join('./views', object_uid, f"{i:03d}.png")
         scene.render.filepath = render_path
         bpy.ops.render.render(write_still=True)
 
@@ -247,13 +258,42 @@ def download_object(object_url: str) -> str:
     return local_path
 
 
+
+def add_environment_map(image_path):
+    # Create or retrieve the world
+    c = bpy.context
+    world = c.scene.world
+    world.use_nodes = True
+    
+    nodes = world.node_tree.nodes
+    links = world.node_tree.links
+
+
+    backNode = nodes['Background']
+
+    if nodes.find('Environment Texture') == -1:
+        envNode = nodes.new("ShaderNodeTexEnvironment")
+    else:
+        envNode = nodes['Environment Texture']
+
+    envNode.location.x = backNode.location.x-300
+    envNode.location.y = backNode.location.y
+
+    envNodeColorOut = envNode.outputs['Color']
+    backColIn = backNode.inputs['Color']
+    links.new(envNodeColorOut, backColIn)
+    bpy.context.scene.render.film_transparent = False
+    
+    envNode.image = bpy.data.images.load(image_path)
+    image = bpy.data.images.load(image_path)
+
+
 if __name__ == "__main__":
     try:
+        bproc.init()
         start_i = time.time()
-        if args.object_path.startswith("http"):
-            local_path = download_object(args.object_path)
-        else:
-            local_path = args.object_path
+        object_path = 'objects/flowerpot.glb'
+        local_path = object_path
         save_images(local_path)
         end_i = time.time()
         print("Finished", local_path, "in", end_i - start_i, "seconds")
@@ -261,5 +301,5 @@ if __name__ == "__main__":
         if args.object_path.startswith("http"):
             os.remove(local_path)
     except Exception as e:
-        print("Failed to render", args.object_path)
-        print(e)
+        print("Failed to render", object_path)
+        print(e)%     
