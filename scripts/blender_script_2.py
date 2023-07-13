@@ -221,6 +221,9 @@ def save_images(object_file: str) -> None:
     normalize_scene()
     add_lighting()
     cam, cam_constraint = setup_camera()
+    image_path = "RENI_HDR/Test/00011.exr"
+   
+
     # create an empty object to track
     empty = bpy.data.objects.new("Empty", None)
     scene.collection.objects.link(empty)
@@ -272,5 +275,5 @@ if __name__ == "__main__":
         print("Finished", local_path, "in", end_i - start_i, "seconds")
         # delete the object if it was downloaded
     except Exception as e:
-        print("Failed to render", "objects/flowerpot.glb")
+        print("Failed to render", object_path)
         print(e)
