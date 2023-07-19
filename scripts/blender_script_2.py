@@ -44,10 +44,6 @@ render.resolution_percentage = 100
 
 scene.cycles.device = "GPU"
 scene.cycles.samples = 32
-scene.cycles.diffuse_bounces = 1
-scene.cycles.glossy_bounces = 1
-scene.cycles.transparent_max_bounces = 3
-scene.cycles.transmission_bounces = 3
 scene.cycles.filter_width = 0.01
 scene.cycles.use_denoising = True
 scene.render.film_transparent = True
@@ -121,22 +117,6 @@ def sample_point_on_sphere(radius: float) -> Tuple[float, float, float]:
         radius * math.sin(phi) * math.sin(theta),
         radius * math.cos(phi),
     )
-
-
-def add_lighting() -> None:
-    # delete the default light
-    bpy.data.objects["Light"].select_set(True)
-    bpy.ops.object.delete()
-    # add a new light
-    bpy.ops.object.light_add(type="AREA")
-    # other options here are POINT, SUN, SPOT, AREA
-    light2 = bpy.data.lights["Area"]
-    light2.energy = 30000
-    bpy.data.objects["Area"].location[2] = 0.3
-    bpy.data.objects["Area"].scale[0] = 100
-    bpy.data.objects["Area"].scale[1] = 100
-    bpy.data.objects["Area"].scale[2] = 100
-
 
 def reset_scene() -> None:
     """Resets the scene to a clean state."""
@@ -236,8 +216,13 @@ def save_images(object_file: str) -> None:
     cam_constraint.target = empty
     camera_dist = 2
     num_images =12
+
     for i in range(num_images):
         # set the camera position
+        scene.cycles.diffuse_bounces = np.random.randint(1,4)
+        scene.cycles.glossy_bounces = np.random.randint(1,4)
+        scene.cycles.transparent_max_bounces = np.random.randint(1,4)
+        scene.cycles.transmission_bounces = np.random.randint(1,3)
         theta = (i / num_images) * math.pi * 2
         rotate_meshes_in_scene()
         add_environment_map(list_env_maps)
