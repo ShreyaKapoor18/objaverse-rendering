@@ -12,7 +12,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true, 
-            "pythonPath": "/opt/anaconda3/envs/pyobjaverse/bin/python3"
+            "python": "/opt/anaconda3/envs/pyobjaverse/bin/python3"
         }
     ]
 }
