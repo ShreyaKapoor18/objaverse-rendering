@@ -1,3 +1,4 @@
+import blenderproc as bproc
 """Blender script to render images of 3D models.
 
 This script is used to render images of 3D models. It takes in a list of paths
@@ -5,7 +6,7 @@ to .glb files and renders images of each model. The images are from rotating the
 object around the origin. The images are saved to the output directory.
 
 Example usage:
-    blender -b -P blender_script_2.py -- \
+    blender -b -P blender_script.py -- \
         --object_path my_object.glb \
         --output_dir ./views \
         --engine CYCLES \
@@ -15,61 +16,77 @@ Example usage:
 
 Here, input_model_paths.json is a json file containing a list of paths to .glb.
 """
-
-
-"""
-To do list:
-a. Render around 100 images per object
-b. Explore different illumination types for each object: area, point light
-c. Change angles, i.e. camera position
-d. Engines are cycles
-"""
-import math
-import os
-import random
-import sys
-import time
-import urllib.request
-from typing import Tuple
-import bpy
-import math
-from mathutils import Vector
-import math
-import os
-import random
-import sys
-import time
-import urllib.request
-from typing import Tuple
 import numpy as np
+import argparse
+import math
+import os
+import random
+import sys
+import time
+import urllib.request
+from typing import Tuple
+
 import bpy
+from mathutils import Vector
+import glob
 
 
-def roate_meshes_in_scene():
+context = bpy.context
+scene = context.scene
+render = scene.render
+
+render.engine = "CYCLES"
+render.image_settings.file_format = "PNG"
+render.image_settings.color_mode = "RGBA" # hence there are 4 channels, I could just put them as 3 channels then it could be compatible with RESNET
+render.resolution_x = 512
+render.resolution_y = 512
+render.resolution_percentage = 100
+
+scene.cycles.device = "GPU"
+scene.cycles.samples = 32
+scene.cycles.diffuse_bounces = 1
+scene.cycles.glossy_bounces = 1
+scene.cycles.transparent_max_bounces = 3
+scene.cycles.transmission_bounces = 3
+scene.cycles.filter_width = 0.01
+scene.cycles.use_denoising = True
+scene.render.film_transparent = True
+
+env_maps_dir = 'RENI_HDR/Train/*'
+list_env_maps = list(glob.glob(env_maps_dir))
+print(list_env_maps)
+
+def rotate_meshes_in_scene():
     # Select the mesh object you want to rotate
      for obj in bpy.context.scene.objects.values():
+        # some error in this function
         if isinstance(obj.data, (bpy.types.Mesh)):
+            print("reached here")
             rotation_angle = np.random.uniform(0, 360)
-            axeses = [(0,0,1), (1,0,0), (0,0,1)]
+            axeses = ['X', 'Y', 'Z']
             i = np.random.randint(3)
             #bpy.data.objects[mesh].select_set(True)
             # Set the rotation values
             rotation_angle = math.radians(rotation_angle) # Replace with the desired rotation angle in degrees
             rotation_axis = axeses[i] # Replace with the desired rotation axis (X, Y, Z)
-
+            print('also here')
             # Get the active object and enter Edit Mode
             bpy.context.view_layer.objects.active = obj
             bpy.ops.object.mode_set(mode='EDIT')
-
+            print('error here')
             # Rotate the mesh in Edit Mode
-            bpy.ops.transform.rotate(value=rotation_angle, orient_axis=rotation_axis)
+            bpy.ops.transform.rotate(value=45, orient_axis=axeses[i])
 
              # Exit Edit Mode and update the scene
             bpy.ops.object.mode_set(mode='OBJECT')
             bpy.context.view_layer.update()
 
-def add_environment_map(image_path):
+def add_environment_map(list_env_maps):
     # Create or retrieve the world
+    i = np.random.randint(len(list_env_maps))
+    image_path = list_env_maps[i]
+    print(image_path)
+
     c = bpy.context
     world = c.scene.world
     world.use_nodes = True
@@ -92,30 +109,8 @@ def add_environment_map(image_path):
     backColIn = backNode.inputs['Color']
     links.new(envNodeColorOut, backColIn)
     bpy.context.scene.render.film_transparent = False
-    
     envNode.image = bpy.data.images.load(image_path)
     image = bpy.data.images.load(image_path)
-
-context = bpy.context
-scene = context.scene
-render = scene.render
-
-render.engine = "CYCLES"
-render.image_settings.file_format = "PNG"
-render.image_settings.color_mode = "RGBA" # hence there are 4 channels, I could just put them as 3 channels then it could be compatible with RESNET
-render.resolution_x = 512
-render.resolution_y = 512
-render.resolution_percentage = 100
-
-scene.cycles.device = "GPU"
-scene.cycles.samples = 32
-scene.cycles.diffuse_bounces = 1
-scene.cycles.glossy_bounces = 1
-scene.cycles.transparent_max_bounces = 3
-scene.cycles.transmission_bounces = 3
-scene.cycles.filter_width = 0.01
-scene.cycles.use_denoising = True
-scene.render.film_transparent = True
 
 
 def sample_point_on_sphere(radius: float) -> Tuple[float, float, float]:
@@ -227,23 +222,25 @@ def setup_camera():
 
 def save_images(object_file: str) -> None:
     """Saves rendered images of the object in the scene."""
-    os.makedirs("views", exist_ok=True)
+    os.makedirs("./views", exist_ok=True)
     reset_scene()
     # load the object
     load_object(object_file)
-    add_environment_map("RENI_HDR/Train/00011.exr")
+    object_uid = os.path.basename(object_file).split(".")[0]
     normalize_scene()
-    add_lighting()
+    # dont need to add lighting due to env maps
     cam, cam_constraint = setup_camera()
     # create an empty object to track
     empty = bpy.data.objects.new("Empty", None)
     scene.collection.objects.link(empty)
     cam_constraint.target = empty
-    num_images = 10
-    camera_dist = 1.2
+    camera_dist = 2
+    num_images =12
     for i in range(num_images):
         # set the camera position
         theta = (i / num_images) * math.pi * 2
+        rotate_meshes_in_scene()
+        add_environment_map(list_env_maps)
         phi = math.radians(60)
         point = (
             camera_dist * math.sin(phi) * math.cos(theta),
@@ -252,7 +249,7 @@ def save_images(object_file: str) -> None:
         )
         cam.location = point
         # render the image
-        render_path = os.path.join("views", f"{i:03d}.png")
+        render_path = os.path.join('./views', object_uid, f"{i:03d}.png")
         scene.render.filepath = render_path
         bpy.ops.render.render(write_still=True)
 
@@ -270,7 +267,6 @@ def download_object(object_url: str) -> str:
     # get the absolute path
     local_path = os.path.abspath(local_path)
     return local_path
-
 
 
 if __name__ == "__main__":
