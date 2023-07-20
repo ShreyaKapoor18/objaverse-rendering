@@ -52,6 +52,37 @@ env_maps_dir = 'RENI_HDR/Train/*'
 list_env_maps = list(glob.glob(env_maps_dir))
 print(list_env_maps)
 
+textures_dir = 'textures/*'
+list_textures_dir = list(glob.glob(textures_dir))
+
+def change_textures_in_scene(textures_dir):
+    # To do: also include cases where there are no textures on the material
+    i = np.random.randint(len(textures_dir))
+    texture_file = textures_dir[i]
+    for obj in bpy.context.scene.objects.values():
+        if isinstance(obj.data, (bpy.types.Mesh)):
+            mat = bpy.data.materials.new(name='newtexture')
+            mat.use_nodes = True
+            bsdf = mat.node_tree.nodes['Principled BSDF']
+            texImage = mat.node_tree.nodes.new('ShaderNodeTexImage')
+            texImage.image = bpy.data.images.load(texture_file)
+            mat.node_tree.links.new(bsdf.inputs['Base Color'], texImage.outputs['Color'])
+
+            ob = context.view_layer.objects.active
+            if ob.data.materials:
+                ob.data.materials[0] = mat
+            else:
+                ob.data.materials.append(mat)
+
+
+# Change the ViewPort Shading to RENDERED    
+for area in bpy.context.screen.areas: 
+    if area.type == 'VIEW_3D':
+        for space in area.spaces: 
+            if space.type == 'VIEW_3D':
+                space.shading.type = 'RENDERED'
+
+
 def rotate_meshes_in_scene():
     # Select the mesh object you want to rotate
      for obj in bpy.context.scene.objects.values():
@@ -215,8 +246,7 @@ def save_images(object_file: str) -> None:
     scene.collection.objects.link(empty)
     cam_constraint.target = empty
     camera_dist = 2
-    num_images =12
-
+    num_images = 12
     for i in range(num_images):
         # set the camera position
         scene.cycles.diffuse_bounces = np.random.randint(1,4)
@@ -226,6 +256,8 @@ def save_images(object_file: str) -> None:
         theta = (i / num_images) * math.pi * 2
         rotate_meshes_in_scene()
         add_environment_map(list_env_maps)
+        if i!=0:
+            change_textures_in_scene(list_textures_dir)
         phi = math.radians(60)
         point = (
             camera_dist * math.sin(phi) * math.cos(theta),
