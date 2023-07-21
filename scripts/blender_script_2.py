@@ -55,6 +55,8 @@ print(list_env_maps)
 textures_dir = 'textures/*'
 list_textures_dir = list(glob.glob(textures_dir))
 
+
+
 def change_textures_in_scene(textures_dir):
     # To do: also include cases where there are no textures on the material
     i = np.random.randint(len(textures_dir))
@@ -69,10 +71,8 @@ def change_textures_in_scene(textures_dir):
             mat.node_tree.links.new(bsdf.inputs['Base Color'], texImage.outputs['Color'])
 
             ob = context.view_layer.objects.active
-            if ob.data.materials:
-                ob.data.materials[0] = mat
-            else:
-                ob.data.materials.append(mat)
+            ob.data.materials[0] = mat
+           
 
 
 # Change the ViewPort Shading to RENDERED    
@@ -82,31 +82,6 @@ for area in bpy.context.screen.areas:
             if space.type == 'VIEW_3D':
                 space.shading.type = 'RENDERED'
 
-
-def rotate_meshes_in_scene():
-    # Select the mesh object you want to rotate
-     for obj in bpy.context.scene.objects.values():
-        # some error in this function
-        if isinstance(obj.data, (bpy.types.Mesh)):
-            print("reached here")
-            rotation_angle = np.random.uniform(0, 360)
-            axeses = ['X', 'Y', 'Z']
-            i = np.random.randint(3)
-            #bpy.data.objects[mesh].select_set(True)
-            # Set the rotation values
-            rotation_angle = math.radians(rotation_angle) # Replace with the desired rotation angle in degrees
-            rotation_axis = axeses[i] # Replace with the desired rotation axis (X, Y, Z)
-            print('also here')
-            # Get the active object and enter Edit Mode
-            bpy.context.view_layer.objects.active = obj
-            bpy.ops.object.mode_set(mode='EDIT')
-            print('error here')
-            # Rotate the mesh in Edit Mode
-            bpy.ops.transform.rotate(value=45, orient_axis=axeses[i])
-
-             # Exit Edit Mode and update the scene
-            bpy.ops.object.mode_set(mode='OBJECT')
-            bpy.context.view_layer.update()
 
 def add_environment_map(list_env_maps):
     # Create or retrieve the world
@@ -254,11 +229,11 @@ def save_images(object_file: str) -> None:
         scene.cycles.transparent_max_bounces = np.random.randint(1,4)
         scene.cycles.transmission_bounces = np.random.randint(1,3)
         theta = (i / num_images) * math.pi * 2
-        rotate_meshes_in_scene()
         add_environment_map(list_env_maps)
         if i!=0:
             change_textures_in_scene(list_textures_dir)
-        phi = math.radians(60)
+        angles = np.random.uniform(0, 360, size=10)
+        phi = math.radians(angles[np.random.randint(len(angles))])
         point = (
             camera_dist * math.sin(phi) * math.cos(theta),
             camera_dist * math.sin(phi) * math.sin(theta),
