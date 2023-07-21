@@ -55,12 +55,10 @@ print(list_env_maps)
 textures_dir = 'textures/*'
 list_textures_dir = list(glob.glob(textures_dir))
 
-
-
 def change_textures_in_scene(textures_dir):
     # To do: also include cases where there are no textures on the material
-    i = np.random.randint(len(textures_dir))
-    texture_file = textures_dir[i]
+    i = np.random.randint(len(list_textures_dir))
+    texture_file = list_textures_dir[i]
     for obj in bpy.context.scene.objects.values():
         if isinstance(obj.data, (bpy.types.Mesh)):
             mat = bpy.data.materials.new(name='newtexture')
@@ -69,18 +67,8 @@ def change_textures_in_scene(textures_dir):
             texImage = mat.node_tree.nodes.new('ShaderNodeTexImage')
             texImage.image = bpy.data.images.load(texture_file)
             mat.node_tree.links.new(bsdf.inputs['Base Color'], texImage.outputs['Color'])
-
             ob = context.view_layer.objects.active
-            ob.data.materials[0] = mat
-           
-
-
-# Change the ViewPort Shading to RENDERED    
-for area in bpy.context.screen.areas: 
-    if area.type == 'VIEW_3D':
-        for space in area.spaces: 
-            if space.type == 'VIEW_3D':
-                space.shading.type = 'RENDERED'
+            obj.data.materials[0] = mat
 
 
 def add_environment_map(list_env_maps):
@@ -115,6 +103,7 @@ def add_environment_map(list_env_maps):
     image = bpy.data.images.load(image_path)
 
 
+
 def sample_point_on_sphere(radius: float) -> Tuple[float, float, float]:
     theta = random.random() * 2 * math.pi
     phi = math.acos(2 * random.random() - 1)
@@ -123,6 +112,22 @@ def sample_point_on_sphere(radius: float) -> Tuple[float, float, float]:
         radius * math.sin(phi) * math.sin(theta),
         radius * math.cos(phi),
     )
+
+
+def add_lighting() -> None:
+    # delete the default light
+    bpy.data.objects["Light"].select_set(True)
+    bpy.ops.object.delete()
+    # add a new light
+    bpy.ops.object.light_add(type="AREA")
+    # other options here are POINT, SUN, SPOT, AREA
+    light2 = bpy.data.lights["Area"]
+    light2.energy = 30000
+    bpy.data.objects["Area"].location[2] = 0.3
+    bpy.data.objects["Area"].scale[0] = 100
+    bpy.data.objects["Area"].scale[1] = 100
+    bpy.data.objects["Area"].scale[2] = 100
+
 
 def reset_scene() -> None:
     """Resets the scene to a clean state."""
@@ -208,32 +213,29 @@ def setup_camera():
 
 def save_images(object_file: str) -> None:
     """Saves rendered images of the object in the scene."""
-    os.makedirs("./views", exist_ok=True)
+    os.makedirs("views", exist_ok=True)
     reset_scene()
     # load the object
     load_object(object_file)
     object_uid = os.path.basename(object_file).split(".")[0]
     normalize_scene()
-    # dont need to add lighting due to env maps
+    add_lighting()
     cam, cam_constraint = setup_camera()
     # create an empty object to track
     empty = bpy.data.objects.new("Empty", None)
     scene.collection.objects.link(empty)
     cam_constraint.target = empty
-    camera_dist = 2
     num_images = 12
+    camera_dist = 1.2
+    angles = np.random.uniform(0,360, size=10)
+    
     for i in range(num_images):
         # set the camera position
-        scene.cycles.diffuse_bounces = np.random.randint(1,4)
-        scene.cycles.glossy_bounces = np.random.randint(1,4)
-        scene.cycles.transparent_max_bounces = np.random.randint(1,4)
-        scene.cycles.transmission_bounces = np.random.randint(1,3)
+        if i > 5:
+            change_textures_in_scene(textures_dir)
         theta = (i / num_images) * math.pi * 2
-        add_environment_map(list_env_maps)
-        if i!=0:
-            change_textures_in_scene(list_textures_dir)
-        angles = np.random.uniform(0, 360, size=10)
-        phi = math.radians(angles[np.random.randint(len(angles))])
+        j = np.random.randint(0,len(angles), size=1)[0]
+        phi = math.radians(angles[j])
         point = (
             camera_dist * math.sin(phi) * math.cos(theta),
             camera_dist * math.sin(phi) * math.sin(theta),
@@ -241,7 +243,7 @@ def save_images(object_file: str) -> None:
         )
         cam.location = point
         # render the image
-        render_path = os.path.join('./views', object_uid, f"{i:03d}.png")
+        render_path = os.path.join("views", object_uid, f"{i:03d}.png")
         scene.render.filepath = render_path
         bpy.ops.render.render(write_still=True)
 
@@ -270,5 +272,5 @@ if __name__ == "__main__":
         print("Finished", local_path, "in", end_i - start_i, "seconds")
         # delete the object if it was downloaded
     except Exception as e:
-        print("Failed to render", local_path)
+        print("Failed to render", "objects/flowerpot.glb")
         print(e)
