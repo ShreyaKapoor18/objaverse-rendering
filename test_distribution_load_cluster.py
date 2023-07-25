@@ -45,4 +45,3 @@ plt.title('Distribution over the objects')
 
 print('The total Number of objects with less than 50 objects', count_objects)
 print('The total Number of objects with less than 50 objects', count_objects, file='output.txt')
-s
