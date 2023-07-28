@@ -11,13 +11,25 @@ from functools import partial
 #%%
 # store the ids of the objects with less than 50 geometries
 def count_objects(object):
-    f1 = open('results/object_names_50.txt', 'a')
+    f1 = open('results/object_names_5.txt', 'a')
+    f2 = open('results/object_names_10.txt', 'a')
+    f2 = open('results/object_names_1.txt', 'a')
+    f3 = open('results/object_names_2.txt', 'a')
+    f4 = open('results/object_names_20.txt', 'a')
     object_name = object.split('/glbs')[1].split('/')[-1][:-4]
     if object_name in list_lvis:
             
             scene = trimesh.load(object)
-            if len(scene.geometry) < 50: 
+            if len(scene.geometry) == 5: 
                 print(object_name, file=f1)
+            if len(scene.geometry) == 10:
+                print(object_name, file=f1)
+            if len(scene.geometry) == 1:
+                print(object_name, file=f2)
+            if len(scene.geometry) == 2:
+                print(object_name, file=f3)
+            if len(scene.geometry) == 20:
+                print(object_name, file= f4)
 
             return len(scene.geometry)
     return None
