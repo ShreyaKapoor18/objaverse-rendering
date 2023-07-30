@@ -16,7 +16,7 @@ from typing import Optional
 import boto3
 import tyro
 import wandb
-
+#%%
 
 lvis_annotations = objaverse.load_lvis_annotations()
 count_keys = [len(lvis_annotations[l]) for l in lvis_annotations.keys()]
