@@ -1,4 +1,3 @@
-import blenderproc as bproc
 """Blender script to render images of 3D models.
 
 This script is used to render images of 3D models. It takes in a list of paths
@@ -30,6 +29,20 @@ import bpy
 from mathutils import Vector
 import glob
 
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--object_path",
+    type=str,
+    required=True,
+    help="Path to the object file",
+)
+parser.add_argument("--output_dir", type=str, default="./views")
+parser.add_argument(
+    "--engine", type=str, default="BLENDER_EEVEE", choices=["CYCLES", "BLENDER_EEVEE"]
+)
+
+argv = sys.argv[sys.argv.index("--") + 1 :]
+args = parser.parse_args(argv)
 
 context = bpy.context
 scene = context.scene
@@ -269,7 +282,7 @@ def download_object(object_url: str) -> str:
 if __name__ == "__main__":
     try:
         start_i = time.time()
-        local_path = "objects/flowerpot.glb"
+        local_path = args.object_path
         save_images(local_path)
         end_i = time.time()
         print("Finished", local_path, "in", end_i - start_i, "seconds")

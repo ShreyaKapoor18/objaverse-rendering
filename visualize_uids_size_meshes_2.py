@@ -115,34 +115,19 @@ for object in glob.glob('objects/glbs/*/*'):
     vec1, vec2 = scene_bbox(scene)
 
     light = bproc.types.Light()
-    light.set_type("POINT")
-    # Sample its location in a shell around the point [1, 2, 3]
-    light.set_location(bproc.sampler.shell(
-    center=vec1,
-    radius_min=4,
-    radius_max=7,
-    elevation_min=15,
-    elevation_max=70
-    ))
-    light.set_energy(5000)
-    # Set the camera to be in front of the object
-    # Find point of interest, all cam poses should look towards it    # Sample random camera location above objects
-    # Find point of interest, all cam poses should look towards it
-    # Sample five camera poses
+    light.set_location([2, -2, 0])
+    light.set_energy(300)
+    # Set the camera to be in front of the objet
     normalize_scene(scene)
 
     camera, camera_to_world_matrix, K_matrix = set_camera_to_view_bounding_box(vec1, vec2)
     #bproc.camera.set_intrinsics_from_K_matrix(K_matrix, 512, 512)
-    
-    cam_to_world_matrix = mathutils.Matrix([
-    [1, 0, 0, 0],
-    [0, -1, 0, 0],
-    [0, 0, 1, 0],
-    [0, 0, 0, 1]
-    ])
-    bproc.camera.set_intrinsics_from_blender_params(35, 512,512)
-    bproc.camera.add_camera_pose(cam_to_world_matrix)
-
+    # Set the camera to be in front of the object
+    vecs = [[0, -2, 0], [-2, 0, 0], [0,0,-2]]
+    vec2 = [[ np.pi/2, 0, 0], [0, np.pi/2, 0], [0, 0, np.pi/2]]
+    for vec in vecs:
+        cam_pose = bproc.math.build_transformation_mat(vec, [np.pi / 2, 0, 0])
+        bproc.camera.add_camera_pose(cam_pose)
 
     # Render the scene
     data = bproc.renderer.render()

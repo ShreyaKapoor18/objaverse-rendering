@@ -63,14 +63,18 @@ for object in glob.glob('objects/glbs/*/*'):
     # Find point of interest, all cam poses should look towards it    # Sample random camera location above objects
     # Find point of interest, all cam poses should look towards it
     # Sample five camera poses
-    bproc.camera.set_intrinsics_from_blender_params(1, 512, 512, lens_unit="FOV")
     normalize_scene(scene)
-        
+    light = bproc.types.Light()
+    light.set_location([2, -2, 0])
+    light.set_energy(300)
 
+    bproc.camera.set_intrinsics_from_blender_params(35, 512, 512)
+    matrix = bproc.camera.get_camera_pose()
+    bproc.camera.add_camera_pose(matrix)
     # Render the scene
     data = bproc.renderer.render()
     # Write the rendering into an hdf5 file
-    #bproc.write_gif(f'output/{object_name}', data)
+    bproc.writer.write_gif_animation(f'output/{object_name}', data)
     bproc.writer.write_hdf5(f"output/{object_name}", data)
     bproc.clean_up()
     
