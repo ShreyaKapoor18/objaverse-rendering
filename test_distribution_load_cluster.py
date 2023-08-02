@@ -50,7 +50,6 @@ for values in lvis_annotations.values():
 
 object_dir = list(glob.glob(objaverse_dir))
 print(object)
-count_objects(object_dir[0])
 list_counts = Parallel(n_jobs=-1)(delayed(count_objects)(object) for object in object_dir)
 #list_counts = list(filter(partial(is_not, None), list_counts))
 print(list_counts)
