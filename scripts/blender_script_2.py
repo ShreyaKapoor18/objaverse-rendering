@@ -40,8 +40,11 @@ parser.add_argument("--output_dir", type=str, default="./views")
 parser.add_argument(
     "--engine", type=str, default="BLENDER_EEVEE", choices=["CYCLES", "BLENDER_EEVEE"]
 )
-
-argv = sys.argv[sys.argv.index("--") + 1 :]
+if "--" in sys.argv:
+    argv = sys.argv[sys.argv.index("--") + 1 :]
+else:
+    # Handle the case when '--' is not present in the arguments
+    argv = sys.argv[1:]
 args = parser.parse_args(argv)
 
 context = bpy.context
@@ -232,7 +235,8 @@ def save_images(object_file: str) -> None:
     load_object(object_file)
     object_uid = os.path.basename(object_file).split(".")[0]
     normalize_scene()
-    add_lighting()
+    #add_lighting()
+    add_environment_map(list_env_maps)
     cam, cam_constraint = setup_camera()
     image_path = "RENI_HDR/Test/00011.exr"
    
@@ -288,5 +292,5 @@ if __name__ == "__main__":
         print("Finished", local_path, "in", end_i - start_i, "seconds")
         # delete the object if it was downloaded
     except Exception as e:
-        print("Failed to render", object_path)
+        print("Failed to render", args.object_path)
         print(e)
