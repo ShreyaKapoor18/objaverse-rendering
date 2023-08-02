@@ -1,4 +1,3 @@
-#%%
 import objaverse
 import trimesh
 import glob
@@ -8,6 +7,7 @@ import multiprocessing
 from joblib import Parallel, delayed
 from operator import is_not
 from functools import partial
+import bpy
 #%%
 # store the ids of the objects with less than 50 geometries
 def count_objects(object):
@@ -36,23 +36,35 @@ def count_objects(object):
     #return None
 
 
+def count_meshes(objs):
+    print(objs)
+    bpy.ops.import_scene.gltf(filepath=objs, merge_vertices=True)
+    count = 0
+    print(bpy.data)
+    #print(bpy.data.objects)
+    try:
+        for obj in bpy.data.objects:
+            if isinstance(obj.data, (bpy.types.Mesh)):
+                count+=1
+        return count
+    except:
+        print('could not load scene')
+        return None
+
+
 objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/*/*'
 
-'''
-In trimesh, the main class that represents a geometry is called Trimesh. It represents a single 3D mesh or a collection of connected triangles that form a surface.
-'''
-annotations = objaverse.load_annotations()
-lvis_annotations = objaverse.load_lvis_annotations()
+#annotations = objaverse.load_annotations()
+#lvis_annotations = objaverse.load_lvis_annotations()
 
-list_lvis = []
-for values in lvis_annotations.values():
-    list_lvis.extend(values)
+#list_lvis = []
+#for values in lvis_annotations.values():
+#    list_lvis.extend(values)
 
 object_dir = list(glob.glob(objaverse_dir))
-print(object)
-list_counts = Parallel(n_jobs=-1)(delayed(count_objects)(object) for object in object_dir)
-#list_counts = list(filter(partial(is_not, None), list_counts))
-print(list_counts)
+
+list_counts = Parallel(n_jobs=-1)(delayed(count_meshes)(object) for object in object_dir[:5])
+list_counts = list(filter(partial(is_not, None), list_counts))
 
 with open('results/count_objects.npy', 'wb') as f:
     a = np.save(f, list_counts)
@@ -63,6 +75,8 @@ plt.title('Distribution over the objects')
 plt.xlabel('Number of meshes')
 plt.ylabel('Number of objects')
 plt.savefig('results/distribution.png')
-
-
 #%%
+
+
+
+

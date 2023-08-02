@@ -5,7 +5,7 @@ to .glb files and renders images of each model. The images are from rotating the
 object around the origin. The images are saved to the output directory.
 
 Example usage:
-    blender -b -P blender_script.py -- \
+    blender -b -P blender_script_2.py -- \
         --object_path my_object.glb \
         --output_dir ./views \
         --engine CYCLES \
@@ -40,11 +40,11 @@ parser.add_argument("--output_dir", type=str, default="./views")
 parser.add_argument(
     "--engine", type=str, default="BLENDER_EEVEE", choices=["CYCLES", "BLENDER_EEVEE"]
 )
-if "--" in sys.argv:
-    argv = sys.argv[sys.argv.index("--") + 1 :]
-else:
-    # Handle the case when '--' is not present in the arguments
-    argv = sys.argv[1:]
+parser.add_argument("--textures", type=bool, default=False)
+parser.add_argument("--num_images", type=int, default=12)
+parser.add_argument("--camera_dist", type=int, default=1.0)
+
+argv = sys.argv[sys.argv.index("--") + 1 :]
 args = parser.parse_args(argv)
 
 context = bpy.context
@@ -91,7 +91,6 @@ def add_environment_map(list_env_maps):
     # Create or retrieve the world
     i = np.random.randint(len(list_env_maps))
     image_path = list_env_maps[i]
-    print(image_path)
 
     c = bpy.context
     world = c.scene.world
@@ -99,8 +98,6 @@ def add_environment_map(list_env_maps):
     
     nodes = world.node_tree.nodes
     links = world.node_tree.links
-
-
     backNode = nodes['Background']
 
     if nodes.find('Environment Texture') == -1:
@@ -238,20 +235,17 @@ def save_images(object_file: str) -> None:
     #add_lighting()
     add_environment_map(list_env_maps)
     cam, cam_constraint = setup_camera()
-    image_path = "RENI_HDR/Test/00011.exr"
-   
 
     # create an empty object to track
     empty = bpy.data.objects.new("Empty", None)
     scene.collection.objects.link(empty)
     cam_constraint.target = empty
-    num_images = 12
     camera_dist = 1.2
     angles = np.random.uniform(0,360, size=10)
     
-    for i in range(num_images):
+    for i in range(args.num_images):
         # set the camera position
-        if i > 5:
+        if args.texture == True:
             change_textures_in_scene(textures_dir)
         theta = (i / num_images) * math.pi * 2
         j = np.random.randint(0,len(angles), size=1)[0]
@@ -263,7 +257,7 @@ def save_images(object_file: str) -> None:
         )
         cam.location = point
         # render the image
-        render_path = os.path.join("views", object_uid, f"{i:03d}.png")
+        render_path = os.path.join(args.output_dir, object_uid, f"{i:03d}.png")
         scene.render.filepath = render_path
         bpy.ops.render.render(write_still=True)
 
