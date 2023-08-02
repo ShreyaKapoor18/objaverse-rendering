@@ -247,7 +247,7 @@ def save_images(object_file: str) -> None:
         # set the camera position
         if args.texture == True:
             change_textures_in_scene(textures_dir)
-        theta = (i / num_images) * math.pi * 2
+        theta = (i / args.num_images) * math.pi * 2
         j = np.random.randint(0,len(angles), size=1)[0]
         phi = math.radians(angles[j])
         point = (
