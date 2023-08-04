@@ -12,4 +12,4 @@ unset SLURM_EXPORT_ENV
 module load git
 conda init
 conda activate pyobjaverse
-srun blenderproc run test_distribution_load_cluster.py
+srun blenderproc run ~/git/objaverse-rendering/scripts_custom/test_distribution_load_cluster.py

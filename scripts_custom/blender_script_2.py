@@ -64,11 +64,11 @@ scene.cycles.filter_width = 0.01
 scene.cycles.use_denoising = True
 scene.render.film_transparent = True
 
-env_maps_dir = 'RENI_HDR/Train/*'
+env_maps_dir = 'environment_maps/RENI_HDR/Train/*'
 list_env_maps = list(glob.glob(env_maps_dir))
 print(list_env_maps)
 
-textures_dir = 'textures/*'
+textures_dir = 'textures/dtd/images/*/*.png'
 list_textures_dir = list(glob.glob(textures_dir))
 
 def change_textures_in_scene(textures_dir):

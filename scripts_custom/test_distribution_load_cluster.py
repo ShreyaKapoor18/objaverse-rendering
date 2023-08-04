@@ -56,21 +56,23 @@ def count_meshes(objs):
     gc.collect()
     return None
 
-
+num_cores = int(os.getenv("SLURM_CPUS_PER_TASK"))# reptetitively giving one object, why???
 objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/*/*'
 
 annotations = objaverse.load_annotations()
 lvis_annotations = objaverse.load_lvis_annotations()
 
+object_dir = list(glob.glob(objaverse_dir))
+
+
+global list_lvis
 list_lvis = []
 for values in lvis_annotations.values():
    list_lvis.extend(values)
 
-object_dir = list(glob.glob(objaverse_dir))
-
 list_counts = []
-for object in glob.glob(objaverse_dir):
-    list_counts.append(count_meshes(object))
+with Pool(num_cores) as p:
+    p.map(count_meshes, object_dir)
 
 list_counts = list(filter(partial(is_not, None), list_counts))
 
