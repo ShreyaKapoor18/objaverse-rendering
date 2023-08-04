@@ -8,6 +8,9 @@ import multiprocessing
 from operator import is_not
 from functools import partial
 import gc
+import os
+from os.path import join
+from multiprocessing import Pool
 #%%
 # store the ids of the objects with less than 50 geometries
 def count_objects(object):
@@ -52,39 +55,40 @@ def count_meshes(objs):
                     print(object_name, file=f5)
         return count
     bproc.clean_up()
+    bproc.python.init._remove_all_data()
     del scene
     gc.collect()
     return None
 
-num_cores = int(os.getenv("SLURM_CPUS_PER_TASK"))# reptetitively giving one object, why???
-objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/*/*'
+if __name__ == '__main__':
+    bproc.init()
+    num_cores = int(os.getenv("SLURM_CPUS_PER_TASK"))# reptetitively giving one object, why???
+    objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/*/*'
 
-annotations = objaverse.load_annotations()
-lvis_annotations = objaverse.load_lvis_annotations()
+    annotations = objaverse.load_annotations()
+    lvis_annotations = objaverse.load_lvis_annotations()
 
-object_dir = list(glob.glob(objaverse_dir))
+    object_dir = list(glob.glob(objaverse_dir))
 
 
-global list_lvis
-list_lvis = []
-for values in lvis_annotations.values():
-   list_lvis.extend(values)
+    global list_lvis
+    list_lvis = []
+    for values in lvis_annotations.values():
+        list_lvis.extend(values)
 
-list_counts = []
-with Pool(num_cores) as p:
-    p.map(count_meshes, object_dir)
+    with Pool(num_cores) as p:
+        list_counts = p.map(count_meshes, object_dir)
 
-list_counts = list(filter(partial(is_not, None), list_counts))
+    list_counts = list(filter(partial(is_not, None), list_counts))
+    with open('results/count_objects.npy', 'wb') as f:
+        a = np.save(f, list_counts)
 
-with open('results/count_objects.npy', 'wb') as f:
-    a = np.save(f, list_counts)
-
-fig = plt.figure()
-plt.hist(list_counts)
-plt.title('Distribution over the objects')
-plt.xlabel('Number of meshes')
-plt.ylabel('Number of objects')
-plt.savefig('results/distribution.png')
+    fig = plt.figure()
+    plt.hist(list_counts)
+    plt.title('Distribution over the objects')
+    plt.xlabel('Number of meshes')
+    plt.ylabel('Number of objects')
+    plt.savefig('results/distribution.png')
 #%%
 
 

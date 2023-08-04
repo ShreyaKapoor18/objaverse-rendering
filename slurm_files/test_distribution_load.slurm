@@ -6,6 +6,8 @@
 #SBATCH --gres=gpu:a40:1
 #SBATCH --partition=a40
 #SBATCH --export=NONE
+#SBATCH -o ./slurm_files/output/test_distribution_load_slurm.%j.out
+
 
 unset SLURM_EXPORT_ENV
 

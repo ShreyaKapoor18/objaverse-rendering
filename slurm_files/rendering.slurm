@@ -1,22 +1,30 @@
 #!/bin/bash -l
 #
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=16
+#SBATCH --ntasks=10
+#SBATCH --cpus-per-task=3
 #SBATCH --time=08:00:00
-#SBATCH --gres=gpu:a40:1
+#SBATCH --gres=gpu:a40:5
 #SBATCH --partition=a40
 #SBATCH --export=NONE
+#SBATCH -o ./slurm_files/output/rendering.%j.out
 
 unset SLURM_EXPORT_ENV
 conda init
 conda activate pyobjaverse
-filename=$(cat ~/git/objaverse-rendering/input_models_path.json)
+filename=$(cat ~/git/objaverse-rendering/input_models_path.txt)
+export SSL_CERT_DIR=/etc/ssl/certs
+export SSL_CERT_FILE=/etc/ssl/ca-bundle.crt
+module load cuda/12.1.1
+export CYCLES_OPENCL_TEST=NONE
 for item in $filename;
-do
-    ~/blender/blender-3.3.1-linux-x64/blender -b -P scripts/blender_script_2.py -- \
+do  
+    echo $item
+    ~/blender/blender-3.3.1-linux-x64/blender -d --enable-autoexec -b -P scripts_custom/blender_script_2.py -- \
         --object_path $item \
         --output_dir /home/janus/iwi9-datasets/objaverse-rendering/textures \
         --engine CYCLES \
         --num_images 12 \
-        --camera_dist 1.2
+        --camera_dist 1.2 \
+        --textures True
 done
+

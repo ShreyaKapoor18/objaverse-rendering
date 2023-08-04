@@ -42,10 +42,12 @@ parser.add_argument(
 )
 parser.add_argument("--textures", type=bool, default=False)
 parser.add_argument("--num_images", type=int, default=12)
-parser.add_argument("--camera_dist", type=int, default=1.0)
+parser.add_argument("--camera_dist", type=float, default=1.0)
 
 argv = sys.argv[sys.argv.index("--") + 1 :]
 args = parser.parse_args(argv)
+
+bpy.context.preferences.addons['cycles'].preferences.compute_device_type= 'CUDA'
 
 context = bpy.context
 scene = context.scene
@@ -66,7 +68,6 @@ scene.render.film_transparent = True
 
 env_maps_dir = 'environment_maps/RENI_HDR/Train/*'
 list_env_maps = list(glob.glob(env_maps_dir))
-print(list_env_maps)
 
 textures_dir = 'textures/dtd/images/*/*.png'
 list_textures_dir = list(glob.glob(textures_dir))
@@ -245,7 +246,7 @@ def save_images(object_file: str) -> None:
     
     for i in range(args.num_images):
         # set the camera position
-        if args.texture == True:
+        if args.textures == True:
             change_textures_in_scene(textures_dir)
         theta = (i / args.num_images) * math.pi * 2
         j = np.random.randint(0,len(angles), size=1)[0]
@@ -265,6 +266,7 @@ def save_images(object_file: str) -> None:
 def download_object(object_url: str) -> str:
     """Download the object and return the path."""
     # uid = uuid.uuid4()
+    print('downloading the object here')
     uid = object_url.split("/")[-1].split(".")[0]
     tmp_local_path = os.path.join("tmp-objects", f"{uid}.glb" + ".tmp")
     local_path = os.path.join("tmp-objects", f"{uid}.glb")
@@ -280,11 +282,17 @@ def download_object(object_url: str) -> str:
 if __name__ == "__main__":
     try:
         start_i = time.time()
-        local_path = args.object_path
+        if args.object_path.startswith("http"):
+            print('the object name starts with http')
+            local_path = download_object(args.object_path)
+        else:
+            local_path = args.object_path
         save_images(local_path)
         end_i = time.time()
         print("Finished", local_path, "in", end_i - start_i, "seconds")
         # delete the object if it was downloaded
+        if args.object_path.startswith("http"):
+            os.remove(local_path)
     except Exception as e:
         print("Failed to render", args.object_path)
         print(e)
