@@ -40,20 +40,18 @@ parser.add_argument("--output_dir", type=str, default="./views")
 parser.add_argument(
     "--engine", type=str, default="BLENDER_EEVEE", choices=["CYCLES", "BLENDER_EEVEE"]
 )
-parser.add_argument("--textures", type=bool, default=False)
+#parser.add_argument("--textures", type=bool, default=False)
 parser.add_argument("--num_images", type=int, default=12)
 parser.add_argument("--camera_dist", type=float, default=1.0)
 
 argv = sys.argv[sys.argv.index("--") + 1 :]
 args = parser.parse_args(argv)
 
-bpy.context.preferences.addons['cycles'].preferences.compute_device_type= 'CUDA'
-
 context = bpy.context
 scene = context.scene
 render = scene.render
 
-render.engine = "CYCLES"
+render.engine = args.engine
 render.image_settings.file_format = "PNG"
 render.image_settings.color_mode = "RGBA" # hence there are 4 channels, I could just put them as 3 channels then it could be compatible with RESNET
 render.resolution_x = 512
@@ -63,16 +61,20 @@ render.resolution_percentage = 100
 scene.cycles.device = "GPU"
 scene.cycles.samples = 32
 scene.cycles.filter_width = 0.01
+scene.cycles.diffuse_bounces = 1
+scene.cycles.glossy_bounces = 1
+scene.cycles.transparent_max_bounces = 3
+scene.cycles.transmission_bounces = 3
 scene.cycles.use_denoising = True
 scene.render.film_transparent = True
 
 env_maps_dir = 'environment_maps/RENI_HDR/Train/*'
 list_env_maps = list(glob.glob(env_maps_dir))
 
-textures_dir = 'textures/dtd/images/*/*.png'
-list_textures_dir = list(glob.glob(textures_dir))
+textures_dir = 'textures/dtd/images/blotchy/*.jpg'
+list_textures_dir = list(glob.glob(textures_dir)) #maybe this list is too big to iterate
 
-def change_textures_in_scene(textures_dir):
+def change_textures_in_scene(list_textures_dir):
     # To do: also include cases where there are no textures on the material
     i = np.random.randint(len(list_textures_dir))
     texture_file = list_textures_dir[i]
@@ -227,7 +229,7 @@ def setup_camera():
 
 def save_images(object_file: str) -> None:
     """Saves rendered images of the object in the scene."""
-    os.makedirs("views", exist_ok=True)
+    os.makedirs(args.output_dir, exist_ok=True)
     reset_scene()
     # load the object
     load_object(object_file)
@@ -241,20 +243,19 @@ def save_images(object_file: str) -> None:
     empty = bpy.data.objects.new("Empty", None)
     scene.collection.objects.link(empty)
     cam_constraint.target = empty
-    camera_dist = 1.2
-    angles = np.random.uniform(0,360, size=10)
+    #angles = np.random.uniform(0,360, size=10)
     
     for i in range(args.num_images):
         # set the camera position
-        if args.textures == True:
-            change_textures_in_scene(textures_dir)
+        
+        change_textures_in_scene(list_textures_dir)
         theta = (i / args.num_images) * math.pi * 2
-        j = np.random.randint(0,len(angles), size=1)[0]
-        phi = math.radians(angles[j])
+        #j = np.random.randint(0,len(angles), size=1)[0]
+        phi = math.radians(60)
         point = (
-            camera_dist * math.sin(phi) * math.cos(theta),
-            camera_dist * math.sin(phi) * math.sin(theta),
-            camera_dist * math.cos(phi),
+            args.camera_dist * math.sin(phi) * math.cos(theta),
+            args.camera_dist * math.sin(phi) * math.sin(theta),
+            args.camera_dist * math.cos(phi),
         )
         cam.location = point
         # render the image
