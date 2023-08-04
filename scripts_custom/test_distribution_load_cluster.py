@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import multiprocessing
 from operator import is_not
 from functools import partial
+import gc
 #%%
 # store the ids of the objects with less than 50 geometries
 def count_objects(object):
@@ -50,6 +51,9 @@ def count_meshes(objs):
         if count == 100:
                     print(object_name, file=f5)
         return count
+    bproc.clean_up()
+    del scene
+    gc.collect()
     return None
 
 
