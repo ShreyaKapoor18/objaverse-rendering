@@ -1,9 +1,9 @@
+#!/Applications/Blender.app/Contents/Resources/3.4/python/bin/python3.10
+
 import bpy
-import objaverse
-import trimesh
+import os 
 import glob
 import numpy as np
-import matplotlib.pyplot as plt
 import multiprocessing
 from operator import is_not
 from functools import partial
@@ -49,18 +49,14 @@ if __name__ == '__main__':
     num_cores = int(os.getenv("SLURM_CPUS_PER_TASK"))# reptetitively giving one object, why???
     objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/*/*'
 
-
-    annotations = objaverse.load_annotations()
-    lvis_annotations = objaverse.load_lvis_annotations()
-
     object_dir = list(glob.glob(objaverse_dir))
-
-
-    global list_lvis
+    f = open('../extras/list_lvis.txt')
     list_lvis = []
-    for values in lvis_annotations.values():
-        list_lvis.extend(values)
-
+    for line in f.readlines():
+        line = line.strip('\n')
+        list_lvis.append(line)
+    
+    print(list_lvis)
     with Pool(num_cores) as p:
         list_counts = p.map(count_meshes, object_dir) # we need only the lvis annotated objects, which is defined in function above
 
@@ -68,11 +64,4 @@ if __name__ == '__main__':
     with open('results/count_objects.npy', 'wb') as f:
         a = np.save(f, list_counts)
 
-    fig = plt.figure()
-    plt.hist(list_counts)
-    plt.title('Distribution over the objects')
-    plt.xlabel('Number of meshes')
-    plt.ylabel('Number of objects')
-    plt.savefig('results/distribution.png')
-#%%
 
