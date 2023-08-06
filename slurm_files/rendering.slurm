@@ -19,12 +19,12 @@ export CYCLES_OPENCL_TEST=NONE
 for item in $filename;
 do  
     echo $item
-    ~/blender/blender-3.3.1-linux-x64/blender -d --enable-autoexec -b -P scripts_custom/blender_script_2.py -- \
+    ~/blender/blender-3.3.1-linux-x64/blender -b -P scripts_custom/blender_script_2.py -- \
         --object_path $item \
         --output_dir /home/janus/iwi9-datasets/objaverse-rendering/textures \
         --engine CYCLES \
         --num_images 12 \
-        --camera_dist 1.2 \
+        --camera_dist 2 \
         --textures True
 done
 

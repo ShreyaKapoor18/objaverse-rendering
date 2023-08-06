@@ -1,0 +1,63 @@
+### Starting TaskPrologue of job 799577 on a1624 at Sat Aug  5 11:44:38 CEST 2023
+Running on cores 48-63 with governor ondemand
+Sat Aug  5 11:44:38 2023       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A40                     On  | 00000000:61:00.0 Off |                    0 |
+|  0%   43C    P8              23W / 300W |      4MiB / 46068MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+### Finished TaskPrologue
+
+no change     /apps/python/3.9-anaconda/condabin/conda
+no change     /apps/python/3.9-anaconda/bin/conda
+no change     /apps/python/3.9-anaconda/bin/conda-env
+no change     /apps/python/3.9-anaconda/bin/activate
+no change     /apps/python/3.9-anaconda/bin/deactivate
+no change     /apps/python/3.9-anaconda/etc/profile.d/conda.sh
+no change     /apps/python/3.9-anaconda/etc/fish/conf.d/conda.fish
+no change     /apps/python/3.9-anaconda/shell/condabin/Conda.psm1
+no change     /apps/python/3.9-anaconda/shell/condabin/conda-hook.ps1
+no change     /apps/python/3.9-anaconda/lib/python3.9/site-packages/xontrib/conda.xsh
+no change     /apps/python/3.9-anaconda/etc/profile.d/conda.csh
+no change     /home/hpc/b112dc/b112dc10/.bashrc
+No action taken.
+Number of cores 16
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** STEP 799577.0 ON a1624 CANCELLED AT 2023-08-05T11:51:44 ***
+slurmstepd: error: *** JOB 799577 ON a1624 CANCELLED AT 2023-08-05T11:51:44 ***
+=== JOB_STATISTICS ===
+=== current date     : Sat Aug  5 11:51:48 CEST 2023
+= Job-ID             : 799577 on alex
+= Job-Name           : generate_json.slurm
+= Job-Command        : /home/hpc/b112dc/b112dc10/git/objaverse-rendering/slurm_files/generate_json.slurm
+= Initial workdir    : /home/hpc/b112dc/b112dc10/git/objaverse-rendering
+= Queue/Partition    : a40
+= Slurm account      : b112dc with QOS=normal
+= Requested resources: cpu=16,mem=60000M,node=1,billing=16,gres/gpu=1,gres/gpu:a40=1 for 08:00:00
+= Elapsed runtime    : 00:07:09
+= Total RAM usage    : 0.5 GiB of assigned 58 GiB (0.9%)   
+= Node list          : a1624
+= Subm/Elig/Start/End: 2023-08-05T11:44:35 / 2023-08-05T11:44:35 / 2023-08-05T11:44:35 / 2023-08-05T11:51:44
+======================
+=== Quota infos ======
+    Path              Used     SoftQ    HardQ    Gracetime  Filec    FileQ    FiHaQ    FileGrace    
+    /home/hpc           49.0G    52.4G   104.9G        N/A     380K     500K   1,000K        N/A    
+    /home/vault          0.0K   524.3G  1048.6G        N/A       1      200K     400K        N/A    
+    janus.rrze.uni-erlangen.de:/zfspool/viphome/iwi9-datasets   163.1G     0.0K     0.0K        N/A     798K                          N/A    
+======================
+=== GPU utilization ==
+gpu_name, gpu_bus_id, pid, gpu_utilization [%], mem_utilization [%], max_memory_usage [MiB], time [ms]

@@ -42,7 +42,7 @@ parser.add_argument(
 )
 parser.add_argument("--textures", type=bool, default=False)
 parser.add_argument("--num_images", type=int, default=12)
-parser.add_argument("--camera_dist", type=float, default=1.0)
+parser.add_argument("--camera_dist", type=float, default=1.2)
 
 argv = sys.argv[sys.argv.index("--") + 1 :]
 args = parser.parse_args(argv)
@@ -71,7 +71,7 @@ scene.render.film_transparent = True
 env_maps_dir = 'environment_maps/RENI_HDR/Train/*'
 list_env_maps = list(glob.glob(env_maps_dir))
 
-textures_dir = 'textures/dtd/images/blotchy/*.jpg'
+textures_dir = 'textures/dtd/images/*/*.jpg'
 list_textures_dir = list(glob.glob(textures_dir)) #maybe this list is too big to iterate
 
 def change_textures_in_scene(list_textures_dir):

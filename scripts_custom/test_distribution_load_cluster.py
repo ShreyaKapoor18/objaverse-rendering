@@ -1,4 +1,4 @@
-import blenderproc as bproc
+import bpy
 import objaverse
 import trimesh
 import glob
@@ -11,30 +11,17 @@ import gc
 import os
 from os.path import join
 from multiprocessing import Pool
-#%%
-# store the ids of the objects with less than 50 geometries
-def count_objects(object):
-    f1 = open('results/object_names_5.txt', 'a')
-    f2 = open('results/object_names_10.txt', 'a')
-    f2 = open('results/object_names_1.txt', 'a')
-    f3 = open('results/object_names_2.txt', 'a')
-    f4 = open('results/object_names_20.txt', 'a')
-    object_name = object.split('/glbs')[1].split('/')[-1][:-4]           
-            
-    scene = trimesh.load(object)
-    
-    return scene.geometry
-
-
+#%
 def count_meshes(objs):
     print(objs)
-    scene = bproc.loader.load_obj(filepath=objs)
+    if objs.endswith(".glb"):
+        bpy.ops.import_scene.gltf(filepath=objs) # why is thi giving an error? loading the file should be easy
     count = 0
     object_name = objs.split('/glbs')[1].split('/')[-1][:-4]
     if object_name in list_lvis:
-        for obj in scene:
-                if isinstance(obj, (bproc.types.MeshObject)):
-                    count+=1
+        for obj in bpy.context.scene.objects.values():
+            if isinstance(obj.data, (bpy.types.Mesh)):
+                count+=1
         f1 = open('results/object_names_5.txt', 'a')
         f2 = open('results/object_names_10.txt', 'a')
         f2 = open('results/object_names_1.txt', 'a')
@@ -54,16 +41,14 @@ def count_meshes(objs):
         if count == 100:
                     print(object_name, file=f5)
         return count
-    bproc.clean_up()
-    bproc.python.init._remove_all_data()
-    del scene
-    gc.collect()
     return None
 
+
+
 if __name__ == '__main__':
-    bproc.init()
     num_cores = int(os.getenv("SLURM_CPUS_PER_TASK"))# reptetitively giving one object, why???
     objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/*/*'
+
 
     annotations = objaverse.load_annotations()
     lvis_annotations = objaverse.load_lvis_annotations()
@@ -77,7 +62,7 @@ if __name__ == '__main__':
         list_lvis.extend(values)
 
     with Pool(num_cores) as p:
-        list_counts = p.map(count_meshes, object_dir)
+        list_counts = p.map(count_meshes, object_dir) # we need only the lvis annotated objects, which is defined in function above
 
     list_counts = list(filter(partial(is_not, None), list_counts))
     with open('results/count_objects.npy', 'wb') as f:
@@ -90,7 +75,4 @@ if __name__ == '__main__':
     plt.ylabel('Number of objects')
     plt.savefig('results/distribution.png')
 #%%
-
-
-
 
