@@ -15,7 +15,7 @@ from multiprocessing import Pool
 def count_meshes(objs):
     print(objs)
     if objs.endswith(".glb"):
-        bpy.ops.import_scene.gltf(filepath=objs) # why is thi giving an error? loading the file should be easy
+        bpy.ops.import_scene.gltf(filepath=objs) # why is this giving an error? loading the file should be easy
     count = 0
     object_name = objs.split('/glbs')[1].split('/')[-1][:-4]
     if object_name in list_lvis:
@@ -37,7 +37,7 @@ def count_meshes(objs):
         if count == 2:
                     print(object_name, file=f3)
         if count == 20:
-                    print(object_name, file= f4)
+                    print(object_name, file=f4)
         if count == 100:
                     print(object_name, file=f5)
         return count
@@ -55,6 +55,8 @@ if __name__ == '__main__':
     for line in f.readlines():
         line = line.strip('\n')
         list_lvis.append(line)
+        
+    list_lvis = list_lvis[:len(list_lvis/2)]
     
     print(list_lvis)
     with Pool(num_cores) as p:

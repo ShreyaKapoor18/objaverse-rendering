@@ -2,7 +2,7 @@
 #
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
-#SBATCH --time=08:00:00
+#SBATCH --time=24:00:00
 #SBATCH --gres=gpu:a40:1
 #SBATCH --partition=a40
 #SBATCH --export=NONE
