@@ -54,36 +54,39 @@ def count_meshes(objs):
     # reset the scene before every import so that there is no object in the scene
     # this will prevent the ram from being overloaded and lead to a better functioning program
     # still not able to iterate through the whole list. 
-    
+    with open('results/counts.json') as f:
+        dict_counts = json.load(f)
     # Maybe create three files and use ntasks=3
     gc.collect() # call garbage collection to reduce memory collection and performance. 
-    print(objs)
-
     count = 0
     object_name = objs.split('/glbs')[1].split('/')[-1][:-4]
-    if object_name in list_lvis:
+    if object_name in list_lvis and object_name not in dict_counts.keys():
         if objs.endswith(".glb"):
             bpy.ops.import_scene.gltf(filepath=objs) # why is this giving an error? loading the file should be easy
             for obj in bpy.context.scene.objects.values():
                 if isinstance(obj.data, (bpy.types.Mesh)):
                     count+=1
-            f1 = open('results/object_names_5.txt', 'a')
-            f2 = open('results/object_names_10.txt', 'a')
-            f3 = open('results/object_names_2.txt', 'a')
-            f4 = open('results/object_names_20.txt', 'a')
-            f5 = open('results/object_names_100.txt', 'a')
-            if count == 5: 
-                        print(object_name, file=f1)
-            if count == 10:
-                        print(object_name, file=f2)
-            if count == 2:
-                        print(object_name, file=f3)
-            if count == 20:
-                        print(object_name, file=f4)
-            if count == 100:
-                        print(object_name, file=f5)
             reset_scene()
-            clear_render_cache()   
+            clear_render_cache()
+            
+            for obj in bpy.data.objects:
+                if obj.type not in {"CAMERA", "LIGHT"}:
+                    bpy.data.objects.remove(obj, do_unlink=True)
+            # delete all the materials
+            for material in bpy.data.materials:
+                bpy.data.materials.remove(material, do_unlink=True)
+            # delete all the textures
+            for texture in bpy.data.textures:
+                bpy.data.textures.remove(texture, do_unlink=True)
+            # delete all the images
+            for image in bpy.data.images:
+                bpy.data.images.remove(image, do_unlink=True)
+                
+            bpy.context.scene.use_nodes = False  # Disable compositing nodes 
+            dict_counts.append({objs : count_meshes})
+            with open('results/counts.json') as f:
+                json.dump(dict_counts)
+            print(objs, ':', count)            
             return count
     return None
 

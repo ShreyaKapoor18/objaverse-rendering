@@ -14,10 +14,10 @@ unset SLURM_EXPORT_ENV
 module load git
 conda init
 conda activate pyobjaverse
-for i in {1..5}
+for i in {0..4}
 do
     srun ~/blender/blender-3.3.1-linux-x64/blender -b -P ~/git/objaverse-rendering/scripts_custom/test_distribution_load_cluster.py --\
-    --filename list_lvis_$i.txt --output_filename count_lvis_$i.npy
+    --filename list_lvis_$i.txt --output_filename ~/git/objaverse-rendering/count_lvis_$i.npy
     sleep 200
 done
 wait # in order to keep all the background processes in check!
