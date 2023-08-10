@@ -33,7 +33,6 @@ for name in file.read():
     name_2 = name.strip('\n') + '.glb'   
     p = Pool(num_cores)
     list_paths_ex = p.map(find, itertools.repeat(name_2), object_paths)
-    list_paths.extend(list_paths_ex)
     p.close()
     p.join()
     gc.collect()

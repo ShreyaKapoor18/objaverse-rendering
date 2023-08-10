@@ -27689,3 +27689,736 @@ Data are loaded, start creating Blender stuff
 glTF import finished in 0.69s
 Scene reset is actually being executed
 clear render cache is actually being executed
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.01s
+Scene reset is actually being executed
+clear render cache is actually being executed
+84e8fe47ea02466aa7276a79ee27e6e0 : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.04s
+Scene reset is actually being executed
+clear render cache is actually being executed
+e8241c085a6841ef85ee6671c4c0bc5d : 5
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.34s
+Scene reset is actually being executed
+clear render cache is actually being executed
+97165e0dd0f14816b86ddac009f15523 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.01s
+Scene reset is actually being executed
+clear render cache is actually being executed
+4befc0f57d414a76ba7a827f709a9f51 : 4
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.04s
+Scene reset is actually being executed
+clear render cache is actually being executed
+1768ad36821a43cda1c6fdfaf548c06b : 3
+Data are loaded, start creating Blender stuff
+Error: Python: Traceback (most recent call last):
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1173, in execute
+    return self.import_gltf2(context)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1206, in import_gltf2
+    return self.unit_import(self.filepath, import_settings)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1221, in unit_import
+    BlenderGlTF.create(gltf_importer)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 33, in create
+    BlenderGlTF._create(gltf)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 40, in _create
+    BlenderScene.create(gltf)
+  File "/home/hpc/b112dc/b... truncatedData are loaded, start creating Blender stuff
+glTF import finished in 1.63s
+Scene reset is actually being executed
+clear render cache is actually being executed
+9decbba81cbf409c86762ec79226f886 : 26
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.04s
+Scene reset is actually being executed
+clear render cache is actually being executed
+6bc2c5e0de894d07ad6408e91e20b99e : 6
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.00s
+Scene reset is actually being executed
+clear render cache is actually being executed
+23ce25036e4545f88d60d1d6bb758ebe : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.01s
+Scene reset is actually being executed
+clear render cache is actually being executed
+c54a7f8f0d2048e7b3f897ec497c74a6 : 4
+Data are loaded, start creating Blender stuff
+Error: Python: Traceback (most recent call last):
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1173, in execute
+    return self.import_gltf2(context)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1206, in import_gltf2
+    return self.unit_import(self.filepath, import_settings)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1221, in unit_import
+    BlenderGlTF.create(gltf_importer)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 33, in create
+    BlenderGlTF._create(gltf)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 40, in _create
+    BlenderScene.create(gltf)
+  File "/home/hpc/b112dc/b... truncatedData are loaded, start creating Blender stuff
+glTF import finished in 0.10s
+Scene reset is actually being executed
+clear render cache is actually being executed
+54562cfac54049538e9cfc6a5a56c3bd : 4
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.35s
+Scene reset is actually being executed
+clear render cache is actually being executed
+c3e45d7d11cd4f7a907b9d28191a824d : 244
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.01s
+Scene reset is actually being executed
+clear render cache is actually being executed
+4be3573f710044a9a1e401cf8374a852 : 2
+Data are loaded, start creating Blender stuff
+Error: Python: Traceback (most recent call last):
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1173, in execute
+    return self.import_gltf2(context)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1206, in import_gltf2
+    return self.unit_import(self.filepath, import_settings)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1221, in unit_import
+    BlenderGlTF.create(gltf_importer)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 33, in create
+    BlenderGlTF._create(gltf)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 40, in _create
+    BlenderScene.create(gltf)
+  File "/home/hpc/b112dc/b... truncatedError: Python: Traceback (most recent call last):
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1173, in execute
+    return self.import_gltf2(context)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1206, in import_gltf2
+    return self.unit_import(self.filepath, import_settings)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1221, in unit_import
+    BlenderGlTF.create(gltf_importer)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 33, in create
+    BlenderGlTF._create(gltf)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 40, in _create
+    BlenderScene.create(gltf)
+  File "/home/hpc/b112dc/b... truncatedData are loaded, start creating Blender stuff
+glTF import finished in 7.18s
+Scene reset is actually being executed
+clear render cache is actually being executed
+073603e3929441e3b6bffc1f0e180e89 : 20
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.02s
+Scene reset is actually being executed
+clear render cache is actually being executed
+5ff4270b4f0b4017b34363a309f756f5 : 6
+Data are loaded, start creating Blender stuff
+glTF import finished in 1.30s
+Scene reset is actually being executed
+clear render cache is actually being executed
+92c10446517645508317985920c48f7a : 4
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.01s
+Scene reset is actually being executed
+clear render cache is actually being executed
+367bbf8f210e4aa09befb267148b5158 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.04s
+Scene reset is actually being executed
+clear render cache is actually being executed
+d185336a70504ee4bd78d606a13b415c : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.01s
+Scene reset is actually being executed
+clear render cache is actually being executed
+5a80787376204bfb8006173bcd0cc448 : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 6.48s
+Scene reset is actually being executed
+clear render cache is actually being executed
+290c94f1bb394656b3970972d94c52fb : 19
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.03s
+Scene reset is actually being executed
+clear render cache is actually being executed
+ef3e64b3f227470495fc836f1ff451e8 : 15
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.01s
+Scene reset is actually being executed
+clear render cache is actually being executed
+ca45e0d5ae394459b1b51b256b18ff20 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.05s
+Scene reset is actually being executed
+clear render cache is actually being executed
+98fb87f4107b4239b833394c00f525f6 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.01s
+Scene reset is actually being executed
+clear render cache is actually being executed
+7313676458644ecb8f873e556f9f67d1 : 4
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.01s
+Scene reset is actually being executed
+clear render cache is actually being executed
+58103ddeeb294efaaec9455fd63259da : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.10s
+Scene reset is actually being executed
+clear render cache is actually being executed
+e36f0003b0be4209b74e093aa5514b2b : 5
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.11s
+Scene reset is actually being executed
+clear render cache is actually being executed
+3f0b63f78c004821bdf73aa7acd2e917 : 3
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.01s
+Scene reset is actually being executed
+clear render cache is actually being executed
+71e7aa497fc84f638851767a3aacad8e : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.01s
+Scene reset is actually being executed
+clear render cache is actually being executed
+cf19a5a2827d46c9831622e556127b7a : 3
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.15s
+Scene reset is actually being executed
+clear render cache is actually being executed
+bac56b6f8a6a426985c62115817c82a0 : 69
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.08s
+Scene reset is actually being executed
+clear render cache is actually being executed
+f43a6bcb93b84f98b379c252274ee5ac : 3
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.08s
+Scene reset is actually being executed
+clear render cache is actually being executed
+3711e52c0f3d41b18123326eee6e2661 : 18
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.04s
+Scene reset is actually being executed
+clear render cache is actually being executed
+0836af0bceab4fa3aa71357d37ae09e2 : 20
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.18s
+Scene reset is actually being executed
+clear render cache is actually being executed
+b2efbdb7322049ad808bf5b3ce327d09 : 25
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.11s
+Scene reset is actually being executed
+clear render cache is actually being executed
+d7203d7ff9694c4db1f2689bb0926529 : 13
+Data are loaded, start creating Blender stuff
+glTF import finished in 2.71s
+Scene reset is actually being executed
+clear render cache is actually being executed
+6980b16d42e4444fa62ee2a652c39bb2 : 12
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.71s
+Scene reset is actually being executed
+clear render cache is actually being executed
+a20c9c9e3e4143ffbd71d8ecbdcbac95 : 407
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.02s
+Scene reset is actually being executed
+clear render cache is actually being executed
+ada8abd5afd843abaa4b9aa2654b9702 : 3
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.45s
+Scene reset is actually being executed
+clear render cache is actually being executed
+bd4a67c182db4fe0a2fb82a70b97f470 : 61
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.01s
+Scene reset is actually being executed
+clear render cache is actually being executed
+ee0fa270366d4b4cac309b9a790178e4 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.02s
+Scene reset is actually being executed
+clear render cache is actually being executed
+ef7be8efe82947c29290a18ef94a8c35 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.03s
+Scene reset is actually being executed
+clear render cache is actually being executed
+afaa0d29b2b54dc3b7f97b353e6313fd : 1
+Data are loaded, start creating Blender stuff
+Error: Python: Traceback (most recent call last):
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1173, in execute
+    return self.import_gltf2(context)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1206, in import_gltf2
+    return self.unit_import(self.filepath, import_settings)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1221, in unit_import
+    BlenderGlTF.create(gltf_importer)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 33, in create
+    BlenderGlTF._create(gltf)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 40, in _create
+    BlenderScene.create(gltf)
+  File "/home/hpc/b112dc/b... truncatedData are loaded, start creating Blender stuff
+glTF import finished in 0.19s
+Scene reset is actually being executed
+clear render cache is actually being executed
+5c3e0c3f69534444bef6d10e2d3567cb : 3
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.02s
+Scene reset is actually being executed
+clear render cache is actually being executed
+1bc1166b18a34a938bf5efd6ee5bbe69 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.33s
+Scene reset is actually being executed
+clear render cache is actually being executed
+72aad2af1dac4d4d8ffc57ed37eead9a : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.02s
+Scene reset is actually being executed
+clear render cache is actually being executed
+771e62e4f43d4c3c81f7d35a8884578c : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.54s
+Scene reset is actually being executed
+clear render cache is actually being executed
+effa9692c0b64245aba9c163c991b21c : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.15s
+Scene reset is actually being executed
+clear render cache is actually being executed
+f0e327c8b90c4c66a4cc5326e848b743 : 13
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.58s
+Scene reset is actually being executed
+clear render cache is actually being executed
+8779541cdb3a4af7a23a597bcac90318 : 7
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.06s
+Scene reset is actually being executed
+clear render cache is actually being executed
+577e9b769a0d45528e18707aaaae18ff : 4
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.80s
+Scene reset is actually being executed
+clear render cache is actually being executed
+0636415305924d2f8f31de1b038c95a1 : 8
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.04s
+Scene reset is actually being executed
+clear render cache is actually being executed
+7a16ce66ec734399953087438a0963ae : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 2.63s
+Scene reset is actually being executed
+clear render cache is actually being executed
+7fb48f6cbcd54149bb23837a3ac09b2e : 13
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.15s
+Scene reset is actually being executed
+clear render cache is actually being executed
+bd691bdc45ab4f91ae9304df4190e2e3 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.03s
+Scene reset is actually being executed
+clear render cache is actually being executed
+c38f909edb6e4186a05aa528fb046d77 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.77s
+Scene reset is actually being executed
+clear render cache is actually being executed
+c48be4def24d46aa90e9f0ad237d1e99 : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.09s
+Scene reset is actually being executed
+clear render cache is actually being executed
+8eef8f10ba56485aaaa6bc8756944b41 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.02s
+Scene reset is actually being executed
+clear render cache is actually being executed
+56573d84343b490785942284d102807b : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.03s
+Scene reset is actually being executed
+clear render cache is actually being executed
+7d7eb00d25834d6592800743e19d49aa : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.15s
+Scene reset is actually being executed
+clear render cache is actually being executed
+a07af3b8c6c045d89a37a3b3cde7be1b : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.13s
+Scene reset is actually being executed
+clear render cache is actually being executed
+c246565eb927410486c7cf27b138a2e2 : 5
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.76s
+Scene reset is actually being executed
+clear render cache is actually being executed
+3969fe35c6444293af27b976dca085a4 : 3
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.09s
+Scene reset is actually being executed
+clear render cache is actually being executed
+3b4d8e3ac5eb40d8befcdb6e5874237a : 5
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.36s
+Scene reset is actually being executed
+clear render cache is actually being executed
+f92f1a8a1f5f4f8ab955d4e7ea9398af : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.60s
+Scene reset is actually being executed
+clear render cache is actually being executed
+cfcfa84fa9d441c59e8047ffe3d539f4 : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.10s
+Scene reset is actually being executed
+clear render cache is actually being executed
+e74dacf54f4b4f0ea62096719d8f6512 : 5
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.12s
+Scene reset is actually being executed
+clear render cache is actually being executed
+9db75463231d4de686043b687cb6836a : 24
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.03s
+Scene reset is actually being executed
+clear render cache is actually being executed
+bf4b47324d154da5a9fca6808222d08b : 1
+Data are loaded, start creating Blender stuff
+Error: Python: Traceback (most recent call last):
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1173, in execute
+    return self.import_gltf2(context)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1206, in import_gltf2
+    return self.unit_import(self.filepath, import_settings)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1221, in unit_import
+    BlenderGlTF.create(gltf_importer)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 33, in create
+    BlenderGlTF._create(gltf)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 40, in _create
+    BlenderScene.create(gltf)
+  File "/home/hpc/b112dc/b... truncatedclear render cache is actually being executed
+2246c91cfcc1436b9824e56fd11fad66 : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.22s
+Scene reset is actually being executed
+clear render cache is actually being executed
+3a7f5bda21e1457fad843422e745b02f : 48
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.02s
+Scene reset is actually being executed
+clear render cache is actually being executed
+3378f67a424041f3acbc574b57bda90d : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.34s
+Scene reset is actually being executed
+clear render cache is actually being executed
+ec78aff7132d48a98b7f84f89e39d172 : 4
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.41s
+Scene reset is actually being executed
+clear render cache is actually being executed
+90e9ccdd97f74104b5310772a984ca49 : 60
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.04s
+Scene reset is actually being executed
+clear render cache is actually being executed
+adb0e767a0824a469d4a854d27e9458b : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 1.80s
+Scene reset is actually being executed
+clear render cache is actually being executed
+d323a15276a24e5eaf60448dc8c1df38 : 7
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.14s
+Scene reset is actually being executed
+clear render cache is actually being executed
+0680623e5d4d432fa1732446e609fb8d : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 1.19s
+Scene reset is actually being executed
+clear render cache is actually being executed
+a48318fd544b454492437e5cc4a3d3ec : 27
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.18s
+Scene reset is actually being executed
+clear render cache is actually being executed
+a1cdb80462394cbeae982b8e2bca8763 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.21s
+Scene reset is actually being executed
+clear render cache is actually being executed
+58ead71b64f249dcbc2b7d09ba8dfc72 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.17s
+Scene reset is actually being executed
+clear render cache is actually being executed
+236ccf2dae264fc3a11cd5be5bc4e280 : 20
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.03s
+Scene reset is actually being executed
+clear render cache is actually being executed
+3b955af797e140eca0947ede57f412ba : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 1.26s
+Scene reset is actually being executed
+clear render cache is actually being executed
+46f13865d272442e95295884206afeb2 : 4
+Data are loaded, start creating Blender stuff
+glTF import finished in 1.36s
+Scene reset is actually being executed
+clear render cache is actually being executed
+6335c2382d5044ed92698ce752d2bdfc : 8
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.20s
+Scene reset is actually being executed
+clear render cache is actually being executed
+ad9e40cbf6e84f76a2e9b9184c16ae50 : 22
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.73s
+Scene reset is actually being executed
+clear render cache is actually being executed
+f7122decef0b4f7aaa3159f66876a9a3 : 3
+Data are loaded, start creating Blender stuff
+glTF import finished in 4.52s
+Scene reset is actually being executed
+clear render cache is actually being executed
+3b8612f609e34dd9bbd943fa4c64f21a : 23
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.03s
+Scene reset is actually being executed
+clear render cache is actually being executed
+cfad2e0388d248ccad1480ce784801f4 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.16s
+Scene reset is actually being executed
+clear render cache is actually being executed
+18f06f808ae648c5b2536bdf93091238 : 6
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.63s
+Scene reset is actually being executed
+clear render cache is actually being executed
+8fda709c6b2646a49f884d130c0c86da : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.15s
+Scene reset is actually being executed
+clear render cache is actually being executed
+95ff48f069594f34878b5df32a8f861c : 5
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.04s
+Scene reset is actually being executed
+clear render cache is actually being executed
+294ad9f9f0bb4223b8a71c2aec6f7104 : 3
+Data are loaded, start creating Blender stuff
+glTF import finished in 3.20s
+Scene reset is actually being executed
+clear render cache is actually being executed
+67731fd2eb974e709337e68f1bb3b8ac : 13
+Data are loaded, start creating Blender stuff
+Error: Python: Traceback (most recent call last):
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1173, in execute
+    return self.import_gltf2(context)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1206, in import_gltf2
+    return self.unit_import(self.filepath, import_settings)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1221, in unit_import
+    BlenderGlTF.create(gltf_importer)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 33, in create
+    BlenderGlTF._create(gltf)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 40, in _create
+    BlenderScene.create(gltf)
+  File "/home/hpc/b112dc/b... truncatedclear render cache is actually being executed
+86d4292baa6c489ab5fab374bf803106 : 7
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.05s
+Scene reset is actually being executed
+clear render cache is actually being executed
+09a29b22caf14b20bd45f98007f87784 : 4
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.02s
+Scene reset is actually being executed
+clear render cache is actually being executed
+f43199f19c3142c68cc672db55d9a40d : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.27s
+Scene reset is actually being executed
+clear render cache is actually being executed
+7dac64c06a1a49338f6573cd7c4e0cdc : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.16s
+Scene reset is actually being executed
+clear render cache is actually being executed
+de61eb0108664e40a05ad9a25b3a3110 : 7
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.03s
+Scene reset is actually being executed
+clear render cache is actually being executed
+ba8cd12090ce40ca8a649cf6d8cf8096 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.02s
+Scene reset is actually being executed
+clear render cache is actually being executed
+9a9060f938104d259f01454a2e461627 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 1.41s
+Scene reset is actually being executed
+clear render cache is actually being executed
+da02455b180546f78f1eb0bb526aa5fe : 4
+Data are loaded, start creating Blender stuff
+Error: Python: Traceback (most recent call last):
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1173, in execute
+    return self.import_gltf2(context)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1206, in import_gltf2
+    return self.unit_import(self.filepath, import_settings)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/__init__.py", line 1221, in unit_import
+    BlenderGlTF.create(gltf_importer)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 33, in create
+    BlenderGlTF._create(gltf)
+  File "/home/hpc/b112dc/b112dc10/blender/blender-3.3.1-linux-x64/3.3/scripts/addons/io_scene_gltf2/blender/imp/gltf2_blender_gltf.py", line 40, in _create
+    BlenderScene.create(gltf)
+  File "/home/hpc/b112dc/b... truncatedd7728fcb8f934eec85003a2ac48b32b8 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.11s
+Scene reset is actually being executed
+clear render cache is actually being executed
+389e61e3fd1e4eacad0000f2e7c31f83 : 1
+e5fea53c70ad4e1c90cd0fcae7bd078b : 20
+Data are loaded, start creating Blender stuff
+glTF import finished in 1.02s
+Scene reset is actually being executed
+clear render cache is actually being executed
+6b8330c7ffee40ef91d378d6bb977176 : 4
+Data are loaded, start creating Blender stuff
+glTF import finished in 20.03s
+Scene reset is actually being executed
+clear render cache is actually being executed
+a9e61b00b8534077a904d833514a2f26 : 7
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.13s
+Scene reset is actually being executed
+clear render cache is actually being executed
+921e5f26a12643d99cded65621985a24 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.35s
+Scene reset is actually being executed
+clear render cache is actually being executed
+8266863b372547939d0bbee60e85c544 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.08s
+Scene reset is actually being executed
+clear render cache is actually being executed
+9c68e7f437b84f6c919be9f59ebb06ab : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.13s
+Scene reset is actually being executed
+clear render cache is actually being executed
+892106545fe343139ce36955563fd24d : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.23s
+Scene reset is actually being executed
+clear render cache is actually being executed
+e2c6a19e13db4a5a84a2ccf3ed41dfaa : 4
+Data are loaded, start creating Blender stuff
+glTF import finished in 1.52s
+Scene reset is actually being executed
+clear render cache is actually being executed
+ab43f96da577493c811083c914c51efe : 9
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.14s
+Scene reset is actually being executed
+clear render cache is actually being executed
+c5f6ab6504f44b82816a9917f8b80d0d : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.31s
+Scene reset is actually being executed
+clear render cache is actually being executed
+6f3a26af345341a39ed2af45437f8dc1 : 3
+Data are loaded, start creating Blender stuff
+glTF import finished in 1.03s
+Scene reset is actually being executed
+clear render cache is actually being executed
+1be1cb560a934bd5a4ef6051b90197dd : 5
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.56s
+Scene reset is actually being executed
+clear render cache is actually being executed
+347632d6839c40a79ba17218099adf99 : 17
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.22s
+Scene reset is actually being executed
+clear render cache is actually being executed
+0fc69683beb74e6e87853e412d7ffe32 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.19s
+Scene reset is actually being executed
+clear render cache is actually being executed
+fef19d409ba94541b2e5aa4b13ea4975 : 2
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.10s
+Scene reset is actually being executed
+clear render cache is actually being executed
+104fa0c1723e477bab1e01c9d6ccfc5e : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.09s
+Scene reset is actually being executed
+clear render cache is actually being executed
+205a055ff47d4845b91d473b1908bae6 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.81s
+Scene reset is actually being executed
+clear render cache is actually being executed
+e67480fccdef480db204164c64f38b7e : 14
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.33s
+Scene reset is actually being executed
+clear render cache is actually being executed
+86ef8aa3e94a41748d9e0698bd0d154e : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.21s
+Scene reset is actually being executed
+clear render cache is actually being executed
+6f7d7154ae0442a3b32d8fa694fc7838 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.21s
+Scene reset is actually being executed
+clear render cache is actually being executed
+eafaa4e2d3e648b486a8df83a188aad8 : 1
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.82s
+Scene reset is actually being executed
+clear render cache is actually being executed
+6ba05685d37c41ff801a6728847f40e6 : 22
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.53s
+Scene reset is actually being executed
+clear render cache is actually being executed
+5c38957b0da84440b197c61b75cb9c2e : 3
+Data are loaded, start creating Blender stuff
+glTF import finished in 8.38s
+Scene reset is actually being executed
+clear render cache is actually being executed
+694ab0c46f874e1ba7e30d2f271b3546 : 190
+Data are loaded, start creating Blender stuff
+glTF import finished in 0.14s
+Scene reset is actually being executed
+clear render cache is actually being executed
+ffb33b1407ae4a50949d4b0f171d2090 : 1
+=== JOB_STATISTICS ===
+=== current date     : Thu Aug 10 14:41:06 CEST 2023
+= Job-ID             : 804924 on alex
+= Job-Name           : test_distribution_load.slurm
+= Job-Command        : /home/hpc/b112dc/b112dc10/git/objaverse-rendering/slurm_files/test_distribution_load.slurm
+= Initial workdir    : /home/hpc/b112dc/b112dc10/git/objaverse-rendering
+= Queue/Partition    : a40
+= Slurm account      : b112dc with QOS=normal
+= Requested resources: cpu=16,mem=60000M,node=1,billing=16,gres/gpu=1,gres/gpu:a40=1 for 02:00:00
+= Elapsed runtime    : 02:00:03
+= Total RAM usage    : 53.7 GiB of assigned 58 GiB (92.6%)   
+= Node list          : a0125
+= Subm/Elig/Start/End: 2023-08-10T12:40:57 / 2023-08-10T12:40:57 / 2023-08-10T12:40:57 / 2023-08-10T14:41:00
+======================
+=== Quota infos ======
+    Path              Used     SoftQ    HardQ    Gracetime  Filec    FileQ    FiHaQ    FileGrace    
+    /home/hpc           46.8G    52.4G   104.9G        N/A     313K     500K   1,000K        N/A    
+    /home/vault          0.0K   524.3G  1048.6G        N/A       1      200K     400K        N/A    
+    janus.rrze.uni-erlangen.de:/zfspool/viphome/iwi9-datasets   163.6G     0.0K     0.0K        N/A     800K                          N/A    
+======================
+=== GPU utilization ==
+gpu_name, gpu_bus_id, pid, gpu_utilization [%], mem_utilization [%], max_memory_usage [MiB], time [ms]
