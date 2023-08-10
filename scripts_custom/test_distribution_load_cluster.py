@@ -22,7 +22,8 @@ scene. It imports each scene and then checks the number of
 meshes in the scene. Then we get the names of the objects in the folder
 which has n = 5 meshes, n=20 meshes, n= 20 and n=100 meshes accordingly
 """
-parser = argparse.ArgumentParser(description='take filename so that you are able to distributedly parse the file and dont have to compute all at once, ensure it is in extras directory')
+parser = argparse.ArgumentParser(description='take filename so that you are able to distributedly parse the file \
+                                 and dont have to compute all at once, ensure it is in extras directory')
 parser.add_argument('--filename', type=str, help='input filename')
 parser.add_argument('--output_filename', type=str, help='name of the numpy array in which the counts will be stored')
 
@@ -55,14 +56,6 @@ def count_meshes(objs):
     # reset the scene before every import so that there is no object in the scene
     # this will prevent the ram from being overloaded and lead to a better functioning program
     # still not able to iterate through the whole list. 
-    if os.path.exists('results/counts.json'):
-        with open('results/counts.json', 'r') as f:
-            dict_counts = json.load(f)
-    else:
-        dict_counts = {'test': 0}
-        with open('results/counts.json', 'w') as f:
-            dict_counts = json.dump(dict_counts, f)
-        
     # Maybe create three files and use ntasks=3
     gc.collect() # call garbage collection to reduce memory collection and performance. 
     count = 0
@@ -76,9 +69,7 @@ def count_meshes(objs):
             reset_scene()
             clear_render_cache()               
             bpy.context.scene.use_nodes = False  # Disable compositing nodes 
-            dict_counts.update({object_name : count})
-            with open('results/counts.json', 'w') as f:
-                json.dump(dict_counts, f, indent=4)
+            dict_counts[object_name] = count
             print(object_name, ':', count)            
             return count
     return None
@@ -86,8 +77,9 @@ def count_meshes(objs):
 
 
 if __name__ == '__main__':
-    num_cores = int(os.getenv("SLURM_CPUS_PER_TASK"))
-    objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/*/*'
+    num_cores = int(os.getenv("SLURM_CPUS_PER_TASK")) - 5
+    objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects' \
+                    '/hf-objaverse-v1/glbs/*/*'
     print(os.getcwd())
     object_dir = list(glob.glob(objaverse_dir))
     base_dir = '../objaverse-rendering/'
@@ -96,10 +88,23 @@ if __name__ == '__main__':
     for line in f.readlines():
         line = line.strip('\n')
         list_lvis.append(line)
-        
+    
+    global dict_counts
+    
+    if os.path.exists('results/counts.json'):
+        with open('results/counts.json', 'r') as f:
+            dict_counts = json.load(f)
+    else:
+        dict_counts = {'test': 0}
+        with open('results/counts.json', 'w') as f:
+            dict_counts = json.dump(dict_counts, f, indent=4)
+
     with Pool(num_cores) as p:
         list_counts = p.map(count_meshes, object_dir) # we need only the lvis annotated objects,
         # which is defined in function above
+    
+    with open('results/counts.json', 'w') as f:
+                json.dump(dict_counts, f, indent=4)
 
     list_counts = list(filter(partial(is_not, None), list_counts))
     with open(join('results', args.output_filename)) as f:

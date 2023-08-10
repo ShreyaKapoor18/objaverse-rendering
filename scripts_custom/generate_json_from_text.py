@@ -1,45 +1,40 @@
 import json
 import glob
+import objaverse
 from os.path import join
-import fnmatch
-import os, re, os.path
-import multiprocessing
-from multiprocessing import Pool, freeze_support
-from functools import partial
-import concurrent.futures
+import os
+from multiprocessing import Pool
 import itertools
-import gc
-
-def ends_with_pattern(teststring):
-    matching_strings = [] 
-    if re.search(re.escape(pattern) + "$", teststring):
-        matching_strings.append(teststring)
-        print(teststring)
-    gc.collect()
-    return matching_strings
+import concurrent.futures
 
 
-num_cores = int(os.getenv("SLURM_CPUS_PER_TASK"))# reptetitively giving one object, why???
-print('Number of cores', num_cores) 
+def find(pattern, string):
+    if pattern in string:
+        print(join(objaverse_dir, string))
+        list_paths.append(join(objaverse_dir, name))
+        return join(objaverse_dir, string)
+    return None
 
 
 directory = []
 base_dir = '~/git/objaverse-rendering/'
 
 file = open(join('results', 'test_5.txt'), 'r')
-objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/*'
-object_id_paths = list(glob.glob(join(objaverse_dir, '*')))
-for object_name in file.readlines():
-    object_name = object_name.strip('\n')
-    pattern = object_name + '.glb'
-    with Pool(num_cores) as p:
-        object_path = p.map(ends_with_pattern, object_id_paths)
-        gc.collect()
-        p.close()
-        p.join()
-    directory.append(object_path)
-    
-json_string = json.dumps(directory)
+objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1'
+object_paths = objaverse._load_object_paths()
 
-with open('results/input_models_path.json', 'w') as f:
-    json.dump(json_string, f) 
+global list_paths
+list_paths = []
+
+for name in file.read():
+    name = name.strip('\n') + '.glb'   
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        # start processes
+        futures = [executor.submit(name, string) for string in object_paths]
+        # wait for all to finish
+        concurrent.futures.wait(futures)
+    
+with open(join('input_models_path_5.txt'), 'w') as f:
+    for line in list_paths:
+        f.write(line)  
+        
