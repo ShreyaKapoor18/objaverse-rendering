@@ -13,4 +13,4 @@ unset SLURM_EXPORT_ENV
 module load git
 conda init
 conda activate pyobjaverse
-srun blender -b -P ~/git/objaverse-rendering/scripts_custom/generate_json_from_text.py
+srun python ~/git/objaverse-rendering/scripts_custom/generate_json_from_text.py

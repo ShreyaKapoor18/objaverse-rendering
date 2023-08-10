@@ -10,7 +10,7 @@ import concurrent.futures
 import itertools
 import gc
 
-def ends_with_pattern(teststring, pattern):
+def ends_with_pattern(teststring):
     matching_strings = [] 
     if re.search(re.escape(pattern) + "$", teststring):
         matching_strings.append(teststring)
@@ -33,7 +33,7 @@ for object_name in file.readlines():
     object_name = object_name.strip('\n')
     pattern = object_name + '.glb'
     with Pool(num_cores) as p:
-        object_path = p.starmap(ends_with_pattern, zip(object_id_paths, itertools.repeat(pattern)))
+        object_path = p.map(ends_with_pattern, object_id_paths)
         gc.collect()
         p.close()
         p.join()
@@ -41,5 +41,5 @@ for object_name in file.readlines():
     
 json_string = json.dumps(directory)
 
-with open('input_models_path.json', 'w') as f:
+with open('results/input_models_path.json', 'w') as f:
     json.dump(json_string, f) 

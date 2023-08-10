@@ -12,6 +12,8 @@ import argparse
 import sys
 import bpy
 import pickle
+import json
+import subprocess
 #%
 
 """
@@ -31,7 +33,6 @@ args = parser.parse_args(argv)
 def clear_render_cache():
     print('clear render cache is actually being executed')
     bpy.context.scene.use_nodes = False  # Disable compositing nodes
-    bpy.ops.wm.memorystate_statistics_reset()
 
 def reset_scene() -> None:
     """Resets the scene to a clean state."""
@@ -54,8 +55,14 @@ def count_meshes(objs):
     # reset the scene before every import so that there is no object in the scene
     # this will prevent the ram from being overloaded and lead to a better functioning program
     # still not able to iterate through the whole list. 
-    with open('results/counts.json') as f:
-        dict_counts = json.load(f)
+    if os.path.exists('results/counts.json'):
+        with open('results/counts.json', 'r') as f:
+            dict_counts = json.load(f)
+    else:
+        dict_counts = {'test': 0}
+        with open('results/counts.json', 'w') as f:
+            dict_counts = json.dump(dict_counts, f)
+        
     # Maybe create three files and use ntasks=3
     gc.collect() # call garbage collection to reduce memory collection and performance. 
     count = 0
@@ -67,35 +74,19 @@ def count_meshes(objs):
                 if isinstance(obj.data, (bpy.types.Mesh)):
                     count+=1
             reset_scene()
-            clear_render_cache()
-            
-            for obj in bpy.data.objects:
-                if obj.type not in {"CAMERA", "LIGHT"}:
-                    bpy.data.objects.remove(obj, do_unlink=True)
-            # delete all the materials
-            for material in bpy.data.materials:
-                bpy.data.materials.remove(material, do_unlink=True)
-            # delete all the textures
-            for texture in bpy.data.textures:
-                bpy.data.textures.remove(texture, do_unlink=True)
-            # delete all the images
-            for image in bpy.data.images:
-                bpy.data.images.remove(image, do_unlink=True)
-                
+            clear_render_cache()               
             bpy.context.scene.use_nodes = False  # Disable compositing nodes 
-            dict_counts.append({objs : count_meshes})
-            with open('results/counts.json') as f:
-                json.dump(dict_counts)
-            print(objs, ':', count)            
+            dict_counts.update({object_name : count})
+            with open('results/counts.json', 'w') as f:
+                json.dump(dict_counts, f, indent=4)
+            print(object_name, ':', count)            
             return count
     return None
 
 
 
 if __name__ == '__main__':
-    num_cores = int(os.getenv("SLURM_CPUS_PER_TASK"))# reptetitively giving one object, why???
-    
-
+    num_cores = int(os.getenv("SLURM_CPUS_PER_TASK"))
     objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/*/*'
     print(os.getcwd())
     object_dir = list(glob.glob(objaverse_dir))
@@ -106,13 +97,12 @@ if __name__ == '__main__':
         line = line.strip('\n')
         list_lvis.append(line)
         
-    
-    print(list_lvis)
     with Pool(num_cores) as p:
-        list_counts = p.map(count_meshes, object_dir) # we need only the lvis annotated objects, which is defined in function above
+        list_counts = p.map(count_meshes, object_dir) # we need only the lvis annotated objects,
+        # which is defined in function above
 
     list_counts = list(filter(partial(is_not, None), list_counts))
-    with open('results', args.output_filename, 'wb') as f:
-        a = np.save(f, list_counts)
+    with open(join('results', args.output_filename)) as f:
+        np.save(f, list_counts)
 
 
