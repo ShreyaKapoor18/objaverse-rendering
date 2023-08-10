@@ -32,9 +32,10 @@ print(num_cores)
 for name in file.read():
     name_2 = name.strip('\n') + '.glb'   
     p = Pool(num_cores)
-    list_paths = p.map(find, itertools.repeat(name_2), object_paths)
-    p.join()
+    list_paths_ex = p.map(find, itertools.repeat(name_2), object_paths)
+    list_paths.extend(list_paths_ex)
     p.close()
+    p.join()
     gc.collect()
     
 with open(join('input_models_path_5.txt'), 'w') as f:
