@@ -1,6 +1,6 @@
-### Starting TaskPrologue of job 804037 on a0228 at Wed Aug  9 22:22:07 CEST 2023
-Running on cores 32-47 with governor ondemand
-Wed Aug  9 22:22:07 2023       
+### Starting TaskPrologue of job 805008 on a0128 at Thu Aug 10 14:01:13 CEST 2023
+Running on cores 0-14 with governor ondemand
+Thu Aug 10 14:01:13 2023       
 +---------------------------------------------------------------------------------------+
 | NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.2     |
 |-----------------------------------------+----------------------+----------------------+
@@ -8,8 +8,8 @@ Wed Aug  9 22:22:07 2023
 | Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
 |                                         |                      |               MIG M. |
 |=========================================+======================+======================|
-|   0  NVIDIA A40                     On  | 00000000:41:00.0 Off |                  Off |
-|  0%   33C    P8              12W / 300W |      4MiB / 49140MiB |      0%      Default |
+|   0  NVIDIA A40                     On  | 00000000:01:00.0 Off |                  Off |
+|  0%   33C    P8              21W / 300W |      4MiB / 49140MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
                                                                                          
@@ -35,27 +35,35 @@ no change     /apps/python/3.9-anaconda/lib/python3.9/site-packages/xontrib/cond
 no change     /apps/python/3.9-anaconda/etc/profile.d/conda.csh
 no change     /home/hpc/b112dc/b112dc10/.bashrc
 No action taken.
-Number of cores 16
-srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
-slurmstepd: error: *** JOB 804037 ON a0228 CANCELLED AT 2023-08-09T22:26:47 ***
-slurmstepd: error: *** STEP 804037.0 ON a0228 CANCELLED AT 2023-08-09T22:26:47 ***
+Traceback (most recent call last):
+  File "/home/hpc/b112dc/b112dc10/git/objaverse-rendering/scripts_custom/generate_json_from_text.py", line 33, in <module>
+    list_paths = p.map(find, name, object_paths)
+  File "/home/atuin/b112dc/b112dc10/software/privat/conda/envs/pyobjaverse/lib/python3.7/multiprocessing/pool.py", line 268, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+  File "/home/atuin/b112dc/b112dc10/software/privat/conda/envs/pyobjaverse/lib/python3.7/multiprocessing/pool.py", line 394, in _map_async
+    error_callback=error_callback)
+  File "/home/atuin/b112dc/b112dc10/software/privat/conda/envs/pyobjaverse/lib/python3.7/multiprocessing/pool.py", line 682, in __init__
+    if chunksize <= 0:
+TypeError: '<=' not supported between instances of 'dict' and 'int'
+srun: error: a0128: task 0: Exited with exit code 1
+srun: launch/slurm: _step_signal: Terminating StepId=805008.0
 === JOB_STATISTICS ===
-=== current date     : Wed Aug  9 22:26:51 CEST 2023
-= Job-ID             : 804037 on alex
+=== current date     : Thu Aug 10 14:03:57 CEST 2023
+= Job-ID             : 805008 on alex
 = Job-Name           : generate_json.slurm
 = Job-Command        : /home/hpc/b112dc/b112dc10/git/objaverse-rendering/slurm_files/generate_json.slurm
 = Initial workdir    : /home/hpc/b112dc/b112dc10/git/objaverse-rendering
 = Queue/Partition    : a40
 = Slurm account      : b112dc with QOS=normal
-= Requested resources: cpu=16,mem=60000M,node=1,billing=16,gres/gpu=1,gres/gpu:a40=1 for 08:00:00
-= Elapsed runtime    : 00:04:43
-= Total RAM usage    : 0.3 GiB of assigned 58 GiB (0.5%)   
-= Node list          : a0228
-= Subm/Elig/Start/End: 2023-08-09T22:22:04 / 2023-08-09T22:22:04 / 2023-08-09T22:22:04 / 2023-08-09T22:26:47
+= Requested resources: cpu=15,mem=56250M,node=1,billing=15,gres/gpu=1,gres/gpu:a40=1 for 01:00:00
+= Elapsed runtime    : 00:02:51
+= Total RAM usage    : 0.3 GiB of assigned 54 GiB (0.6%)   
+= Node list          : a0128
+= Subm/Elig/Start/End: 2023-08-10T14:01:06 / 2023-08-10T14:01:06 / 2023-08-10T14:01:06 / 2023-08-10T14:03:57
 ======================
 === Quota infos ======
     Path              Used     SoftQ    HardQ    Gracetime  Filec    FileQ    FiHaQ    FileGrace    
-    /home/hpc           46.8G    52.4G   104.9G        N/A     312K     500K   1,000K        N/A    
+    /home/hpc           46.9G    52.4G   104.9G        N/A     313K     500K   1,000K        N/A    
     /home/vault          0.0K   524.3G  1048.6G        N/A       1      200K     400K        N/A    
     janus.rrze.uni-erlangen.de:/zfspool/viphome/iwi9-datasets   163.6G     0.0K     0.0K        N/A     800K                          N/A    
 ======================

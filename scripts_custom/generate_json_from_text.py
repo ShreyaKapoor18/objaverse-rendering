@@ -21,20 +21,23 @@ base_dir = '~/git/objaverse-rendering/'
 
 file = open(join('results', 'test_5.txt'), 'r')
 objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1'
-object_paths = objaverse._load_object_paths()
+object_paths = list(objaverse._load_object_paths().values())
+print(object_paths[:10])
 
 global list_paths
 list_paths = []
 
+num_cores = int(os.getenv("SLURM_CPUS_PER_TASK")) - 1
 for name in file.read():
     name = name.strip('\n') + '.glb'   
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        # start processes
-        futures = [executor.submit(name, string) for string in object_paths]
-        # wait for all to finish
-        concurrent.futures.wait(futures)
+    p = Pool(num_cores)
+    list_paths = p.map(find, itertools.repeat(name), object_paths)
+    p.close()
+    p.join()
+    gc.collect()
     
 with open(join('input_models_path_5.txt'), 'w') as f:
     for line in list_paths:
         f.write(line)  
+        
         

@@ -1,6 +1,6 @@
-### Starting TaskPrologue of job 804854 on a0327 at Thu Aug 10 11:06:29 CEST 2023
-Running on cores 16-30 with governor ondemand
-Thu Aug 10 11:06:29 2023       
+### Starting TaskPrologue of job 805024 on a0327 at Thu Aug 10 14:07:39 CEST 2023
+Running on cores 96-110 with governor ondemand
+Thu Aug 10 14:07:39 2023       
 +---------------------------------------------------------------------------------------+
 | NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.2     |
 |-----------------------------------------+----------------------+----------------------+
@@ -8,8 +8,8 @@ Thu Aug 10 11:06:29 2023
 | Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
 |                                         |                      |               MIG M. |
 |=========================================+======================+======================|
-|   0  NVIDIA A40                     On  | 00000000:25:00.0 Off |                  Off |
-|  0%   32C    P8              22W / 300W |      4MiB / 49140MiB |      0%      Default |
+|   0  NVIDIA A40                     On  | 00000000:C1:00.0 Off |                  Off |
+|  0%   32C    P8              21W / 300W |      4MiB / 49140MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
                                                                                          
@@ -35,41 +35,32 @@ no change     /apps/python/3.9-anaconda/lib/python3.9/site-packages/xontrib/cond
 no change     /apps/python/3.9-anaconda/etc/profile.d/conda.csh
 no change     /home/hpc/b112dc/b112dc10/.bashrc
 No action taken.
-multiprocessing.pool.RemoteTraceback: 
-"""
+['glbs/000-023/8476c4170df24cf5bbe6967222d1a42d.glb', 'glbs/000-023/8ff7f1f2465347cd8b80c9b206c2781e.glb', 'glbs/000-023/c786b97d08b94d02a1fa3b87d2e86cf1.glb', 'glbs/000-023/139331da744542009f146018fd0e05f4.glb', 'glbs/000-023/be2c02614d774f9da672dfdc44015219.glb', 'glbs/000-023/efd35e7d21ac482688c294e3b6c9f74e.glb', 'glbs/000-023/21d5f90dbc9f4f229b0faa7b56b67f3e.glb', 'glbs/000-023/dcd33159a0864de388de3a08f55e604a.glb', 'glbs/000-023/a7ad32b5d4d84ee5a40ebbd86da4dbe4.glb', 'glbs/000-023/7d6a14874eed48c2b720f0d1adfe6dd9.glb']
 Traceback (most recent call last):
-  File "/home/atuin/b112dc/b112dc10/software/privat/conda/envs/pyobjaverse/lib/python3.7/multiprocessing/pool.py", line 121, in worker
-    result = (True, func(*args, **kwds))
-  File "/home/atuin/b112dc/b112dc10/software/privat/conda/envs/pyobjaverse/lib/python3.7/multiprocessing/pool.py", line 44, in mapstar
-    return list(map(*args))
-TypeError: find() missing 1 required positional argument: 'string'
-"""
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/home/hpc/b112dc/b112dc10/git/objaverse-rendering/scripts_custom/generate_json_from_text.py", line 29, in <module>
-    list_base_dir = p.map(find, zip(itertools.repeat(name), object_paths))
+  File "/home/hpc/b112dc/b112dc10/git/objaverse-rendering/scripts_custom/generate_json_from_text.py", line 34, in <module>
+    list_paths = p.map(find, name, object_paths)
   File "/home/atuin/b112dc/b112dc10/software/privat/conda/envs/pyobjaverse/lib/python3.7/multiprocessing/pool.py", line 268, in map
     return self._map_async(func, iterable, mapstar, chunksize).get()
-  File "/home/atuin/b112dc/b112dc10/software/privat/conda/envs/pyobjaverse/lib/python3.7/multiprocessing/pool.py", line 657, in get
-    raise self._value
-TypeError: find() missing 1 required positional argument: 'string'
+  File "/home/atuin/b112dc/b112dc10/software/privat/conda/envs/pyobjaverse/lib/python3.7/multiprocessing/pool.py", line 394, in _map_async
+    error_callback=error_callback)
+  File "/home/atuin/b112dc/b112dc10/software/privat/conda/envs/pyobjaverse/lib/python3.7/multiprocessing/pool.py", line 682, in __init__
+    if chunksize <= 0:
+TypeError: '<=' not supported between instances of 'list' and 'int'
 srun: error: a0327: task 0: Exited with exit code 1
-srun: launch/slurm: _step_signal: Terminating StepId=804854.0
+srun: launch/slurm: _step_signal: Terminating StepId=805024.0
 === JOB_STATISTICS ===
-=== current date     : Thu Aug 10 11:06:32 CEST 2023
-= Job-ID             : 804854 on alex
+=== current date     : Thu Aug 10 14:09:50 CEST 2023
+= Job-ID             : 805024 on alex
 = Job-Name           : generate_json.slurm
 = Job-Command        : /home/hpc/b112dc/b112dc10/git/objaverse-rendering/slurm_files/generate_json.slurm
 = Initial workdir    : /home/hpc/b112dc/b112dc10/git/objaverse-rendering
 = Queue/Partition    : a40
 = Slurm account      : b112dc with QOS=normal
 = Requested resources: cpu=15,mem=56250M,node=1,billing=15,gres/gpu=1,gres/gpu:a40=1 for 01:00:00
-= Elapsed runtime    : 00:00:07
+= Elapsed runtime    : 00:02:24
 = Total RAM usage    : 0.0 GiB of assigned 54 GiB (0.0%)   
 = Node list          : a0327
-= Subm/Elig/Start/End: 2023-08-10T11:06:25 / 2023-08-10T11:06:25 / 2023-08-10T11:06:25 / 2023-08-10T11:06:32
+= Subm/Elig/Start/End: 2023-08-10T14:07:25 / 2023-08-10T14:07:25 / 2023-08-10T14:07:26 / 2023-08-10T14:09:50
 ======================
 === Quota infos ======
     Path              Used     SoftQ    HardQ    Gracetime  Filec    FileQ    FiHaQ    FileGrace    
