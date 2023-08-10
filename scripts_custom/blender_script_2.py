@@ -40,7 +40,7 @@ parser.add_argument("--output_dir", type=str, default="./views")
 parser.add_argument(
     "--engine", type=str, default="BLENDER_EEVEE", choices=["CYCLES", "BLENDER_EEVEE"]
 )
-parser.add_argument("--textures", type=bool, default=False)
+parser.add_argument("--textures", action='store_true')
 parser.add_argument("--num_images", type=int, default=12)
 parser.add_argument("--camera_dist", type=float, default=1.2)
 
@@ -243,15 +243,17 @@ def save_images(object_file: str) -> None:
     empty = bpy.data.objects.new("Empty", None)
     scene.collection.objects.link(empty)
     cam_constraint.target = empty
-    #angles = np.random.uniform(0,360, size=10)
+    angles = np.random.uniform(0,360, size=10)
     
     for i in range(args.num_images):
         # set the camera position
-        
-        change_textures_in_scene(list_textures_dir)
+        print('Textures set to', args.textures)
+        if args.textures == True:
+            change_textures_in_scene(list_textures_dir) #only 
+            # if it set to false
         theta = (i / args.num_images) * math.pi * 2
-        #j = np.random.randint(0,len(angles), size=1)[0]
-        phi = math.radians(60)
+        j = np.random.randint(0,len(angles), size=1)[0]
+        phi = angles[j]
         point = (
             args.camera_dist * math.sin(phi) * math.cos(theta),
             args.camera_dist * math.sin(phi) * math.sin(theta),

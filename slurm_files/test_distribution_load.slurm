@@ -2,7 +2,7 @@
 #
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
-#SBATCH --time=02:00:00
+#SBATCH --time=10:00:00
 #SBATCH --gres=gpu:a40:1
 #SBATCH --partition=a40
 #SBATCH -e ./slurm_files/errors/test_distribution_load_slurm.%j.err  # Specify the error file
@@ -18,5 +18,5 @@ conda activate pyobjaverse
 srun ~/blender/blender-3.3.1-linux-x64/blender -b -P ~/git/objaverse-rendering/scripts_custom/test_distribution_load_cluster.py --\
     --filename list_lvis.txt --output_filename ~/git/objaverse-rendering/count_lvis.npy
 
- # in order to keep all the background processes in check!
+# in order to keep all the background processes in check!
 # these processes in check are all correct
