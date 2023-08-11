@@ -42,6 +42,10 @@ def reset_scene() -> None:
     for obj in bpy.data.objects:
         if obj.type not in {"CAMERA", "LIGHT"}:
             bpy.data.objects.remove(obj, do_unlink=True)
+            
+    for obj in bpy.context.scene.objects.values():
+        if isinstance(obj.data, (bpy.types.Mesh)):
+           bpy.data.objects.remove(obj, do_unlink=True)
     # delete all the materials
     for material in bpy.data.materials:
         bpy.data.materials.remove(material, do_unlink=True)
@@ -51,13 +55,13 @@ def reset_scene() -> None:
     # delete all the images
     for image in bpy.data.images:
         bpy.data.images.remove(image, do_unlink=True)
+    gc.collect()
 
 def count_meshes(objs):
     # reset the scene before every import so that there is no object in the scene
     # this will prevent the ram from being overloaded and lead to a better functioning program
     # still not able to iterate through the whole list. 
     # Maybe create three files and use ntasks=3
-    gc.collect() # call garbage collection to reduce memory collection and performance. 
     count = 0
     object_name = objs.split('/glbs')[1].split('/')[-1][:-4]
     if object_name in list_lvis and object_name not in dict_counts.keys():
@@ -70,7 +74,8 @@ def count_meshes(objs):
             clear_render_cache()               
             bpy.context.scene.use_nodes = False  # Disable compositing nodes 
             dict_counts[object_name] = count
-            print(object_name, ':', count)            
+            print(object_name, ':', count)   
+            gc.collect()         
             return count
     return None
 

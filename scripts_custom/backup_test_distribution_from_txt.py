@@ -1,7 +1,7 @@
 import json
 
 filename = f'/home/hpc/b112dc/b112dc10/git/objaverse-rendering/slurm_files' \
-            '/output/test_distribution_load_slurm.805160.out'
+            '/output/test_distribution_load_slurm.805666.out'
 f = open(filename, 'r')
 
 dict_counts_new = {}

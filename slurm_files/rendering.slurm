@@ -19,12 +19,10 @@ export CYCLES_OPENCL_TEST=NONE
 for item in $filename;
 do  
     echo $item
-    ~/blender/blender-3.3.1-linux-x64/blender -b -P scripts_custom/blender_script_2.py -- \
+    ~/blender/blender-3.3.1-linux-x64/blender -b -P scripts/blender_script.py -- \
         --object_path $item \
-        --output_dir /home/janus/iwi9-datasets/objaverse-rendering/no_textures_5 \
+        --output_dir /home/janus/iwi9-datasets/objaverse-rendering/original_renders_5 \
         --engine CYCLES \
         --num_images 12 \
-        --camera_dist 2 \
-        --textures False
+        --camera_dist 2 
 done
-
