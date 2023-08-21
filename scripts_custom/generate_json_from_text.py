@@ -1,37 +1,34 @@
 import json
-import glob
 import objaverse
 from os.path import join
-import os
 from multiprocessing import Pool
-import itertools
-import concurrent.futures
-import re
+import os
+# ... (other imports and variable definitions)
 
+def process_object(key):
+    objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1'
+    if dict_json[key] <= 100:
+        name = key + '.glb'
+        res = [join(objaverse_dir, x) for x in object_paths if x.split('/')[-1] == name]
+        return res
+    return []
 
-directory = []
-base_dir = '~/git/objaverse-rendering/'
+if __name__ == '__main__':
+    
+    num_cores = int(os.getenv("SLURM_CPUS_PER_TASK")) - 2
 
-file = open(join('results', 'test_5.txt'), 'r')
-objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1'
-object_paths = list(objaverse._load_object_paths().values())
+    with open('results/counts.json') as f:
+        dict_json = json.load(f)
 
-global list_paths
-list_paths = []
+    object_paths = list(objaverse._load_object_paths().values())
 
-num_cores = 2
+    list_paths = []
 
-for name in file.readlines():
-    print(name)
-    name_2 = name.strip('\n') + '.glb'  
-    print(name_2)
-    res = [join(objaverse_dir, x) for x in object_paths if x.split('/')[-1]==name_2]
-    print(res)
-    list_paths.extend(res)
+    with Pool(num_cores) as p:
+        results = p.map(process_object, dict_json.keys())
+        for res in results:
+            list_paths.extend(res)
 
-
-with open(join('input_models_path_5.txt'), 'w') as f:
-    for line in list_paths:
-        f.write(line + '\n')  
-        
-        
+    with open(join('input_models_path_lt_100.txt'), 'w') as f:
+        for line in list_paths:
+            f.write(line + '\n')

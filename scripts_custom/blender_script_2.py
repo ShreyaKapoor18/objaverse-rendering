@@ -52,10 +52,11 @@ scene = context.scene
 render = scene.render
 
 render.engine = args.engine
-render.image_settings.file_format = "PNG"
-render.image_settings.color_mode = "RGBA" # hence there are 4 channels, I could just put them as 3 channels then it could be compatible with RESNET
-render.resolution_x = 512
-render.resolution_y = 512
+render.image_settings.file_format = "JPEG"
+render.image_settings.color_mode = "RGB" # hence there are 4 channels, I could just put them as 3 channels then it could be compatible with RESNET
+render.resolution_x = 256
+render.resolution_y = 256
+render.image_settings.compression = 15
 render.resolution_percentage = 100
 
 scene.cycles.device = "GPU"

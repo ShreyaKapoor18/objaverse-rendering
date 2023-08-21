@@ -11,7 +11,7 @@
 unset SLURM_EXPORT_ENV
 conda init
 conda activate pyobjaverse
-filename=$(cat ~/git/objaverse-rendering/input_models_path_5.txt)
+filename=$(cat ~/git/objaverse-rendering/input_models_path_lt_100.txt)
 export SSL_CERT_DIR=/etc/ssl/certs
 export SSL_CERT_FILE=/etc/ssl/ca-bundle.crt
 module load cuda/12.1.1
@@ -19,10 +19,10 @@ export CYCLES_OPENCL_TEST=NONE
 for item in $filename;
 do  
     echo $item
-    ~/blender/blender-3.3.1-linux-x64/blender -b -P scripts/blender_script.py -- \
+    ~/blender/blender-3.3.1-linux-x64/blender -b -P scripts_custom/blender_script_2.py -- \
         --object_path $item \
-        --output_dir /home/janus/iwi9-datasets/objaverse-rendering/original_renders_5 \
+        --output_dir /home/hpc/b112dc/b112dc10/objaverse-rendering/trial_5 # Rename to meshes_lt_100_original since all the meshes lt_100 are getting stored here
         --engine CYCLES \
         --num_images 12 \
-        --camera_dist 2 
+        --camera_dist 2
 done
