@@ -170,3 +170,4 @@ cython_debug/
 LICENSE
 
 slurm_files/output/
+slurm_files/errors/

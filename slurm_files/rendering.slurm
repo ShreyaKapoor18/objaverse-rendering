@@ -21,8 +21,9 @@ do
     echo $item
     ~/blender/blender-3.3.1-linux-x64/blender -b -P scripts_custom/blender_script_2.py -- \
         --object_path $item \
-        --output_dir /home/hpc/b112dc/b112dc10/objaverse-rendering/trial_5 # Rename to meshes_lt_100_original since all the meshes lt_100 are getting stored here
+        --output_dir /home/hpc/b112dc/b112dc10/objaverse-rendering/meshes_lt_100_textures \
         --engine CYCLES \
         --num_images 12 \
-        --camera_dist 2
+        --camera_dist 2 \
+        --textures
 done
