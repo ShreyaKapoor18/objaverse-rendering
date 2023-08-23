@@ -295,7 +295,9 @@ if __name__ == "__main__":
         
         object_uid = os.path.basename(local_path).split(".")[0]
         path = join(args.output_dir, object_uid)
-        if  not os.path.exists(path):
+        if os.path.exists(path):
+            print('rendering done already')
+        if not os.path.exists(path):
             save_images(local_path)
         end_i = time.time()
         print("Finished", local_path, "in", end_i - start_i, "seconds")

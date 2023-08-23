@@ -40,14 +40,14 @@ module load cuda/12.1.1
 chmod +x ~/git/objaverse-rendering/scripts_custom/distributed2.py
 
 # Modify the output directory path
-which_dir="${output_dir%/*}"
+which_dir=textures
 output_filename="/home/hpc/b112dc/b112dc10/git/objaverse-rendering/jsons/input_models_path_remaining_${which_dir}.json"
 
 # Run the Python script to write new files and check paths
-python scripts_custom/write_new_files_check_paths.py --output_dir "$output_dir" --input_file "$filename_original" --num_images "$num_images"
+python scripts_custom/write_new_file_check_paths.py --output_dir "$output_dir" --input_file "$filename_original" --num_images "$num_images" --output_file $output_filename
 
 # Use srun to run the distributed Python script
 srun python /home/hpc/b112dc/b112dc10/git/objaverse-rendering/scripts_custom/distributed2.py \
-     --num_gpus 8 --input_models_path "$filename_original" \
+     --num_gpus 8 --input_models_path "$output_filename" \
      --workers_per_gpu 14 --script "$script" --camera_dist "$camera_dist" --num_images "$num_images"
 
