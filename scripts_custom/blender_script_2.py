@@ -24,7 +24,7 @@ import sys
 import time
 import urllib.request
 from typing import Tuple
-
+from os.path import join
 import bpy
 from mathutils import Vector
 import glob
@@ -233,10 +233,11 @@ def save_images(object_file: str) -> None:
     os.makedirs(args.output_dir, exist_ok=True)
     reset_scene()
     # load the object
-    load_object(object_file)
     object_uid = os.path.basename(object_file).split(".")[0]
+    load_object(object_file)
     normalize_scene()
     #add_lighting()
+    # if this uid has not already been rendered with 12 images
     add_environment_map(list_env_maps)
     cam, cam_constraint = setup_camera()
 
@@ -248,7 +249,6 @@ def save_images(object_file: str) -> None:
     
     for i in range(args.num_images):
         # set the camera position
-        print('Textures set to', args.textures)
         if args.textures == True:
             change_textures_in_scene(list_textures_dir) #only 
             # if it set to false
@@ -291,7 +291,12 @@ if __name__ == "__main__":
             local_path = download_object(args.object_path)
         else:
             local_path = args.object_path
-        save_images(local_path)
+            
+        
+        object_uid = os.path.basename(local_path).split(".")[0]
+        path = join(args.output_dir, object_uid)
+        if  not os.path.exists(path):
+            save_images(local_path)
         end_i = time.time()
         print("Finished", local_path, "in", end_i - start_i, "seconds")
         # delete the object if it was downloaded

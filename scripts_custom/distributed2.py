@@ -10,7 +10,7 @@ from typing import Optional
 import boto3
 import tyro
 import wandb
-
+from os.path import join
 
 @dataclass
 class Args:
@@ -28,6 +28,24 @@ class Args:
 
     num_gpus: int = -1
     """number of gpus to use. -1 means all available gpus"""
+    
+    output_dir: str
+    """ The output directory to which we wanna write the renderings"""
+    
+    engine : str
+    """ Which engine to use"""
+    
+    num_images: str
+    """ Number of images"""
+    
+    camera_dist: str
+    """ Camera distance for the renderer"""
+    
+    textures: bool
+    """ If the renderings shall include textures or not"""
+    
+    script: str
+    """ Which script to use"""
 
 
 def worker(
@@ -44,9 +62,14 @@ def worker(
         # Perform some operation on the item
         print(item, gpu)
         command = (
-            f"export DISPLAY=:0.{gpu} &&"
-            f" blender -b -P scripts_custom/blender_script_2.py --"
-            f" --object_path {item}"        )
+            f"~/blender/blender-3.3.1-linux-x64/blender -b -P {args.script} --"
+            f" --object_path {item}"
+            f" --output_dir  {args.output_dir}" 
+            f" --engine {args.engine}"
+            f" --num_images {args.num_images}"
+            f" --camera_dist {args.camera_dist}")
+        if args.texture:
+            command += f"--textures"
         subprocess.run(command, shell=True)
         # quit opening blender for each turn
         # after the object has been rendered then delete it, since we want to save the sample on the computer
@@ -71,6 +94,8 @@ if __name__ == "__main__":
 
     # Start worker processes on each of the GPUs
     for gpu_i in range(args.num_gpus):
+        # HOw does it find the gpu
+        print('Entering the gpus loop')
         for worker_i in range(args.workers_per_gpu):
             worker_i = gpu_i * args.workers_per_gpu + worker_i
             process = multiprocessing.Process(

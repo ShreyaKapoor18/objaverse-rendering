@@ -1,5 +1,0 @@
-/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/000-005/b8e0e3185e5a4bfdb53439c3eb686fad.glb
-/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/000-101/8d00e925ebd24a9092b69d366ae024b6.glb
-/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/000-101/15dda994c29a4a2780840ef7c0242d7c.glb
-/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/000-075/0c82e90457534a99b9221633c8ed10b3.glb
-/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/000-136/f1d1eb1f7c934a1b9a9df628dfee003c.glb
