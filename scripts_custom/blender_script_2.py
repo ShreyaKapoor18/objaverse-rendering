@@ -240,26 +240,29 @@ def save_images(object_file: str) -> None:
     cam, cam_constraint = setup_camera()
 
     # create an empty object to track
-    empty = bpy.data.objects.new("Empty", None)
-    scene.collection.objects.link(empty)
-    cam_constraint.target = empty
-    #angles = np.random.uniform(0,360, size=10)
-    
-    for i in range(args.num_images):
+    start = 0
+    stop = 1
+    step = 0.05
+    combinations = list(range(int(start / step), int(stop / step) + 1))
+    bpy.ops.object.camera_add(enter_editmode=False, location=new_camera_pos)
+    for iterns in range(args.num_images):
         # set the camera position
-        
+    
         change_textures_in_scene(list_textures_dir)
-        theta = (i / args.num_images) * math.pi * 2
-        #j = np.random.randint(0,len(angles), size=1)[0]
-        phi = math.radians(60)
-        point = (
-            args.camera_dist * math.sin(phi) * math.cos(theta),
-            args.camera_dist * math.sin(phi) * math.sin(theta),
-            args.camera_dist * math.cos(phi),
-        )
-        cam.location = point
+        empty = bpy.data.objects.new("Empty", None)
+        scene.collection.objects.link(empty)
+        cam_constraint.target = empty
+        #angles = np.random.uniform(0,360, size=10)
+        i = random.choice(combinations)
+        z = i *cam.location[2]
+        radius = Vector((cam.location[0], cam.location[1], 0)).length
+        angle = 2 * math.pi * random.random()
+
+        # Randomly place the camera on a circle around the object at the same height as the main camera
+        new_camera_pos = Vector((radius * math.cos(angle), radius * math.sin(angle), z))
+  
         # render the image
-        render_path = os.path.join(args.output_dir, object_uid, f"{i:03d}.png")
+        render_path = os.path.join(args.output_dir, object_uid, f"{iterns:03d}.png")
         scene.render.filepath = render_path
         bpy.ops.render.render(write_still=True)
 
