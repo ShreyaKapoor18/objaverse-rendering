@@ -11,5 +11,5 @@ do
         --engine CYCLES \
         --num_images 12 \
         --camera_dist 1.2 \
-        --textures True
+        --textures False
 done

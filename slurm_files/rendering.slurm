@@ -1,9 +1,9 @@
 #!/bin/bash -l
 #
-#SBATCH --ntasks=10
-#SBATCH --cpus-per-task=3
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=5
 #SBATCH --time=08:00:00
-#SBATCH --gres=gpu:a40:5
+#SBATCH --gres=gpu:a40:2
 #SBATCH --partition=a40
 #SBATCH --export=NONE
 #SBATCH -o ./slurm_files/output/rendering.%j.out

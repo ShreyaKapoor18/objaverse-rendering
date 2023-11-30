@@ -23,10 +23,10 @@ def split(a, n):
     return (a[i*k+min(i, m):(i+1)*k+min(i+1, m)] for i in range(n))
 
 splitted_list = split(list_lvis, 5)
+splitted_list = list_lvis
 base_dir = '../objaverse-rendering/'
 
-for i, spl in zip(range(5), splitted_list):
-    with  open(join(base_dir,f'extras/list_lvis_{i}.txt'), 'w') as f:
-        for line in spl:
-            f.write(line+'\n')
 
+with open(join(base_dir,f'extras/list_lvis.txt'), 'w') as f:
+        for line in splitted_list:
+            f.write(line+'\n')

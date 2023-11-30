@@ -1,45 +1,34 @@
 import json
-import glob
+import objaverse
 from os.path import join
-import fnmatch
-import os, re, os.path
-import multiprocessing
-from multiprocessing import Pool, freeze_support
-from functools import partial
-import concurrent.futures
-import itertools
-import gc
+from multiprocessing import Pool
+import os
+# ... (other imports and variable definitions)
 
-def ends_with_pattern(teststring, pattern):
-    matching_strings = [] 
-    if re.search(re.escape(pattern) + "$", teststring):
-        matching_strings.append(teststring)
-        print(teststring)
-    gc.collect()
-    return matching_strings
+def process_object(key):
+    objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1'
+    if dict_json[key] <= 60:
+        name = key + '.glb'
+        res = [join(objaverse_dir, x) for x in object_paths if x.split('/')[-1] == name]
+        return res
+    return []
 
-
-num_cores = int(os.getenv("SLURM_CPUS_PER_TASK"))# reptetitively giving one object, why???
-print('Number of cores', num_cores) 
-
-
-directory = []
-base_dir = '~/git/objaverse-rendering/'
-
-file = open(join('results', 'test_5.txt'), 'r')
-objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects/hf-objaverse-v1/glbs/*'
-object_id_paths = list(glob.glob(join(objaverse_dir, '*')))
-for object_name in file.readlines():
-    object_name = object_name.strip('\n')
-    pattern = object_name + '.glb'
-    with Pool(num_cores) as p:
-        object_path = p.starmap(ends_with_pattern, zip(object_id_paths, itertools.repeat(pattern)))
-        gc.collect()
-        p.close()
-        p.join()
-    directory.append(object_path)
+if __name__ == '__main__':
     
-json_string = json.dumps(directory)
+    num_cores = int(os.getenv("SLURM_CPUS_PER_TASK")) - 2
 
-with open('input_models_path.json', 'w') as f:
-    json.dump(json_string, f) 
+    with open('results/counts.json') as f:
+        dict_json = json.load(f)
+
+    object_paths = list(objaverse._load_object_paths().values())
+
+    list_paths = []
+
+    with Pool(num_cores) as p:
+        results = p.map(process_object, dict_json.keys())
+        for res in results:
+            list_paths.extend(res)
+
+    with open(join('input_models_path_lt_100.txt'), 'w') as f:
+        for line in list_paths:
+            f.write(line + '\n')
