@@ -119,38 +119,39 @@ def add_environment_map(list_env_maps, i):
     envNode.image = bpy.data.images.load(image_path) 
 
 def add_background_image(list_env_maps, i):
+    print('Add background image')
+    print(i)
+    print(len(list_env_maps))
+    image_path = list_env_maps[i]
+    #print(image_path)
     c = bpy.context
     world = c.scene.world
     world.use_nodes = True
     nodes = world.node_tree.nodes
-    world.node_tree.nodes.clear()
-
     links = world.node_tree.links
-    
-    white_node = nodes.new('ShaderNodeTexEnvironment')
-    white_node.image = bpy.data.images.load('white_emissive_sphere_map.hdr')
-    env_node = nodes.new('ShaderNodeTexEnvironment')
-    env_node.image = bpy.data.images.load(list_env_maps[i])
-    
-    color_ramp = nodes.new('ShaderNodeValToRGB')
-    backNode1 = nodes.new('ShaderNodeBackground')
-    backNode2 = nodes.new('ShaderNodeBackground')
-    light_path_node = nodes.new('ShaderNodeLightPath')
-    mix_shader_node = nodes.new('ShaderNodeMixShader')
-    
-    world_output_node = world.node_tree.nodes.new(type='ShaderNodeOutputWorld')
-    
-    links.new(white_node.outputs['Color'], color_ramp.inputs['Fac'])
-    mix_shader_node['Fac'] = 1.0
-    links.new(color_ramp.outputs['Color'], backNode1.inputs['Color'])
-    links.new(backNode1.outputs['Background'], mix_shader_node.inputs[1])
-    links.new(env_node.outputs['Color'], backNode2.inputs['Color'])
-    links.new(backNode2.outputs['Background'], mix_shader_node.inputs[2])
-    links.new(light_path_node.outputs['Is Camera Ray'], mix_shader_node.inputs['Fac'])
-    links.new(mix_shader_node.outputs['Shader'], world_output_node.inputs['Surface'])
-    bpy.context.scene.render.film_transparent = False
+    backNode = nodes['Background']
 
-     
+    if nodes.find('Environment Texture') == -1:
+        envNode = nodes.new('ShaderNodeTexEnvironment')
+    else:
+        envNode = nodes['Environment Texture']
+        
+    envNode.location.x = backNode.location.x - 300
+    envNode.location.y = backNode.location.y
+    envNodeColorOut = envNode.outputs['Color']
+    backColIn = backNode.inputs['Color']
+    links.new(envNodeColorOut, backColIn)
+    bpy.context.scene.render.film_transparent = False
+    envNode.image = bpy.data.images.load(image_path) 
+    bpy.context.scene.world.cycles_visibility.diffuse = False
+    bpy.context.scene.world.cycles_visibility.glossy = False
+    bpy.context.scene.world.cycles_visibility.transmission = False
+    bpy.context.scene.world.cycles_visibility.scatter = False
+    scene.render.use_freestyle = False
+    scene.render.use_motion_blur = False
+    scene.render.use_stamp = False
+    # Create a new emission material
+        
 # Set ambient occlusion factor    
 def sample_point_on_sphere(radius: float) -> Tuple[float, float, float]:
     theta = random.random() * 2 * math.pi
@@ -356,7 +357,7 @@ def save_images(object_file: str) -> None:
         # change the env maps for each image, but make sure the env maps are consistent for each dataset
         #add_environment_map(list_env_maps, i)
         add_background_image(list_env_maps,i)
-        #add_white_environment_map("white_emissive_sphere_map.hdr")
+        add_white_environment_map("white_emissive_sphere_map.hdr")
         #add_background_map(list_env_maps, i)
         #add_area_light(intensity=0.5)
         #add_ambient_illumination(list_env_maps, i, intensity=0.5)

@@ -123,8 +123,6 @@ def add_background_image(list_env_maps, i):
     world = c.scene.world
     world.use_nodes = True
     nodes = world.node_tree.nodes
-    world.node_tree.nodes.clear()
-
     links = world.node_tree.links
     
     white_node = nodes.new('ShaderNodeTexEnvironment')
@@ -141,15 +139,12 @@ def add_background_image(list_env_maps, i):
     world_output_node = world.node_tree.nodes.new(type='ShaderNodeOutputWorld')
     
     links.new(white_node.outputs['Color'], color_ramp.inputs['Fac'])
-    mix_shader_node['Fac'] = 1.0
     links.new(color_ramp.outputs['Color'], backNode1.inputs['Color'])
     links.new(backNode1.outputs['Background'], mix_shader_node.inputs[1])
     links.new(env_node.outputs['Color'], backNode2.inputs['Color'])
     links.new(backNode2.outputs['Background'], mix_shader_node.inputs[2])
     links.new(light_path_node.outputs['Is Camera Ray'], mix_shader_node.inputs['Fac'])
     links.new(mix_shader_node.outputs['Shader'], world_output_node.inputs['Surface'])
-    bpy.context.scene.render.film_transparent = False
-
      
 # Set ambient occlusion factor    
 def sample_point_on_sphere(radius: float) -> Tuple[float, float, float]:

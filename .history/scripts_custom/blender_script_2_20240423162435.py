@@ -70,10 +70,10 @@ bpy.context.scene.cycles.device = 'GPU'
 for i, device in enumerate(bpy.context.preferences.addons['cycles'].preferences.devices):
     print(f"Device {i + 1}: {device.name}")
 
-env_maps_dir = '/Users/shreya/Documents/GitHub/objaverse-rendering/environment_maps/RENI_HDR/Train/*'
+env_maps_dir = r'C:\Users\Shreya\objaverse-rendering\environment_maps\RENI_HDR\*'
 list_env_maps = list(glob.glob(env_maps_dir))
 
-textures_dir = '/Users/shreya/Documents/GitHub/objaverse-rendering/textures/dtd/images/*/*.jpg'
+textures_dir = r'C:\Users\Shreya\objaverse-rendering\textures\*\*.jpg'
 list_textures_dir = list(glob.glob(textures_dir)) #maybe this list is too big to iterate
 
 def change_textures_in_scene(list_textures_dir):
@@ -92,9 +92,25 @@ def change_textures_in_scene(list_textures_dir):
             obj = context.view_layer.objects.active
             obj.data.materials[0] = mat
             
+def calculate_bounding_box_corners(obj):
+    # Get the object's world matrix
+    world_matrix = obj.matrix_world
+    print(type(world_matrix))
+    print(world_matrix)
+    
+    # Initialize a list to store the transformed bounding box corners
+    bounding_box_corners_world = []
+    
+    # Iterate through each bounding box corner vector
+    for vector in obj.bound_box:
+        # Transform the vector to world space
+        coord = Vector(vector)
+        world_corner = world_matrix @ coord
 
+        bounding_box_corners_world.append(world_corner)
+    return bounding_box_corners_world
 
-def add_environment_map(list_env_maps, i):
+def add_env_map(list_env_maps, i):
     print('Add background image')
     image_path = list_env_maps[i]
     #print(image_path)
@@ -119,38 +135,95 @@ def add_environment_map(list_env_maps, i):
     envNode.image = bpy.data.images.load(image_path) 
 
 def add_background_image(list_env_maps, i):
+    print('Add background image')
+    image_path = list_env_maps[i]
+    #print(image_path)
     c = bpy.context
     world = c.scene.world
     world.use_nodes = True
     nodes = world.node_tree.nodes
-    world.node_tree.nodes.clear()
-
     links = world.node_tree.links
-    
-    white_node = nodes.new('ShaderNodeTexEnvironment')
-    white_node.image = bpy.data.images.load('white_emissive_sphere_map.hdr')
-    env_node = nodes.new('ShaderNodeTexEnvironment')
-    env_node.image = bpy.data.images.load(list_env_maps[i])
-    
-    color_ramp = nodes.new('ShaderNodeValToRGB')
-    backNode1 = nodes.new('ShaderNodeBackground')
-    backNode2 = nodes.new('ShaderNodeBackground')
-    light_path_node = nodes.new('ShaderNodeLightPath')
-    mix_shader_node = nodes.new('ShaderNodeMixShader')
-    
-    world_output_node = world.node_tree.nodes.new(type='ShaderNodeOutputWorld')
-    
-    links.new(white_node.outputs['Color'], color_ramp.inputs['Fac'])
-    mix_shader_node['Fac'] = 1.0
-    links.new(color_ramp.outputs['Color'], backNode1.inputs['Color'])
-    links.new(backNode1.outputs['Background'], mix_shader_node.inputs[1])
-    links.new(env_node.outputs['Color'], backNode2.inputs['Color'])
-    links.new(backNode2.outputs['Background'], mix_shader_node.inputs[2])
-    links.new(light_path_node.outputs['Is Camera Ray'], mix_shader_node.inputs['Fac'])
-    links.new(mix_shader_node.outputs['Shader'], world_output_node.inputs['Surface'])
-    bpy.context.scene.render.film_transparent = False
+    backNode = nodes['Background']
 
-     
+    if nodes.find('Environment Texture') == -1:
+        envNode = nodes.new('ShaderNodeTexEnvironment')
+    else:
+        envNode = nodes['Environment Texture']
+        
+    envNode.location.x = backNode.location.x - 300
+    envNode.location.y = backNode.location.y
+    envNodeColorOut = envNode.outputs['Color']
+    backColIn = backNode.inputs['Color']
+    links.new(envNodeColorOut, backColIn)
+    bpy.context.scene.render.film_transparent = False
+    envNode.image = bpy.data.images.load(image_path) 
+    bpy.context.scene.world.cycles_visibility.diffuse = False
+    bpy.context.scene.world.cycles_visibility.glossy = False
+    bpy.context.scene.world.cycles_visibility.transmission = False
+    bpy.context.scene.world.cycles_visibility.scatter = False
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.ops.object.select_all(action='SELECT')
+    #bpy.context.scene.render.use_ambient_occlusion = False
+    bpy.context.scene.world.light_settings.use_ambient_occlusion = True
+    scene.render.use_freestyle = False
+    scene.render.use_motion_blur = False
+    scene.render.use_stamp = False
+    # Create a new emission material
+    mesh_objects = [obj for obj in bpy.context.scene.objects if obj.type == 'MESH']
+
+    # Iterate over each mesh object
+    for obj in mesh_objects:
+        # Create a new material for each object
+        emission_mat = bpy.data.materials.new(name="Bottom Emission_" + obj.name)
+        emission_mat.use_nodes = True
+
+        # Clear default nodes
+        emission_mat.node_tree.nodes.clear()
+
+        # Create Texture Coordinate node
+        tex_coord_node = emission_mat.node_tree.nodes.new(type='ShaderNodeTexCoord')
+
+        # Create Mapping node
+        mapping_node = emission_mat.node_tree.nodes.new(type='ShaderNodeMapping')
+        mapping_node.vector_type = 'TEXTURE'
+        #mapping_node.scale = (1, 1, 0)  # Keep Z scale to 0 for 2D mapping
+
+        # Create Image Texture node
+        image_texture_node = emission_mat.node_tree.nodes.new(type='ShaderNodeTexImage')
+
+        # Create Color Ramp node
+        color_ramp_node = emission_mat.node_tree.nodes.new(type='ShaderNodeValToRGB')
+
+        # Create Emission node
+        emission_node = emission_mat.node_tree.nodes.new(type='ShaderNodeEmission')
+
+        # Create Material Output node
+        output_node = emission_mat.node_tree.nodes.new(type='ShaderNodeOutputMaterial')
+
+        # Connect nodes
+        emission_mat.node_tree.links.new(tex_coord_node.outputs['Generated'], mapping_node.inputs['Vector'])
+        emission_mat.node_tree.links.new(mapping_node.outputs['Vector'], image_texture_node.inputs['Vector'])
+        emission_mat.node_tree.links.new(image_texture_node.outputs['Color'], color_ramp_node.inputs['Fac'])
+        emission_mat.node_tree.links.new(color_ramp_node.outputs['Color'], emission_node.inputs['Color'])
+        emission_mat.node_tree.links.new(emission_node.outputs['Emission'], output_node.inputs['Surface'])
+
+        # Check if the object has an active material
+        if obj.active_material:
+            # Get the active material
+            active_material = obj.active_material
+            
+            # Iterate over each node in the material's node tree
+            for node in active_material.node_tree.nodes:
+                # Check if the node is an Image Texture node
+                if node.type == 'TEX_IMAGE':
+                    # Set the image texture node
+                    image_texture_node.image = node.image
+
+
+        # Assign the material to the mesh object
+        obj.data.materials.clear()
+        obj.data.materials.append(emission_mat)
+        
 # Set ambient occlusion factor    
 def sample_point_on_sphere(radius: float) -> Tuple[float, float, float]:
     theta = random.random() * 2 * math.pi
@@ -354,9 +427,8 @@ def save_images(object_file: str) -> None:
         if args.textures == True:
             change_textures_in_scene(list_textures_dir)  # only
         # change the env maps for each image, but make sure the env maps are consistent for each dataset
-        #add_environment_map(list_env_maps, i)
-        add_background_image(list_env_maps,i)
-        #add_white_environment_map("white_emissive_sphere_map.hdr")
+        add_environment_map(list_env_maps, i)
+        #add_background_image(list_env_maps,i)
         #add_background_map(list_env_maps, i)
         #add_area_light(intensity=0.5)
         #add_ambient_illumination(list_env_maps, i, intensity=0.5)
