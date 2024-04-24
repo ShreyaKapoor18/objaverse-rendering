@@ -17,7 +17,6 @@ items=()  # Initialize the items array
 while IFS= read -r -u 3 line && [ ${#items[@]} -lt 20 ]; do
     items+=("$line")
 done 3< "/home/atuin/b112dc/b112dc10/objaverse-rendering/jsons/input_models_path_lt_100_remaining_original.txt"
-
 export CUDA_VISIBLE_DEVICES=0
 # Print the contents of the array
 for item in "${items[@]}"; do

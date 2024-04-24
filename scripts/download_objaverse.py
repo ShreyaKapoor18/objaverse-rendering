@@ -76,6 +76,8 @@ if __name__ == "__main__":
     annotations = objaverse.load_annotations()
     object_paths = objaverse._load_object_paths()
     print(len(object_paths))
+    import multiprocessing
+    processes = multiprocessing.cpu_count()
     #uids = uids[args.start_i : args.end_i]
     #dict_cat = ten_per_cat(annotations, uids)
     #list_cat = []
@@ -85,7 +87,7 @@ if __name__ == "__main__":
     #uids = list_cat
     #print(len(uids))
     uids = lvis_cats()
-    uids = uids[:100]
+    uids = uids
     # values should be around 47k
     print(len(uids))
     # get the uids that have already been downloaded
@@ -97,6 +99,9 @@ if __name__ == "__main__":
         f"https://huggingface.co/datasets/allenai/objaverse/resolve/main/{object_paths[uid]}"
         for uid in uids
     ]
+    import multiprocessing
+
+    objects = objaverse.load_objects(uids=uids,download_processes=processes )
     print(len(uid_object_paths))
     with open("input_models_path.json", "w") as f:
         json.dump(uid_object_paths, f, indent=2)
