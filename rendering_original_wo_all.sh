@@ -7,7 +7,7 @@ export CUDA_VISIBLE_DEVICES=0
 # Print the contents of the array
 script_name=f"rendering_original_wo_all.sh"
 num_items=${#items[@]}
-blender_cmd="blender -b -P scripts_custom/blender_script_2.py"
+blender_cmd="blender -b -P scripts_custom/blender_script_2_woall.py"
 
 # Function to render an item
 function render_item {
@@ -21,7 +21,7 @@ function render_item {
     echo "no specularity"
     render_options="$render_options --no_specular"
     echo "blender -b -P scripts_custom/blender_script_2.py -- --object_path "$item" --output_dir original_wo_shading_2023-11-21_14-34-42 $render_options"
-    blender -b -P scripts_custom/blender_script_2.py -- --object_path "$item" --output_dir original_wo_all_08_03_2024 $render_options
+    blender -b -P scripts_custom/blender_script_2_woall.py -- --object_path "$item" --output_dir original_wo_all_08_03_2024 $render_options
 }
 iteration_count=0
 for item in "${items[@]}"; do
