@@ -269,7 +269,7 @@ def save_images(object_file: str) -> None:
     reset_scene()
     # load the object
     object_uid = os.path.basename(object_file).split(".")[0]
-    print(object_file, 'path found')
+    print(object_file, 'path found \n')
     load_object(object_file) # this is done
     normalize_scene()
     # add_lighting()
@@ -340,6 +340,7 @@ def save_images(object_file: str) -> None:
 # load the glb model
 def load_object(object_path: str) -> None:
     """Loads a glb model into the scene."""
+    print('here is the object path', object_path)
     if object_path.endswith(".glb"):
         bpy.ops.import_scene.gltf(filepath=object_path, merge_vertices=True)
     elif object_path.endswith(".fbx"):

@@ -39,7 +39,7 @@ function render_item {
     fi
 
     echo "blender -b -P scripts_custom/blender_script_2.py -- --object_path "$item" --output_dir /Users/shreya/Documents/GitHub/objaverse-rendering/original_2023-12-07_20-30-44 $render_options"
-    blender -b -P scripts_custom/blender_script_2_zaxis.py -- --object_path "$item" --output_dir /Users/shreya/Documents/GitHub/objaverse-rendering/original_zaxis $render_options
+    blender -b -P objaverse-rendering/scripts_custom/blender_script_2_zaxis.py -- --object_path "$item" --output_dir /Users/shreya/Documents/GitHub/objaverse-rendering/original_zaxis $render_options
 }
 iteration_count=0
 for item in "${items[@]}"; do
