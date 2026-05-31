@@ -70,11 +70,11 @@ bpy.context.scene.cycles.device = 'GPU'
 for i, device in enumerate(bpy.context.preferences.addons['cycles'].preferences.devices):
     print(f"Device {i + 1}: {device.name}")
 
-env_maps_dir = '/Users/shreya/Documents/GitHub/objaverse-rendering/environment_maps/RENI_HDR/Train/*'
+cwd = os.getcwd()
+env_maps_dir = os.path.join(cwd, "environment_maps", "RENI_HDR", "Train", "*")
+textures_dir = os.path.join(cwd, "textures", "dtd", "images", "*", "*.jpg")
 list_env_maps = list(glob.glob(env_maps_dir))
-
-textures_dir = '/Users/shreya/Documents/GitHub/objaverse-rendering/textures/dtd/images/*/*.jpg'
-list_textures_dir = list(glob.glob(textures_dir)) #maybe this list is too big to iterate
+list_textures_dir = list(glob.glob(textures_dir))
 
 def change_textures_in_scene(list_textures_dir):
     # To do: also include cases where there are no textures on the material
@@ -82,7 +82,7 @@ def change_textures_in_scene(list_textures_dir):
     i = np.random.randint(0, len(list_textures_dir), size=1)[0]
     texture_file = list_textures_dir[i]
     for obj in bpy.context.scene.objects.values():
-        if isinstance(obj.data, (bpy.types.Mesh)):
+        if isinstance(obj.data, bpy.types.Mesh):
             mat = bpy.data.materials.new(name='newtexture')
             mat.use_nodes = True
             bsdf = mat.node_tree.nodes['Principled BSDF']
@@ -375,8 +375,7 @@ def save_images(object_file: str) -> None:
         theta = (i / args.num_images) * math.pi * 2
         #theta = np.pi/4
         j = np.random.randint(0, len(angles), size=1)[0]
-        phi = angles[j]
-        #phi = np.pi/2
+        phi = math.radians(angles[j])
         point = (
             args.camera_dist * math.sin(phi) * math.cos(theta),
             args.camera_dist * math.sin(phi) * math.sin(theta),
@@ -384,7 +383,7 @@ def save_images(object_file: str) -> None:
         )
         cam.location = point
         # render the image
-        render_path = os.path.join(args.output_dir, object_uid, f"{i:03d}.png")
+        render_path = os.path.join(args.output_dir, object_uid, f"{i:03d}.jpg")
         scene.render.filepath = render_path
         bpy.ops.render.render(write_still=True)
 

@@ -89,7 +89,7 @@ def change_textures_in_scene(list_textures_dir):
     print(texture_file)
     for obj in bpy.context.scene.objects.values():
         print(obj)
-        if type(obj) == "MESH":
+        if isinstance(obj.data, bpy.types.Mesh):
             mat = bpy.data.materials.new(name='newtexture')
             mat.use_nodes = True
             bsdf = mat.node_tree.nodes['Principled BSDF']
@@ -333,7 +333,7 @@ def save_images(object_file: str) -> None:
         )
         cam.location = point
         # render the image
-        render_path = os.path.join(args.output_dir, object_uid, f"{i:03d}.png")
+        render_path = os.path.join(args.output_dir, object_uid, f"{i:03d}.jpg")
         scene.render.filepath = render_path
         bpy.ops.render.render(write_still=True)
 
