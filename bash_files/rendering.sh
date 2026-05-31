@@ -1,3 +1,4 @@
+#!/bin/bash -l
 conda activate pyobjaverse
 filename=$(cat ~/Documents/GitHub/objaverse-rendering/input_models_path_2.txt)
 export SSL_CERT_DIR=/etc/ssl/certs
@@ -10,6 +11,5 @@ do
         --output_dir ./views \
         --engine CYCLES \
         --num_images 12 \
-        --camera_dist 1.2 \
-        --textures False
+        --camera_dist 1.2
 done
