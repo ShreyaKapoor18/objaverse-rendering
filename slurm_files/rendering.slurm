@@ -24,5 +24,5 @@ do
         --output_dir /home/hpc/b112dc/b112dc10/all_less_than_5 \
         --engine CYCLES \
         --num_images 12 \
-        --camera_dist 2 \
+        --camera_dist 2
 done

@@ -1,4 +1,5 @@
 #!/bin/bash -l
+script_name=$(basename "$0")
 python scripts_custom/write_new_file_check_paths.py --output_dir ~/git/objaverse-rendering/meshes_lt_100_shadows_ambient_textures --input_file $WORK/objaverse-rendering/jsons/input_models_path_lt_100.txt --num_images 15  --output_file $WORK/objaverse-rendering/jsons/input_models_path_lt_100_remaining_meshes_lt_100_shadows_ambient_textures.txt
 blender_cmd="blender -b -P scripts_custom/blender_script_2.py"
 gpu_indices=(0)

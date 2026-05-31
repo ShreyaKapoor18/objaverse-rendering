@@ -7,6 +7,8 @@
 #SBATCH -o ./slurm_files/output/rendering_meshes_lt_100_shadows_ambient_original.%j.out
 #SBATCH -e ./slurm_files/errors/rendering_meshes_lt_100_shadows_ambient_original.%j.out
 unset SLURM_EXPORT_ENV
+script_name=$(basename "$0")
+output_filename="$WORK/objaverse-rendering/jsons/input_models_path_lt_100_remaining_meshes_lt_100_shadows_ambient_original.txt"
 
 # Load CUDA module with version
 module load cuda/12.1.1

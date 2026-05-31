@@ -49,5 +49,6 @@ python scripts_custom/write_new_file_check_paths.py --output_dir "$output_dir" -
 # Use srun to run the distributed Python script
 srun python /home/hpc/b112dc/b112dc10/git/objaverse-rendering/scripts_custom/distributed2.py \
      --num_gpus 8 --input_models_path "$output_filename" \
-     --workers_per_gpu 14 --script "$script" --camera_dist "$camera_dist" --num_images "$num_images"
+     --workers_per_gpu 14 --script "$script" --camera_dist "$camera_dist" --num_images "$num_images" \
+     --output_dir "$output_dir" --engine "$engine"
 

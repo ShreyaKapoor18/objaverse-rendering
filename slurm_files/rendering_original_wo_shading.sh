@@ -7,7 +7,7 @@
 #SBATCH --export=NONE
 #SBATCH -o ./slurm_files/output/rendering_original_wo_shading.out
 #SBATCH -e ./slurm_files/errors/rendering_original_wo_shading.err
-export PATH='/home/atuin/b112dc/b112dc10/blender-3.3.1-linux-x64.$PATH'
+export PATH="/home/atuin/b112dc/b112dc10/blender-3.3.1-linux-x64:$PATH"
 unset SLURM_EXPORT_ENV
 export SSL_CERT_DIR=/etc/ssl/certs
 export SSL_CERT_FILE=/etc/ssl/cert.pem
@@ -23,7 +23,7 @@ export CUDA_VISIBLE_DEVICES=0
 for item in "${items[@]}"; do
     echo "$item"
 done
-script_name=f"rendering_original_wo_shading.sh"
+script_name=$(basename "$0")
 num_items=${#items[@]}
 blender_cmd="blender -b -P scripts_custom/blender_script_2.py"
 
