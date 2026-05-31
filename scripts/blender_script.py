@@ -5,7 +5,7 @@ to .glb files and renders images of each model. The images are from rotating the
 object around the origin. The images are saved to the output directory.
 
 Example usage:
-    blender -b -P blender_script.py -- \
+    blender -b -P scripts/blender_script.py -- \
         --object_path my_object.glb \
         --output_dir ./views \
         --engine CYCLES \
@@ -40,7 +40,7 @@ parser.add_argument(
     "--engine", type=str, default="BLENDER_EEVEE", choices=["CYCLES", "BLENDER_EEVEE"]
 )
 parser.add_argument("--num_images", type=int, default=12)
-parser.add_argument("--camera_dist", type=int, default=1.0)
+parser.add_argument("--camera_dist", type=float, default=1.0)
 
 argv = sys.argv[sys.argv.index("--") + 1 :]
 args = parser.parse_args(argv)
@@ -188,6 +188,7 @@ def save_images(object_file: str) -> None:
     empty = bpy.data.objects.new("Empty", None)
     scene.collection.objects.link(empty)
     cam_constraint.target = empty
+    os.makedirs(os.path.join(args.output_dir, object_uid), exist_ok=True)
     for i in range(args.num_images):
         # set the camera position
         theta = (i / args.num_images) * math.pi * 2
