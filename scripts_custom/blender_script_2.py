@@ -330,6 +330,7 @@ def save_images(object_file: str) -> None:
     empty = bpy.data.objects.new("Empty", None)
     scene.collection.objects.link(empty)
     cam_constraint.target = empty
+    os.makedirs(os.path.join(args.output_dir, object_uid), exist_ok=True)
     print("camera constraint done")
     if args.bake_ao:
         print('Baking ambient occlusion')
@@ -344,7 +345,7 @@ def save_images(object_file: str) -> None:
         bpy.ops.render.render(animation=False)
         os.makedirs(args.output_dir, exist_ok=True)
 
-    angles = np.random.uniform(0, 360, size=args.num_images-5) # just for visualization can I set the angles to be non random -- change this later on
+    angles = np.random.uniform(0, 360, size=args.num_images)
     #angles = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270] # all angles should be the same for all the renderings
     print(len(angles)) # the length of the angles is 10
     print("angles")
@@ -476,12 +477,12 @@ if __name__ == "__main__":
             local_path = download_object(args.object_path)
         else:
             local_path = args.object_path    
-        object_uid = os.path.basename(local_path)
+        object_uid = os.path.basename(local_path).split(".")[0]
         print(object_uid)
         path = join(args.output_dir, object_uid)
         if os.path.exists(path):
             print('rendering done already')
-        if not os.path.exists(path):
+        else:
             save_images(local_path)
         end_i = time.time()
         print("Finished", local_path, "in", end_i - start_i, "seconds")
