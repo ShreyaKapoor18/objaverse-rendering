@@ -8,7 +8,6 @@ import urllib
 import urllib.request
 urllib.request.urlretrieve("https://github.com/pytorch/hub/raw/master/images/dog.jpg", "dog.jpg")
 from PIL import Image
-import transformers
 filename = "dog.jpg"
 input_image = Image.open(filename)
 preprocess = transforms.Compose([

@@ -1,5 +1,5 @@
 #%%
-import numpy as np # linear algebra
+import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 import matplotlib.pyplot as plt
@@ -14,10 +14,8 @@ from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout, Flatten, Conv2D, MaxPooling2D
 from keras.layers import BatchNormalization
 from keras.utils import to_categorical
-import numpy as np
 from torchvision.models import resnet50, ResNet50_Weights
 from torchvision.io import read_image
-from PIL import Image
 import torch
 #%%
 # https://vitalflux.com/pytorch-load-predict-pretrained-resnet-model/
@@ -49,7 +47,7 @@ for dirname1, _, filenames in os.walk(join(dirname(dirname(__file__)), 'views/')
             y.append(dict_cat[cat])
 '''
 #%%
-filepath = '/Users/shreya/blender/objaverse-rendering/views/cars-vehicles/e9fe70b8fc094d26a08bb4b8c1c37518/008.png'
+filepath = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'views', 'cars-vehicles', 'e9fe70b8fc094d26a08bb4b8c1c37518', '008.png')
 img = Image.open(filepath).convert("RGB")
 #X = np.array(X)
 #print(X.shape)

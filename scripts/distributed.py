@@ -45,7 +45,7 @@ def worker(
         print(item, gpu)
         command = (
             f"export DISPLAY=:0.{gpu} &&"
-            f" Blender -b -P blender_script.py --"
+            f" blender -b -P scripts/blender_script.py --"
             f" --object_path {item}"
         )
         subprocess.run(command, shell=True)

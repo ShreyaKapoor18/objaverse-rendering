@@ -1,12 +1,11 @@
 import matplotlib.pyplot as plt
 import os
 import glob
-import matplotlib.pyplot as plt
 
-categories = ['characters-creatures', 'cultural-heritage-history', 'furniture-home', 'art-abstract', 
+categories = ['characters-creatures', 'cultural-heritage-history', 'furniture-home', 'art-abstract',
                   'science-technology', 'architecture', 'cars-vehicles', 'places-travel', 'people', 'food-drink',
                   'fashion-style', 'sports-fitness', 'music', 'news-politics', 'animals-pets', 'nature-plants',
-                  'electronic-gadgets', 'weapons-military']
+                  'electronics-gadgets', 'weapons-military']
 views_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'views')
 path = os.path.join(views_path, categories[0])
 print(path)
