@@ -279,6 +279,7 @@ def save_images(object_file: str) -> None:
     empty = bpy.data.objects.new("Empty", None)
     scene.collection.objects.link(empty)
     cam_constraint.target = empty
+    os.makedirs(os.path.join(args.output_dir, object_uid), exist_ok=True)
     print("camera constraint done")
     if args.bake_ao:
         print('Baking ambient occlusion')
@@ -293,13 +294,12 @@ def save_images(object_file: str) -> None:
         bpy.ops.render.render(animation=False)
         os.makedirs(args.output_dir, exist_ok=True)
 
-    angles = np.random.uniform(0, 360, size=args.num_images) # just for visualization can I set the angles to be non random -- change this later on
-    #angles = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270] # all angles should be the same for all the renderings
-    print(len(angles)) # the length of the angles is 10
+    angles = np.random.uniform(0, 360, size=args.num_images)
+    print(len(angles))
     print("angles")
     for i in range(args.num_images):
         # set the camera position
-        if args.textures == True:
+        if args.textures:
             change_textures_in_scene(list_textures_dir)  # only
         # change the env maps for each image, but make sure the env maps are consistent for each dataset
         add_environment_map(list_env_maps, i)
@@ -319,7 +319,6 @@ def save_images(object_file: str) -> None:
         if args.no_specular:
             print('Removing specular')
             remove_specular()
-            # if it set to false
         #theta = (i / args.num_images) * math.pi * 2
         theta = np.pi/4
         #theta = np.pi/4
@@ -436,11 +435,10 @@ def download_object(object_url: str) -> str:
     tmp_local_path = os.path.join("tmp-objects-1", f"{uid}.glb" + ".tmp")
     local_path = os.path.join("tmp-objects-1", f"{uid}.glb")
     # wget the file and put it in local_path
-    if not os.path.exists('tmp-objects-1'):
-        if not os.path.exists(local_path):
-            os.makedirs(os.path.dirname(tmp_local_path), exist_ok=True)
-            urllib.request.urlretrieve(object_url, tmp_local_path)
-    os.rename(tmp_local_path, local_path)
+    if not os.path.exists(local_path):
+        os.makedirs(os.path.dirname(tmp_local_path), exist_ok=True)
+        urllib.request.urlretrieve(object_url, tmp_local_path)
+        os.rename(tmp_local_path, local_path)
     # get the absolute path
         
     local_path = os.path.abspath(local_path)
@@ -455,12 +453,12 @@ if __name__ == "__main__":
             local_path = download_object(args.object_path)
         else:
             local_path = args.object_path    
-        object_uid = os.path.basename(local_path)
+        object_uid = os.path.basename(local_path).split(".")[0]
         print(object_uid)
         path = join(args.output_dir, object_uid)
         if os.path.exists(path):
             print('rendering done already')
-        if not os.path.exists(path):
+        else:
             save_images(local_path)
         end_i = time.time()
         print("Finished", local_path, "in", end_i - start_i, "seconds")
