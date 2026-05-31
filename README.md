@@ -2,6 +2,14 @@
 
 Scripts to perform distributed rendering of Objaverse objects in Blender across many GPUs and processes.
 
+## Summary
+
+This repository provides a Blender-based pipeline for generating multi-view image datasets from [Objaverse](https://objaverse.allenai.org/) 3D models. Given a list of `.glb`/`.fbx` object files or URLs, it renders N views per object by orbiting a camera around each model and saves the results as images.
+
+The core scripts (`scripts/`) come from AI2/PRIOR. The extended scripts (`scripts_custom/`) add support for controlled rendering ablations — removing shadows, shading, or specularity, and substituting random DTD textures or HDR environment maps — to produce matched render sets that vary only one visual property at a time. This is useful for training or evaluating vision models where lighting and material conditions need to be controlled.
+
+Rendering can be parallelized across multiple GPUs locally (`distributed.py` / `distributed2.py`) or submitted as batch jobs on an HPC cluster via the SLURM scripts in `slurm_files/`.
+
 ### System requirements
 
 We have only tested the rendering scripts on Ubuntu machines that have NVIDIA GPUs.
