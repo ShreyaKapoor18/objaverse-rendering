@@ -42,7 +42,7 @@ count_500 = 0
 count_500p = 0
 #%%
 for key in lvis_annotations.keys():
-    num = len(count_keys)
+    num = len(lvis_annotations[key])
     if num<=20:
             count_20+=1
     if num>=20 and num<=40:

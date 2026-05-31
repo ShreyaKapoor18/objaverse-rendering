@@ -22,7 +22,6 @@ def split(a, n):
     k, m = divmod(len(a), n)
     return (a[i*k+min(i, m):(i+1)*k+min(i+1, m)] for i in range(n))
 
-splitted_list = split(list_lvis, 5)
 splitted_list = list_lvis
 base_dir = '../objaverse-rendering/'
 

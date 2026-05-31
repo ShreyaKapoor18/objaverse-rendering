@@ -1,5 +1,6 @@
-#!/Applications/Blender.app/Contents/Resources/3.4/python/bin/python3.10
-import os 
+#!/usr/bin/env python3
+import os
+import subprocess
 import glob
 import numpy as np
 import multiprocessing
@@ -132,7 +133,7 @@ if __name__ == '__main__':
                 json.dump(dict_counts, f, indent=4)
 
     list_counts = list(filter(partial(is_not, None), list_counts))
-    with open(join('results', args.output_filename)) as f:
+    with open(join('results', args.output_filename), 'wb') as f:
         np.save(f, list_counts)
 
 

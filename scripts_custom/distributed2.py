@@ -35,10 +35,10 @@ class Args:
     engine : str
     """ Which engine to use"""
     
-    num_images: str
+    num_images: int
     """ Number of images"""
-    
-    camera_dist: str
+
+    camera_dist: float
     """ Camera distance for the renderer"""
     
     textures: bool
@@ -53,6 +53,7 @@ def worker(
     count: multiprocessing.Value,
     gpu: int,
     s3: Optional[boto3.client],
+    args: Args,
 ) -> None:
     while True:
         item = queue.get()
@@ -64,12 +65,12 @@ def worker(
         command = (
             f"~/blender/blender-3.3.1-linux-x64/blender -b -P {args.script} --"
             f" --object_path {item}"
-            f" --output_dir  {args.output_dir}" 
+            f" --output_dir {args.output_dir}"
             f" --engine {args.engine}"
             f" --num_images {args.num_images}"
             f" --camera_dist {args.camera_dist}")
-        if args.texture:
-            command += f"--textures"
+        if args.textures:
+            command += " --textures"
         subprocess.run(command, shell=True)
         # quit opening blender for each turn
         # after the object has been rendered then delete it, since we want to save the sample on the computer
@@ -99,7 +100,7 @@ if __name__ == "__main__":
         for worker_i in range(args.workers_per_gpu):
             worker_i = gpu_i * args.workers_per_gpu + worker_i
             process = multiprocessing.Process(
-                target=worker, args=(queue, count, gpu_i, s3)
+                target=worker, args=(queue, count, gpu_i, s3, args)
             )
             process.daemon = True
             process.start()
