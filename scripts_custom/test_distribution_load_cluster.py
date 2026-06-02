@@ -100,7 +100,7 @@ def count_meshes(objs):
 
 
 if __name__ == '__main__':
-    num_cores = int(os.getenv("SLURM_CPUS_PER_TASK")) - 5
+    num_cores = int(os.getenv("SLURM_CPUS_PER_TASK", "6")) - 5
     objaverse_dir = '/home/janus/iwi9-datasets/objaverse-objects' \
                     '/hf-objaverse-v1/glbs/*/*'
     print(os.getcwd())
@@ -123,7 +123,7 @@ if __name__ == '__main__':
     else:
         dict_counts = {'test': 0}
         with open('results/counts.json', 'w') as f:
-            dict_counts = json.dump(dict_counts, f, indent=4)
+            json.dump(dict_counts, f, indent=4)
 
     with Pool(num_cores) as p:
         list_counts = p.map(count_meshes, object_dir) # we need only the lvis annotated objects,

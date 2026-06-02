@@ -23,7 +23,6 @@ def normalize_scene(scene):
     for obj in scene_root_objects(scene):
         obj.blender_obj.matrix_world.translation += offset
     bpy.ops.object.select_all(action="DESELECT")
-    return obj
 
 def scene_bbox(scene, single_obj=None, ignore_matrix=False):
     bbox_min = (math.inf,) * 3

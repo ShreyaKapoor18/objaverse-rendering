@@ -23,17 +23,13 @@ for files in glob.glob(join("/Users/shreya/Documents/GitHub/objaverse-rendering/
     print('The file being read is', files)
     filename = files.split('/')[-1].split('_combined.txt')[0]
     with open(files, 'r') as f:
-        with open(files, 'r') as file:
-            uids_in_file = set()
-            print('50bd4cc3a141400cb84ea66fd8dfb2a6' in uids)
-            for line in f:
-                uid_line = line.split('.glb')
-                uid_line = uid_line[0].strip('\n')
-                uid_line = uid_line.replace(" ", "")
-                #print(uid_line)
-                uids_in_file.add(uid_line)
-                #print(uid_line)
-                #print("Uid not found", uid_line)
+        uids_in_file = set()
+        print('50bd4cc3a141400cb84ea66fd8dfb2a6' in uids)
+        for line in f:
+            uid_line = line.split('.glb')
+            uid_line = uid_line[0].strip('\n')
+            uid_line = uid_line.replace(" ", "")
+            uids_in_file.add(uid_line)
         object_paths = objaverse._load_object_paths()
         uids_remaining = uids.difference(uids_in_file)
         print("number of uids remaining", len(uids_remaining))

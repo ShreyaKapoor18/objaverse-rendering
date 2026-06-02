@@ -51,7 +51,7 @@ export CUDA_VISIBLE_DEVICES=0
 for item in "${{items[@]}}"; do
     echo "$item"
 done
-script_name=f"rendering_{name}.sh"
+script_name="rendering_{name}.sh"
 num_items=${{#items[@]}}
 blender_cmd="blender -b -P scripts_custom/blender_script_2.py"
 

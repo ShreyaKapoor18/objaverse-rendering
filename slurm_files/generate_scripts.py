@@ -3,7 +3,6 @@ import datetime
 import glob
 from os.path import join
 import re
-import os
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 folder_names = ['original', 'textures', 'original_wo_shadows', 'original_wo_shading', 'original_no_spec', 'original_wo_all']
 for folder in folder_names:
@@ -47,7 +46,7 @@ export CUDA_VISIBLE_DEVICES=0
 for item in "${{items[@]}}"; do
     echo "$item"
 done
-script_name=f"rendering_{name}.sh"
+script_name="rendering_{name}.sh"
 num_items=${{#items[@]}}
 blender_cmd="blender -b -P scripts_custom/blender_script_2.py"
 

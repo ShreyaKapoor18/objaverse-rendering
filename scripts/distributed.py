@@ -52,7 +52,6 @@ def worker(
         # quit opening blender for each turn
         # after the object has been rendered then delete it, since we want to save the sample on the computer
         # this has already been ensured by the tmp objects folder
-	
 
         with count.get_lock():
             count.value += 1

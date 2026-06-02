@@ -96,8 +96,10 @@ def change_textures_in_scene(list_textures_dir):
             texImage = mat.node_tree.nodes.new('ShaderNodeTexImage')
             texImage.image = bpy.data.images.load(texture_file)
             mat.node_tree.links.new(bsdf.inputs['Base Color'], texImage.outputs['Color'])
-            obj = context.view_layer.objects.active
-            obj.data.materials[0] = mat
+            if obj.data.materials:
+                obj.data.materials[0] = mat
+            else:
+                obj.data.materials.append(mat)
             
 # Set ambient occlusion factor    
 def sample_point_on_sphere(radius: float) -> Tuple[float, float, float]:
@@ -243,12 +245,12 @@ def remove_specular():
             if principled_bsdf:
             # Remove links to the Metallic input
                 for link in mat.node_tree.links:
-                        if link.to_node == principled_bsdf.inputs["Metallic"]:
+                        if link.to_socket == principled_bsdf.inputs["Metallic"]:
                             mat.node_tree.links.remove(link)
                             principled_bsdf.inputs["Metallic"].default_value = 0
                 # Remove links to the Roughness input
                 for link in mat.node_tree.links:
-                        if link.to_node == principled_bsdf.inputs["Roughness"]:
+                        if link.to_socket == principled_bsdf.inputs["Roughness"]:
                             mat.node_tree.links.remove(link)
                             principled_bsdf.inputs["Roughness"].default_value = 1
                             
@@ -303,7 +305,7 @@ def save_images(object_file: str) -> None:
         if args.textures:
             change_textures_in_scene(list_textures_dir)
         # change the env maps for each image, but make sure the env maps are consistent for each dataset
-        add_environment_map(list_env_maps, i)
+        add_environment_map(list_env_maps, i % len(list_env_maps))
         #add_background_image(list_env_maps,i)
         #add_background_map(list_env_maps, i)
         #add_area_light(intensity=0.5)

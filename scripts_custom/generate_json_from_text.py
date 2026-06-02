@@ -15,7 +15,7 @@ def process_object(key):
 
 if __name__ == '__main__':
     
-    num_cores = int(os.getenv("SLURM_CPUS_PER_TASK")) - 2
+    num_cores = int(os.getenv("SLURM_CPUS_PER_TASK", "4")) - 2
 
     with open('results/counts.json') as f:
         dict_json = json.load(f)
