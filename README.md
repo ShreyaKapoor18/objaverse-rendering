@@ -49,6 +49,14 @@ objaverse-rendering/
 
 Each column is the **same 3D object** rendered with a different ablation setting. The ambient-only render is intentionally dark — no direct light, just the white ambient environment map.
 
+### No variation axis — 5 views of the same object
+
+| View 1 | View 2 | View 3 | View 4 | View 5 |
+|:---:|:---:|:---:|:---:|:---:|
+| ![view 0](docs/samples/whale_novar_000.jpg) | ![view 1](docs/samples/whale_novar_001.jpg) | ![view 2](docs/samples/whale_novar_002.jpg) | ![view 3](docs/samples/whale_novar_003.jpg) | ![view 4](docs/samples/whale_novar_004.jpg) |
+
+Camera elevation is fixed; only the horizontal angle changes across the 10 rendered views. Each frame uses a different random HDR background.
+
 ---
 
 ## System Requirements
