@@ -57,6 +57,14 @@ Each column is the **same 3D object** rendered with a different ablation setting
 
 Camera elevation is fixed; only the horizontal angle changes across the 10 rendered views. Each frame uses a different random HDR background.
 
+### Less variation — 5 views of the same object
+
+| View 1 | View 2 | View 3 | View 4 | View 5 |
+|:---:|:---:|:---:|:---:|:---:|
+| ![view 0](docs/samples/whale_lessvar_000.jpg) | ![view 1](docs/samples/whale_lessvar_001.jpg) | ![view 2](docs/samples/whale_lessvar_002.jpg) | ![view 3](docs/samples/whale_lessvar_003.jpg) | ![view 4](docs/samples/whale_lessvar_004.jpg) |
+
+Camera elevation varies within a narrower range than the fully random default, producing more consistent viewpoints while still capturing multiple angles.
+
 ---
 
 ## System Requirements
