@@ -33,6 +33,24 @@ objaverse-rendering/
 
 ---
 
+## Sample Renderings
+
+### Object gallery
+
+| Beach ball | Disc | Book | Toy |
+|:---:|:---:|:---:|:---:|
+| ![beach ball](docs/samples/beach_ball.jpg) | ![disc](docs/samples/disc.jpg) | ![book](docs/samples/book.jpg) | ![toy](docs/samples/toy.jpg) |
+
+### Rendering variants — same object, different lighting/camera
+
+| No variation axis | Z-axis only | Less variation | Ambient illumination only |
+|:---:|:---:|:---:|:---:|
+| ![no variation](docs/samples/whale_no_variation.jpg) | ![z-axis](docs/samples/whale_zaxis.jpg) | ![less variation](docs/samples/whale_less_variation.jpg) | ![ambient](docs/samples/whale_ambient.jpg) |
+
+Each column is the **same 3D object** rendered with a different ablation setting. The ambient-only render is intentionally dark — no direct light, just the white ambient environment map.
+
+---
+
 ## System Requirements
 
 - Ubuntu with NVIDIA GPU(s)
