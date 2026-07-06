@@ -73,6 +73,14 @@ Camera elevation varies within a narrower range than the fully random default, p
 
 Camera rotates purely around the vertical (Z) axis at a fixed elevation — the object stays at the same height in every frame, only spinning horizontally.
 
+### Ambient illumination only — 5 views of a different object
+
+| View 1 | View 2 | View 3 | View 4 | View 5 |
+|:---:|:---:|:---:|:---:|:---:|
+| ![view 0](docs/samples/ambient_000.jpg) | ![view 1](docs/samples/ambient_001.jpg) | ![view 2](docs/samples/ambient_002.jpg) | ![view 3](docs/samples/ambient_003.jpg) | ![view 4](docs/samples/ambient_004.jpg) |
+
+No direct lighting — only the white ambient HDR environment map. The object geometry is fully visible but flat, with no shadows or specular highlights.
+
 ---
 
 ## System Requirements
