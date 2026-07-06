@@ -65,6 +65,14 @@ Camera elevation is fixed; only the horizontal angle changes across the 10 rende
 
 Camera elevation varies within a narrower range than the fully random default, producing more consistent viewpoints while still capturing multiple angles.
 
+### Z-axis only — 5 views of the same object
+
+| View 1 | View 2 | View 3 | View 4 | View 5 |
+|:---:|:---:|:---:|:---:|:---:|
+| ![view 0](docs/samples/whale_zaxis_000.jpg) | ![view 1](docs/samples/whale_zaxis_001.jpg) | ![view 2](docs/samples/whale_zaxis_002.jpg) | ![view 3](docs/samples/whale_zaxis_003.jpg) | ![view 4](docs/samples/whale_zaxis_004.jpg) |
+
+Camera rotates purely around the vertical (Z) axis at a fixed elevation — the object stays at the same height in every frame, only spinning horizontally.
+
 ---
 
 ## System Requirements
