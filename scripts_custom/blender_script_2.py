@@ -130,7 +130,7 @@ def add_background_image(list_env_maps, i):
     links = world.node_tree.links
     
     white_node = nodes.new('ShaderNodeTexEnvironment')
-    white_node.image = bpy.data.images.load('white_ambient_env_map.hdr')
+    white_node.image = bpy.data.images.load('hdr/white_ambient_env_map.hdr')
     env_node = nodes.new('ShaderNodeTexEnvironment')
     env_node.image = bpy.data.images.load(list_env_maps[i])
     
@@ -358,7 +358,7 @@ def save_images(object_file: str) -> None:
         # change the env maps for each image, but make sure the env maps are consistent for each dataset
         #add_environment_map(list_env_maps, i)
         add_background_image(list_env_maps, i % len(list_env_maps))
-        #add_white_environment_map("white_emissive_sphere_map.hdr")
+        #add_white_environment_map("hdr/white_emissive_sphere_map.hdr")
         #add_background_map(list_env_maps, i)
         #add_area_light(intensity=0.5)
         #add_ambient_illumination(list_env_maps, i, intensity=0.5)

@@ -10,13 +10,18 @@
 unset SLURM_EXPORT_ENV
 export SSL_CERT_DIR=/etc/ssl/certs
 export SSL_CERT_FILE=/etc/ssl/cert.pem
-
-mapfile -t items < "C:\Users\Shreya\objaverse-rendering\jsons\input_models_path_lt_100.txt"
+input_file=jsons/input_models_path_lt_100.txt
+items=()  # Initialize the items array
+mapfile -t items < jsons/input_models_path_lt_100.txt
 
 export CUDA_VISIBLE_DEVICES=0
-script_name=f"rendering_original.sh"
+# Print the contents of the array
+for item in "${items[@]}"; do
+    echo "$item"
+done
+script_name="rendering_ambient.sh"
 num_items=${#items[@]}
-blender_cmd="blender -b -P scripts_custom/blender_script_2_zaxis.py"
+blender_cmd="blender -b -P scripts_custom/blender_script_2.py"
 
 # Function to render an item
 function render_item {
@@ -37,14 +42,23 @@ function render_item {
         echo "no specularity"
         render_options="$render_options --no_specular"
     fi
+    if [[ "$script_name" == *original_wo_all* ]]; then
+        echo "remove all"
+        render_options="$render_options --no_shading --no_shadows --no_specular --textures"
+    fi
+    
 
-    echo "blender -b -P scripts_custom/blender_script_2.py -- --object_path "$item" --output_dir /Users/shreya/Documents/GitHub/objaverse-rendering/original_2023-12-07_20-30-44 $render_options"
-    blender -b -P objaverse-rendering/scripts_custom/blender_script_2_zaxis.py -- --object_path "$item" --output_dir /Users/shreya/Documents/GitHub/objaverse-rendering/original_zaxis $render_options
+    echo "blender -b -P scripts_custom/blender_script_2.py -- --object_path "$item" --output_dir jsons/original_2024-04-17_10-41-19 $render_options"
+    blender -b -P scripts_custom/blender_script_2.py -- --object_path "$item" --output_dir jsons/original_ambient_ill $render_options
 }
 iteration_count=0
 for item in "${items[@]}"; do
+    if [ "$iteration_count" -lt 20 ]; then
         render_item "$item"
         # Additional commands related to rendering can be added here
         ((iteration_count++))
+    else
+        break  # Exit the loop if the iteration count reaches 20
+    fi
 done
 
