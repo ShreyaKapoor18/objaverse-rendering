@@ -49,7 +49,7 @@ function render_item {
     
 
     echo "blender -b -P scripts_custom/blender_script_2.py -- --object_path "$item" --output_dir jsons/original_2024-04-17_10-41-19 $render_options"
-    blender -b -P scripts_custom/blender_script_2.py -- --no_shadows --object_path "$item" --output_dir jsons/original_ambient_ill $render_options
+    blender -b -P scripts_custom/blender_script_2.py -- --object_path "$item" --output_dir jsons/original_2024-04-17_10-41-19 $render_options
 }
 iteration_count=0
 for item in "${items[@]}"; do

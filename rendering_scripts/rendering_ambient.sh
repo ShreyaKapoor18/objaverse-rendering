@@ -5,8 +5,8 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --export=NONE
-#SBATCH -o ./slurm_files/output/rendering_original.out
-#SBATCH -e ./slurm_files/errors/rendering_original.err
+#SBATCH -o ./slurm_files/output/rendering_ambient.out
+#SBATCH -e ./slurm_files/errors/rendering_ambient.err
 unset SLURM_EXPORT_ENV
 export SSL_CERT_DIR=/etc/ssl/certs
 export SSL_CERT_FILE=/etc/ssl/cert.pem
@@ -48,7 +48,7 @@ function render_item {
     fi
     
 
-    echo "blender -b -P scripts_custom/blender_script_2.py -- --object_path "$item" --output_dir jsons/original_2024-04-17_10-41-19 $render_options"
+    echo "blender -b -P scripts_custom/blender_script_2.py -- --object_path "$item" --output_dir jsons/original_ambient_ill $render_options"
     blender -b -P scripts_custom/blender_script_2.py -- --object_path "$item" --output_dir jsons/original_ambient_ill $render_options
 }
 iteration_count=0

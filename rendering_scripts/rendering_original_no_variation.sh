@@ -5,8 +5,8 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --export=NONE
-#SBATCH -o ./slurm_files/output/rendering_original.out
-#SBATCH -e ./slurm_files/errors/rendering_original.err
+#SBATCH -o ./slurm_files/output/rendering_original_no_variation.out
+#SBATCH -e ./slurm_files/errors/rendering_original_no_variation.err
 unset SLURM_EXPORT_ENV
 export SSL_CERT_DIR=/etc/ssl/certs
 export SSL_CERT_FILE=/etc/ssl/cert.pem
